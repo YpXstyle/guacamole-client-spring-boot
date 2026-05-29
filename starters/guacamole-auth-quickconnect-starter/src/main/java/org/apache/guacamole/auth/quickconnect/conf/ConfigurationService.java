@@ -20,7 +20,6 @@
 package org.apache.guacamole.auth.quickconnect.conf;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import org.apache.guacamole.GuacamoleException;
 import org.apache.guacamole.environment.Environment;
@@ -29,7 +28,6 @@ import org.apache.guacamole.properties.StringListProperty;
 /**
  * Configuration options to control the QuickConnect module.
  */
-@Service
 public class ConfigurationService {
    
     /**

@@ -21,8 +21,6 @@ package org.apache.guacamole.auth.totp.form;
 
 import com.google.common.io.BaseEncoding;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -41,8 +39,6 @@ import org.apache.guacamole.totp.TOTPGenerator;
 /**
  * Field which prompts the user for an authentication code generated via TOTP.
  */
-@Service
-@Scope("prototype")
 public class AuthenticationCodeField extends Field {
 
     /**

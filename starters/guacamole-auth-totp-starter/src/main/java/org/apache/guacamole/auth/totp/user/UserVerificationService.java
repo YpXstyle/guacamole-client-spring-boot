@@ -21,7 +21,6 @@ package org.apache.guacamole.auth.totp.user;
 
 import com.google.common.io.BaseEncoding;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.ObjectProvider;
 import java.security.InvalidKeyException;
 import java.util.Collections;
@@ -48,7 +47,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Service for verifying the identity of a user using TOTP.
  */
-@Service
 public class UserVerificationService {
 
     /**

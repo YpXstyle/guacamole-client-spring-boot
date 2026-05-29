@@ -1,12 +1,12 @@
 package org.apache.guacamole.auth.quickconnect;
 
+import org.apache.guacamole.auth.quickconnect.conf.ConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 @Configuration
@@ -15,8 +15,17 @@ public class QuickConnectAuthenticationAutoConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(QuickConnectAuthenticationAutoConfiguration.class);
 
+    @Bean("quickConnectConfigurationService")
+    public ConfigurationService quickConnectConfigurationService() {
+        return new ConfigurationService();
+    }
+
+    @Bean("quickConnectDirectory")
+    public QuickConnectDirectory quickConnectDirectory() {
+        return new QuickConnectDirectory();
+    }
+
     @Bean("quickConnectAuthenticationProvider")
-    @ConditionalOnMissingBean
     public QuickConnectAuthenticationProvider quickConnectAuthenticationProvider(
             ObjectProvider<QuickConnectUserContext> userContextProvider) {
         logger.info("Quick Connect authentication extension enabled.");
@@ -25,7 +34,6 @@ public class QuickConnectAuthenticationAutoConfiguration {
 
     @Bean("quickConnectUserContext")
     @Scope("prototype")
-    @ConditionalOnMissingBean(name = "quickConnectUserContext")
     public QuickConnectUserContext quickConnectUserContext() {
         return new QuickConnectUserContext();
     }

@@ -20,7 +20,6 @@
 package org.apache.guacamole.auth.quickconnect;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -37,7 +36,6 @@ import org.apache.guacamole.protocol.GuacamoleConfiguration;
  * Implementation of a directory to store Connection objects
  * completely in memory.
  */
-@Service
 public class QuickConnectDirectory extends SimpleDirectory<Connection> {
 
     /**
