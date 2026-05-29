@@ -20,7 +20,6 @@
 package org.apache.guacamole.auth.json.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
@@ -39,7 +38,6 @@ import org.apache.guacamole.protocol.GuacamoleConfiguration;
  * be removed from the given UserData such that only the first connection
  * attempt can succeed.
  */
-@Service
 public class UserDataConnection implements Connection {
 
     /**

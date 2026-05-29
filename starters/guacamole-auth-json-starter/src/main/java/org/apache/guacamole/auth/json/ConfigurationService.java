@@ -20,7 +20,6 @@
 package org.apache.guacamole.auth.json;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.Collections;
 import org.apache.guacamole.GuacamoleException;
@@ -32,7 +31,6 @@ import org.apache.guacamole.properties.StringListProperty;
  * Service for retrieving configuration information regarding the JSON
  * authentication provider.
  */
-@Service("jsonConfigurationService")
 public class ConfigurationService {
 
     /**

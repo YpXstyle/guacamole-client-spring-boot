@@ -18,8 +18,6 @@
  */
 
 package org.apache.guacamole.auth.json;
-import org.springframework.stereotype.Service;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import inet.ipaddr.IPAddressString;
 import java.util.ArrayList;
@@ -32,7 +30,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Service for testing the validity of received HTTP requests.
  */
-@Service
 public class RequestValidationService {
 
     /**

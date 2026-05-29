@@ -21,7 +21,6 @@
 package org.apache.guacamole.auth.json.connection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -51,7 +50,6 @@ import org.slf4j.LoggerFactory;
  * Service which provides a centralized means of establishing connections,
  * tracking/joining active connections, and retrieving associated data.
  */
-@Service("jsonConnectionService")
 public class ConnectionService {
 
     /**

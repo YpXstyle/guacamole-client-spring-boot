@@ -18,10 +18,10 @@
  */
 
 package org.apache.guacamole.auth.json;
-import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.ObjectProvider;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.guacamole.GuacamoleException;
 import org.apache.guacamole.auth.json.user.AuthenticatedUser;
 import org.apache.guacamole.auth.json.user.UserContext;
@@ -34,7 +34,6 @@ import org.apache.guacamole.net.auth.credentials.GuacamoleInvalidCredentialsExce
 /**
  * Service providing convenience functions for the JSONAuthenticationProvider.
  */
-@Service("jsonAuthenticationProviderService")
 public class AuthenticationProviderService {
 
     /**
@@ -72,6 +71,12 @@ public class AuthenticationProviderService {
      */
     public AuthenticatedUser authenticateUser(Credentials credentials)
             throws GuacamoleException {
+
+        // If the request does not contain the "data" parameter, this is not
+        // a JSON auth attempt - return null to let other providers handle it
+        HttpServletRequest request = credentials.getRequest();
+        if (request == null || request.getParameter(UserDataService.ENCRYPTED_DATA_PARAMETER) == null)
+            return null;
 
         // Pull UserData from credentials, if possible
         UserData userData = userDataService.fromCredentials(credentials);

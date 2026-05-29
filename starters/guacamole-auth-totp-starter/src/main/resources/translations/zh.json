@@ -29,6 +29,15 @@
 
         "SECTION_HEADER_DETAILS" : "详情:"
 
+    },
+
+    "USER_ATTRIBUTES" : {
+
+        "FIELD_HEADER_GUAC_TOTP_RESET"         : "清除TOTP密钥:",
+        "FIELD_HEADER_GUAC_TOTP_KEY_CONFIRMED" : "TOTP密钥已确认:",
+
+        "SECTION_HEADER_TOTP_CONFIG_FORM" : "配置TOTP"
+
     }
 
 }

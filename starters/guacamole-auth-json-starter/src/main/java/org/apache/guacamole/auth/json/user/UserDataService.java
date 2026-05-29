@@ -22,7 +22,6 @@ package org.apache.guacamole.auth.json.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.BaseEncoding;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.ObjectProvider;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -50,7 +49,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Service for deriving Guacamole extension API data from UserData objects.
  */
-@Service
 public class UserDataService {
 
     /**

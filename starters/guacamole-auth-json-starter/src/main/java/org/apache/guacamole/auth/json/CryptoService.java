@@ -33,13 +33,11 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import org.apache.guacamole.GuacamoleException;
 import org.apache.guacamole.GuacamoleServerException;
-import org.springframework.stereotype.Service;
 
 /**
  * Service for handling cryptography-related operations, such as decrypting
  * encrypted data.
  */
-@Service
 public class CryptoService {
 
     /**

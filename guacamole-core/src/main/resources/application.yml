@@ -14,7 +14,7 @@ guacamole:
     duo:
       enabled: false
     json:
-      enabled: false
+      enabled: true
     ldap:
       enabled: false
     totp:
