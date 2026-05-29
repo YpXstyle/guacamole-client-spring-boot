@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                            http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.5</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.yourcompany</groupId>
+    <artifactId>guacamole-spring-boot</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Guacamole Spring Boot</name>
+    <description>Apache Guacamole migrated to Spring Boot</description>
+
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Guacamole 版本 -->
+        <guacamole.version>1.5.5</guacamole.version>
+
+        <!-- 依赖版本 -->
+        <guava.version>32.1.3-jre</guava.version>
+        <jackson.version>2.17.0</jackson.version>
+        <mybatis-spring-boot.version>3.0.3</mybatis-spring-boot.version>
+        <zxing.version>3.5.3</zxing.version>
+        <apache-ldap.version>2.1.6</apache-ldap.version>
+        <commons-lang3.version>3.14.0</commons-lang3.version>
+        <guice.version>7.0.0</guice.version>
+    </properties>
+
+    <modules>
+        <!-- 核心协议层 -->
+        <module>guacamole-common</module>
+
+        <!-- 扩展接口层 -->
+        <module>guacamole-ext</module>
+
+        <!-- Web 应用核心 -->
+        <module>guacamole-core</module>
+
+        <!-- 认证扩展 Starters -->
+        <module>starters/guacamole-auth-header-starter</module>
+        <module>starters/guacamole-auth-duo-starter</module>
+        <module>starters/guacamole-auth-json-starter</module>
+        <module>starters/guacamole-auth-ldap-starter</module>
+        <module>starters/guacamole-auth-totp-starter</module>
+        <module>starters/guacamole-auth-radius-starter</module>
+        <module>starters/guacamole-auth-quickconnect-starter</module>
+        <module>starters/guacamole-auth-mysql-starter</module>
+        <module>starters/guacamole-auth-postgresql-starter</module>
+        <module>starters/guacamole-auth-sqlserver-starter</module>
+        <module>starters/guacamole-auth-sso-base-starter</module>
+        <module>starters/guacamole-auth-sso-cas-starter</module>
+        <module>starters/guacamole-auth-sso-openid-starter</module>
+        <module>starters/guacamole-auth-sso-saml-starter</module>
+        <!-- Vault: Base可用, KSM需Fortanix SDK (非Maven Central) -->
+        <module>starters/guacamole-vault-base-starter</module>
+        <!--module>starters/guacamole-vault-ksm-starter</module-->
+        <module>starters/guacamole-history-starter</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- 内部模块 -->
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-ext</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-auth-header-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-auth-mysql-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-auth-quickconnect-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-auth-totp-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-auth-json-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-history-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-vault-base-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <!-- Jackson -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-yaml</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <!-- MyBatis Spring Boot Starter -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis-spring-boot.version}</version>
+            </dependency>
+
+            <!-- ZXing (二维码) -->
+            <dependency>
+                <groupId>com.google.zxing</groupId>
+                <artifactId>javase</artifactId>
+                <version>${zxing.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.zxing</groupId>
+                <artifactId>core</artifactId>
+                <version>${zxing.version}</version>
+            </dependency>
+
+            <!-- Apache Directory LDAP API -->
+            <dependency>
+                <groupId>org.apache.directory.api</groupId>
+                <artifactId>api-all</artifactId>
+                <version>${apache-ldap.version}</version>
+            </dependency>
+
+            <!-- Guice (annotations only) -->
+<!--            <dependency>-->
+<!--                <groupId>com.google.inject.extensions</groupId>-->
+<!--                <artifactId>guice-assistedinject</artifactId>-->
+<!--                <version>${guice.version}</version>-->
+<!--            </dependency>-->
+
+            <!-- Apache Commons -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <!-- IPAddress -->
+            <dependency>
+                <groupId>com.github.seancfoley</groupId>
+                <artifactId>ipaddress</artifactId>
+                <version>5.3.3</version>
+            </dependency>
+
+            <!-- Jakarta REST API -->
+            <dependency>
+                <groupId>jakarta.ws.rs</groupId>
+                <artifactId>jakarta.ws.rs-api</artifactId>
+                <version>3.1.0</version>
+            </dependency>
+
+            <!-- JRadius RADIUS library -->
+            <dependency>
+                <groupId>net.jradius</groupId>
+                <artifactId>jradius-core</artifactId>
+                <version>1.1.5</version>
+            </dependency>
+            <dependency>
+                <groupId>net.jradius</groupId>
+                <artifactId>jradius-dictionary</artifactId>
+                <version>1.1.5</version>
+            </dependency>
+            <dependency>
+                <groupId>net.jradius</groupId>
+                <artifactId>jradius-extended</artifactId>
+                <version>1.1.5</version>
+            </dependency>
+
+            <!-- Commons Logging -->
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.2</version>
+            </dependency>
+
+            <!-- Commons Collections -->
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>3.2.2</version>
+            </dependency>
+
+            <!-- CAS Client -->
+            <dependency>
+                <groupId>org.jasig.cas.client</groupId>
+                <artifactId>cas-client-core</artifactId>
+                <version>3.6.4</version>
+            </dependency>
+
+            <!-- jose4j (JOSE implementation) -->
+            <dependency>
+                <groupId>org.bitbucket.b_c</groupId>
+                <artifactId>jose4j</artifactId>
+                <version>0.9.6</version>
+            </dependency>
+
+            <!-- OneLogin SAML -->
+            <dependency>
+                <groupId>com.onelogin</groupId>
+                <artifactId>java-saml</artifactId>
+                <version>2.9.0</version>
+            </dependency>
+
+            <!-- Woodstox -->
+            <dependency>
+                <groupId>com.fasterxml.woodstox</groupId>
+                <artifactId>woodstox-core</artifactId>
+                <version>5.4.0</version>
+            </dependency>
+
+            <!-- Apache XML Security -->
+            <dependency>
+                <groupId>org.apache.santuario</groupId>
+                <artifactId>xmlsec</artifactId>
+                <version>2.2.6</version>
+            </dependency>
+
+            <!-- Keeper Security Secrets Manager -->
+            <dependency>
+                <groupId>com.keepersecurity.secrets-manager</groupId>
+                <artifactId>core</artifactId>
+                <version>16.6.3</version>
+            </dependency>
+
+            <!-- Kotlin -->
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-reflect</artifactId>
+                <version>1.9.23</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib</artifactId>
+                <version>1.9.23</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib-jdk8</artifactId>
+                <version>1.9.23</version>
+            </dependency>
+
+            <!-- Bouncy Castle FIPS -->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bc-fips</artifactId>
+                <version>1.0.2.4</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                    <compilerArgs>
+                        <arg>-Xlint:all</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,77 @@
+server:
+  port: 8080
+
+guacamole:
+  guacd:
+    hostname: localhost
+    port: 4822
+    ssl: false
+
+  # Authentication extensions (enable via Maven dependency + set to true)
+  auth:
+    header:
+      enabled: false
+    duo:
+      enabled: false
+    json:
+      enabled: false
+    ldap:
+      enabled: false
+    totp:
+      enabled: true
+    radius:
+      enabled: false
+    quickconnect:
+      enabled: true
+    mysql:
+      enabled: true
+      hostname: 192.168.5.188
+      port: 3306
+      database: guacamole
+      username: guacamole
+      password: guacamole
+    postgresql:
+      enabled: false
+      hostname: localhost
+      port: 5432
+      database: guacamole
+      username: guacamole
+      password: guacamole
+    sqlserver:
+      enabled: false
+      hostname: localhost
+      port: 1433
+      database: guacamole
+      username: guacamole
+      password: guacamole
+    sso-cas:
+      enabled: false
+    sso-openid:
+      enabled: false
+    sso-saml:
+      enabled: false
+
+  vault:
+    ksm:
+      enabled: false
+
+# History configuration 录像名配置为：${HISTORY_UUID}
+  history:
+    enabled: true
+    recording-search-path: /tmp/guacamole/recordings
+
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.5.188:3306/guacamole?allowMultiQueries=true
+    username: guacamole
+    password: guacamole
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  main:
+    banner-mode: "off"
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+
+logging:
+  level:
+    org.apache.guacamole.history: info

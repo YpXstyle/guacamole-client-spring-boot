@@ -1,0 +1,47 @@
+### gradle ###
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+### STS ###
+.settings/
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+bin/
+
+### IntelliJ IDEA ###
+!.idea/icon.png
+.idea
+*.iws
+*.iml
+*.ipr
+rebel.xml
+
+### maven ###
+target/
+
+### logs ###
+/logs/
+*.log
+*.log.gz
+
+### temp ignore ###
+*.cache
+*.diff
+*.patch
+*.tmp
+*.java~
+*.properties~
+*.xml~
+
+### system ignore ###
+.DS_Store
+Thumbs.db
+Servers
+.metadata
+.flattened-pom.xml
+
