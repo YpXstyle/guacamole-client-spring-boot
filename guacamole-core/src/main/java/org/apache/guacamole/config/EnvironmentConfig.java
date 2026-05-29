@@ -8,12 +8,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import jakarta.annotation.PostConstruct;
 
 @Configuration
 public class EnvironmentConfig {
 
     @Autowired
     private org.springframework.core.env.Environment springEnv;
+
+    @PostConstruct
+    public void validateJdbcModules() {
+        boolean mysql = springEnv.getProperty("guacamole.auth.mysql.enabled", Boolean.class, false);
+        boolean postgresql = springEnv.getProperty("guacamole.auth.postgresql.enabled", Boolean.class, false);
+        boolean sqlserver = springEnv.getProperty("guacamole.auth.sqlserver.enabled", Boolean.class, false);
+
+        int count = 0;
+        if (mysql) count++;
+        if (postgresql) count++;
+        if (sqlserver) count++;
+
+        if (count > 1) {
+            throw new IllegalStateException(
+                "Only one JDBC authentication module can be enabled at a time. "
+                + "Currently enabled: "
+                + (mysql ? "[MySQL] " : "")
+                + (postgresql ? "[PostgreSQL] " : "")
+                + (sqlserver ? "[SQLServer] " : "")
+                + ". Please disable all but one in application.yml.");
+        }
+    }
 
     @Bean
     @Primary

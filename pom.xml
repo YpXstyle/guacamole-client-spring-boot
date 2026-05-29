@@ -50,6 +50,7 @@
         <module>guacamole-core</module>
 
         <!-- 认证扩展 Starters -->
+        <module>starters/guacamole-auth-jdbc</module>
         <module>starters/guacamole-auth-header-starter</module>
         <module>starters/guacamole-auth-duo-starter</module>
         <module>starters/guacamole-auth-json-starter</module>
@@ -57,9 +58,6 @@
         <module>starters/guacamole-auth-totp-starter</module>
         <module>starters/guacamole-auth-radius-starter</module>
         <module>starters/guacamole-auth-quickconnect-starter</module>
-        <module>starters/guacamole-auth-mysql-starter</module>
-        <module>starters/guacamole-auth-postgresql-starter</module>
-        <module>starters/guacamole-auth-sqlserver-starter</module>
         <module>starters/guacamole-auth-sso-base-starter</module>
         <module>starters/guacamole-auth-sso-cas-starter</module>
         <module>starters/guacamole-auth-sso-openid-starter</module>
@@ -87,6 +85,21 @@
             <dependency>
                 <groupId>com.yourcompany</groupId>
                 <artifactId>guacamole-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-auth-jdbc-base</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-auth-postgresql-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-auth-sqlserver-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

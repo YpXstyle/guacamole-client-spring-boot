@@ -18,10 +18,18 @@
 
     <dependencies>
 
-        <!-- Starter: MySQL JDBC Authentication -->
+        <!-- Starter: JDBC Authentication -->
         <dependency>
             <groupId>com.yourcompany</groupId>
             <artifactId>guacamole-auth-mysql-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yourcompany</groupId>
+            <artifactId>guacamole-auth-postgresql-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yourcompany</groupId>
+            <artifactId>guacamole-auth-sqlserver-starter</artifactId>
         </dependency>
 
         <!-- Starter: Quick Connect -->
