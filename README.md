@@ -76,26 +76,63 @@ guacamole:
     ssl: false
 
   auth:
+    # 基础认证模块
     header:
-      enabled: true          # HTTP Header 认证
-    duo:
-      enabled: false         # Duo 双因素认证
+      enabled: true
     json:
-      enabled: true          # JSON Token 认证
-    ldap:
-      enabled: false         # LDAP 认证
-    totp:
-      enabled: false         # TOTP 双因素认证
-    radius:
-      enabled: false         # RADIUS 认证
+      enabled: true
     quickconnect:
-      enabled: true          # 快速连接
+      enabled: true
+    totp:
+      enabled: false
+    duo:
+      enabled: false
+
+    # 数据库认证（同时只能启用一个）
     mysql:
-      enabled: false         # MySQL 数据库认证
+      enabled: false
     postgresql:
-      enabled: true          # PostgreSQL 数据库认证
+      enabled: true
     sqlserver:
-      enabled: false         # SQL Server 数据库认证
+      enabled: false
+
+    # LDAP 认证
+    ldap:
+      enabled: false
+      ldap-hostname: ldap.example.com
+      ldap-port: 389
+      ldap-user-base-dn: ou=users,dc=example,dc=com
+      ldap-username-attribute: uid
+
+    # RADIUS 认证
+    radius:
+      enabled: false
+      radius-hostname: localhost
+      radius-shared-secret: testing123
+      radius-auth-protocol: PAP
+
+    # SSO 单点登录（同时只能启用一个）
+    sso-cas:
+      enabled: false
+      cas-authorization-endpoint: https://cas.example.org/cas
+      cas-redirect-uri: http://localhost:8080/
+
+    sso-openid:
+      enabled: false
+      openid-authorization-endpoint: https://accounts.google.com/o/oauth2/v2/auth
+      openid-jwks-endpoint: https://www.googleapis.com/oauth2/v3/certs
+      openid-issuer: https://accounts.google.com
+      openid-client-id: your-client-id
+      openid-redirect-uri: http://localhost:8080/
+
+    sso-saml:
+      enabled: false
+      saml-callback-url: http://localhost:8080/
+      saml-idp-metadata-url: https://idp.example.com/metadata.xml
+
+  vault:
+    ksm:
+      enabled: false
 
   history:
     enabled: true
@@ -109,9 +146,10 @@ spring:
     driver-class-name: org.postgresql.Driver
 ```
 
-### 数据库认证限制
+### 互斥限制
 
-同时只能启用一个数据库认证模块（MySQL、PostgreSQL、SQL Server）。启动时会校验，如果启用多个会报错。
+- **数据库认证**：同时只能启用一个（MySQL、PostgreSQL、SQL Server），启动时校验
+- **SSO 单点登录**：同时只能启用一个（CAS、OpenID Connect、SAML），启动时校验
 
 ### Header Auth 配置
 
@@ -125,6 +163,10 @@ guacamole:
       http-auth-header: X-Remote-User  # 自定义头名称
 ```
 
+| 属性 | 必填 | 默认值 | 说明 |
+|------|------|--------|------|
+| `http-auth-header` | - | `REMOTE_USER` | 用于传递认证用户名的 HTTP 头名称 |
+
 ### JSON Auth 配置
 
 ```yaml
@@ -132,8 +174,14 @@ guacamole:
   auth:
     json:
       enabled: true
-      json-secret-key: your-secret-key-here
+      json-secret-key: your-base64-encoded-secret-key
+      json-trusted-networks: 192.168.1.0/24,10.0.0.0/8
 ```
+
+| 属性 | 必填 | 默认值 | 说明 |
+|------|------|--------|------|
+| `json-secret-key` | ✅ | - | Base64 编码的对称密钥（至少 32 字节），用于加密和签名 |
+| `json-trusted-networks` | - | 允许所有 | 允许认证的 IP 地址或 CIDR 子网（逗号分隔） |
 
 ### LDAP 配置
 
@@ -146,12 +194,47 @@ guacamole:
       ldap-port: 389
       ldap-user-base-dn: ou=users,dc=example,dc=com
       ldap-username-attribute: uid
+      # 以下为可选配置
+      ldap-group-base-dn: ou=groups,dc=example,dc=com
+      ldap-group-name-attribute: cn
+      ldap-member-attribute: member
+      ldap-member-attribute-type: dn
+      ldap-search-bind-dn: cn=admin,dc=example,dc=com
+      ldap-search-bind-password: password
+      ldap-encryption-method: starttls   # none、ssl、starttls
+      ldap-max-search-results: 1000
+      ldap-operation-timeout: 30
+      ldap-network-timeout: 30
+      ldap-user-search-filter: (&(objectClass=person)(uid={0}))
+      ldap-group-search-filter: (&(objectClass=groupOfNames)(member={0}))
+      ldap-follow-referrals: false
+      ldap-max-referral-hops: 5
+      ldap-dereference-aliases: never
+      ldap-user-attributes: cn,mail
 ```
 
-**LDAP 认证逻辑：**
-- LDAP 负责认证（验证用户身份）和授权（从 LDAP 目录查询连接）
-- `LDAPUserContext` 从 LDAP 目录中查询该用户可用的连接
-- 认证成功后，用户看到的是 LDAP 目录中配置的连接
+| 属性 | 必填 | 默认值 | 说明 |
+|------|------|--------|------|
+| `ldap-hostname` | ✅ | - | LDAP 服务器地址 |
+| `ldap-user-base-dn` | ✅ | - | 用户搜索基础 DN |
+| `ldap-username-attribute` | ✅ | - | 用户名属性（如 `uid`、`sAMAccountName`） |
+| `ldap-port` | - | `389` | LDAP 端口 |
+| `ldap-group-base-dn` | - | - | 组搜索基础 DN |
+| `ldap-group-name-attribute` | - | `cn` | 组名属性 |
+| `ldap-member-attribute` | - | `member` | 组成员属性 |
+| `ldap-member-attribute-type` | - | `dn` | 成员属性类型 |
+| `ldap-search-bind-dn` | - | - | 搜索绑定 DN（用于搜索用户） |
+| `ldap-search-bind-password` | - | - | 搜索绑定密码 |
+| `ldap-encryption-method` | - | `none` | 加密方式：`none`、`ssl`、`starttls` |
+| `ldap-max-search-results` | - | `1000` | 最大搜索结果数 |
+| `ldap-operation-timeout` | - | - | 操作超时（秒） |
+| `ldap-network-timeout` | - | - | 网络超时（秒） |
+| `ldap-user-search-filter` | - | - | 用户搜索过滤器（`{0}` 会被替换为用户名） |
+| `ldap-group-search-filter` | - | - | 组搜索过滤器 |
+| `ldap-follow-referrals` | - | `false` | 是否跟随 LDAP 转介 |
+| `ldap-max-referral-hops` | - | `5` | 最大转介跳数 |
+| `ldap-dereference-aliases` | - | `never` | 别名解引用策略 |
+| `ldap-user-attributes` | - | - | 额外用户属性（逗号分隔） |
 
 ### RADIUS 配置
 
@@ -161,17 +244,38 @@ guacamole:
     radius:
       enabled: true
       radius-hostname: localhost
-      radius-port: 1812
-      radius-secret: testing123
+      radius-auth-port: 1812
+      radius-shared-secret: testing123
       radius-auth-protocol: PAP
+      # 以下为可选配置
+      radius-acct-port: 1813
+      radius-max-retries: 3
+      radius-timeout: 30
+      radius-nas-ip: 192.168.1.1
+      radius-trust-all: false
+      radius-ca-file: /path/to/ca.pem
+      radius-key-file: /path/to/key.pem
+      radius-key-password: keypass
 ```
 
-**RADIUS 认证逻辑：**
-- RADIUS 是网络认证协议，常用于 WiFi、VPN、网络设备认证
-- 需要配置 RADIUS 服务器地址、端口、密钥和认证协议
-- 支持 PAP、CHAP、MSCHAPv1/v2、EAP-TLS 等协议
+| 属性 | 必填 | 默认值 | 说明 |
+|------|------|--------|------|
+| `radius-hostname` | ✅ | - | RADIUS 服务器地址 |
+| `radius-shared-secret` | ✅ | - | RADIUS 共享密钥 |
+| `radius-auth-protocol` | ✅ | - | 认证协议（PAP、CHAP、MSCHAPv1、MSCHAPv2、EAP-TLS、EAP-TTLS） |
+| `radius-auth-port` | - | `1812` | RADIUS 认证端口 |
+| `radius-acct-port` | - | `1813` | RADIUS 计费端口 |
+| `radius-max-retries` | - | `3` | 最大重试次数 |
+| `radius-timeout` | - | `30` | 超时时间（秒） |
+| `radius-nas-ip` | - | - | NAS IP 地址 |
+| `radius-trust-all` | - | `false` | 是否信任所有服务器证书 |
+| `radius-ca-file` | - | - | CA 证书文件路径 |
+| `radius-key-file` | - | - | 客户端密钥文件路径 |
+| `radius-key-password` | - | - | 客户端密钥密码 |
 
 ### SSO 配置
+
+同时只能启用一个 SSO 模块（CAS、OpenID Connect、SAML），启动时会校验，如果启用多个会报错。
 
 #### CAS 单点登录
 
@@ -182,7 +286,23 @@ guacamole:
       enabled: true
       cas-authorization-endpoint: https://cas-server.com/cas
       cas-redirect-uri: http://localhost:8080/
+      # 以下为可选配置
+      cas-clearpass-key: /path/to/private.key
+      cas-group-attribute: memberOf
+      cas-group-format: plain            # plain 或 ldap
+      cas-group-ldap-base-dn: ou=groups,dc=example,dc=com
+      cas-group-ldap-attribute: cn
 ```
+
+| 属性 | 必填 | 默认值 | 说明 |
+|------|------|--------|------|
+| `cas-authorization-endpoint` | ✅ | - | CAS 服务的授权端点 URL |
+| `cas-redirect-uri` | ✅ | - | 认证完成后 CAS 重定向回的 URL（Guacamole 访问地址） |
+| `cas-clearpass-key` | - | - | ClearPass 私钥文件路径，用于解密 CAS 返回的密码 |
+| `cas-group-attribute` | - | - | CAS 属性中表示组成员的属性名（如 `memberOf`） |
+| `cas-group-format` | - | `plain` | 组名格式：`plain`（纯文本）或 `ldap`（LDAP DN） |
+| `cas-group-ldap-base-dn` | - | - | LDAP 格式组的基础 DN |
+| `cas-group-ldap-attribute` | - | - | LDAP 格式组的属性名 |
 
 #### OpenID Connect
 
@@ -191,12 +311,33 @@ guacamole:
   auth:
     sso-openid:
       enabled: true
-      openid-authorization-endpoint: https://openid-provider.com/auth
-      openid-jwks-endpoint: https://openid-provider.com/.well-known/jwks.json
-      openid-issuer: https://openid-provider.com
+      openid-authorization-endpoint: https://accounts.google.com/o/oauth2/v2/auth
+      openid-jwks-endpoint: https://www.googleapis.com/oauth2/v3/certs
+      openid-issuer: https://accounts.google.com
       openid-client-id: your-client-id
       openid-redirect-uri: http://localhost:8080/
+      # 以下为可选配置
+      openid-scope: openid email profile
+      openid-username-claim-type: email
+      openid-groups-claim-type: groups
+      openid-allowed-clock-skew: 30
+      openid-max-token-validity: 300
+      openid-max-nonce-validity: 10
 ```
+
+| 属性 | 必填 | 默认值 | 说明 |
+|------|------|--------|------|
+| `openid-authorization-endpoint` | ✅ | - | OpenID Provider 的授权端点 URL |
+| `openid-jwks-endpoint` | ✅ | - | JWKS 端点 URL，用于验证 JWT 签名 |
+| `openid-issuer` | ✅ | - | JWT 中的签发者标识 |
+| `openid-client-id` | ✅ | - | OpenID Provider 分配的客户端 ID |
+| `openid-redirect-uri` | ✅ | - | 认证完成后重定向回的 URL（Guacamole 访问地址） |
+| `openid-scope` | - | `openid email profile` | 请求的 OpenID 范围（空格分隔） |
+| `openid-username-claim-type` | - | `email` | JWT 中包含用户名的 claim |
+| `openid-groups-claim-type` | - | `groups` | JWT 中包含用户组的 claim |
+| `openid-allowed-clock-skew` | - | `30` | 允许的时钟偏差（秒） |
+| `openid-max-token-validity` | - | `300` | Token 最大有效期（分钟） |
+| `openid-max-nonce-validity` | - | `10` | Nonce 最大有效期（分钟） |
 
 #### SAML 单点登录
 
@@ -206,11 +347,32 @@ guacamole:
     sso-saml:
       enabled: true
       saml-callback-url: http://localhost:8080/
+      # 方式一：使用 IdP 元数据 URL
       saml-idp-metadata-url: https://idp.example.com/metadata.xml
-      # 或使用单独配置
+      # 方式二：手动配置 IdP 信息
       saml-idp-url: https://idp.example.com/sso
       saml-entity-id: http://localhost:8080/
+      # 以下为可选配置
+      saml-strict: true
+      saml-debug: false
+      saml-compress-request: true
+      saml-compress-response: true
+      saml-group-attribute: groups
+      saml-auth-timeout: 5
 ```
+
+| 属性 | 必填 | 默认值 | 说明 |
+|------|------|--------|------|
+| `saml-callback-url` | ✅ | - | SAML 回调基础 URL（Guacamole 访问地址） |
+| `saml-idp-metadata-url` | 条件 | - | IdP 元数据 XML 的 URL（与 `saml-idp-url` 二选一） |
+| `saml-idp-url` | 条件 | - | IdP 登录 URL（不使用元数据时必填） |
+| `saml-entity-id` | 条件 | - | SAML 客户端实体 ID（不使用元数据时必填） |
+| `saml-strict` | - | `true` | 是否强制严格安全检查（生产环境建议保持 `true`） |
+| `saml-debug` | - | `false` | 是否启用 SAML 调试日志 |
+| `saml-compress-request` | - | `true` | 是否压缩 SAML 请求 |
+| `saml-compress-response` | - | `true` | 是否压缩 SAML 响应 |
+| `saml-group-attribute` | - | `groups` | IdP 返回的组成员属性名 |
+| `saml-auth-timeout` | - | `5` | SAML 认证超时时间（分钟） |
 
 ### 多认证链
 
@@ -249,6 +411,10 @@ guacamole:
 | **SSO CAS** | CAS 单点登录 | ✅ 启动验证通过 | 标准 Starter 模式，需配置 CAS 服务器 |
 | **SSO OpenID** | OpenID Connect 认证 | ⏳ 启动验证通过 | 标准 Starter 模式，需配置 OpenID Provider |
 | **SSO SAML** | SAML 单点登录 | ⏳ 启动验证通过 | 标准 Starter 模式，需配置 SAML IdP |
+
+**SSO 注意事项：**
+- 同时只能启用一个 SSO 模块（CAS、OpenID Connect、SAML），启动时会校验
+- 同理，同时只能启用一个数据库认证模块（MySQL、PostgreSQL、SQL Server）
 
 ### 待验证
 
