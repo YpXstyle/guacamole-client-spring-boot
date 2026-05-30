@@ -116,7 +116,7 @@ public class ExtensionResourceConfig implements WebMvcConfigurer {
                         // Check if extension is enabled via configProperty
                         String configProperty = (String) manifest.get("configProperty");
                         if (configProperty != null) {
-                            Boolean enabled = environment.getProperty(configProperty, Boolean.class, true);
+                            Boolean enabled = environment.getProperty(configProperty, Boolean.class, false);
                             if (!enabled) {
                                 logger.info("Extension '{}' disabled by config: {}",
                                         manifest.get("name"), configProperty);

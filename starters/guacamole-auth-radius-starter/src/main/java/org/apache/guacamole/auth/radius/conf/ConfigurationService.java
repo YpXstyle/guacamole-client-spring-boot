@@ -20,7 +20,6 @@
 package org.apache.guacamole.auth.radius.conf;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -31,7 +30,6 @@ import org.apache.guacamole.environment.Environment;
 /**
  * Service for retrieving configuration information regarding the RADIUS server.
  */
-@Service
 public class ConfigurationService {
 
     /**

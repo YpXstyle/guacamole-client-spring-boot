@@ -18,7 +18,6 @@
  */
 
 package org.apache.guacamole.auth.radius;
-import org.springframework.stereotype.Service;
 
 import com.google.common.io.BaseEncoding;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,6 @@ import org.apache.guacamole.form.PasswordField;
  * Service providing convenience functions for the RADIUS AuthenticationProvider
  * implementation.
  */
-@Service
 public class AuthenticationProviderService {
 
     /**

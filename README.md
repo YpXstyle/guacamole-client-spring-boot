@@ -153,6 +153,24 @@ guacamole:
 - `LDAPUserContext` 从 LDAP 目录中查询该用户可用的连接
 - 认证成功后，用户看到的是 LDAP 目录中配置的连接
 
+### RADIUS 配置
+
+```yaml
+guacamole:
+  auth:
+    radius:
+      enabled: true
+      radius-hostname: localhost
+      radius-port: 1812
+      radius-secret: testing123
+      radius-auth-protocol: PAP
+```
+
+**RADIUS 认证逻辑：**
+- RADIUS 是网络认证协议，常用于 WiFi、VPN、网络设备认证
+- 需要配置 RADIUS 服务器地址、端口、密钥和认证协议
+- 支持 PAP、CHAP、MSCHAPv1/v2、EAP-TLS 等协议
+
 ### 多认证链
 
 多个认证模块可同时启用，Guacamole 按顺序尝试每个 provider：
@@ -186,7 +204,7 @@ guacamole:
 | 模块 | 作用 | 测试状态 | 说明 |
 |------|------|---------|------|
 | **DUO** | Duo Security 双因素认证 | ⏳ 启动验证通过 | 需升级到 Web SDK v4（见下方说明） |
-| **RADIUS** | RADIUS 认证 | ⏳ 启动验证通过 | 需配置 RADIUS 服务器 |
+| **RADIUS** | RADIUS 认证 | ✅ 启动验证通过 | 标准 Starter 模式，需配置 RADIUS 服务器 |
 
 ### 待验证
 
@@ -229,10 +247,10 @@ guacamole:
 **已转换为标准模式的模块：**
 - Header Auth、JSON Auth、TOTP、QuickConnect、History
 - MySQL、PostgreSQL、SQL Server（JDBC）
-- LDAP
+- LDAP、RADIUS
 
 **待转换的模块：**
-- DUO、RADIUS、SSO 系列、Vault
+- DUO、SSO 系列、Vault
 
 ### 与原项目的主要差异
 

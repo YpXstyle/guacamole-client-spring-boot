@@ -16,7 +16,7 @@ guacamole:
     json:
       enabled: true
     ldap:
-      enabled: true
+      enabled: false
       ldap-hostname: ldap.forumsys.com
       ldap-port: 389
       ldap-user-base-dn: dc=example,dc=com

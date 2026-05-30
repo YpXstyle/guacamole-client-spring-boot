@@ -20,6 +20,7 @@
 package org.apache.guacamole.auth.radius.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.apache.guacamole.net.auth.AbstractAuthenticatedUser;
 import org.apache.guacamole.net.auth.AuthenticationProvider;
 import org.apache.guacamole.net.auth.Credentials;
@@ -35,6 +36,7 @@ public class AuthenticatedUser extends AbstractAuthenticatedUser {
      * authenticated user.
      */
     @Autowired
+    @Qualifier("radiusAuthenticationProvider")
     private AuthenticationProvider authProvider;
 
     /**

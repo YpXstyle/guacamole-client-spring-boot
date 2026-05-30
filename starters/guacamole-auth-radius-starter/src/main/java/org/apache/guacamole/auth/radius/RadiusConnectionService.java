@@ -20,7 +20,6 @@
 package org.apache.guacamole.auth.radius;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -55,7 +54,6 @@ import net.jradius.packet.RadiusResponse;
 /**
  * Service for creating and managing connections to RADIUS servers.
  */
-@Service
 public class RadiusConnectionService {
 
     /**
