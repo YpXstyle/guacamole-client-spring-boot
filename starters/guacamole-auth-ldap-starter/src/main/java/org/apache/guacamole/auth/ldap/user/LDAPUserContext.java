@@ -20,6 +20,7 @@
 package org.apache.guacamole.auth.ldap.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import java.util.Collections;
 import org.apache.guacamole.auth.ldap.connection.ConnectionService;
 import org.apache.guacamole.GuacamoleException;
@@ -67,6 +68,7 @@ public class LDAPUserContext extends AbstractUserContext {
      * UserContext.
      */
     @Autowired
+    @Qualifier("ldapAuthenticationProvider")
     private AuthenticationProvider authProvider;
 
     /**

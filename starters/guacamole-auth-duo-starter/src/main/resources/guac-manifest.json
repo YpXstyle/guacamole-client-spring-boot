@@ -12,6 +12,7 @@
     ],
 
     "js" : [
+        "lib/DuoWeb/Duo-Web-v2.js",
         "duoModule.js",
         "config/duoConfig.js",
         "controllers/duoSignedResponseController.js"

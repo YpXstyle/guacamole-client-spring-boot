@@ -20,7 +20,6 @@
 package org.apache.guacamole.auth.ldap.group;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -49,7 +48,6 @@ import org.slf4j.LoggerFactory;
  * Service for querying user group membership and retrieving user groups
  * visible to a particular Guacamole user.
  */
-@Service
 public class UserGroupService {
 
     /**

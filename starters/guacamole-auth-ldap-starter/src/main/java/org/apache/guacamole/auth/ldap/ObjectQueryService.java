@@ -20,7 +20,6 @@
 package org.apache.guacamole.auth.ldap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,7 +57,6 @@ import org.slf4j.LoggerFactory;
  * for retrieving Guacamole objects, as well as for converting the results of a
  * query into a {@link Map} of Guacamole objects.
  */
-@Service
 public class ObjectQueryService {
 
     /**

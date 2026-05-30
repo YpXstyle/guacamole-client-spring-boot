@@ -20,7 +20,6 @@
 package org.apache.guacamole.auth.ldap.connection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -54,7 +53,6 @@ import org.slf4j.LoggerFactory;
  * Service for querying the connections available to a particular Guacamole
  * user according to an LDAP directory.
  */
-@Service
 public class ConnectionService {
 
     /**

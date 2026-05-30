@@ -20,6 +20,7 @@
 package org.apache.guacamole.auth.ldap.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +41,7 @@ public class LDAPAuthenticatedUser extends AbstractAuthenticatedUser {
      * authenticated user.
      */
     @Autowired
+    @Qualifier("ldapAuthenticationProvider")
     private AuthenticationProvider authProvider;
 
     /**

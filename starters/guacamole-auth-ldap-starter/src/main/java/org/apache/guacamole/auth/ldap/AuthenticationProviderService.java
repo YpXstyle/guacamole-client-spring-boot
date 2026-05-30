@@ -18,7 +18,6 @@
  */
 
 package org.apache.guacamole.auth.ldap;
-import org.springframework.stereotype.Service;
 
 import org.apache.guacamole.auth.ldap.user.UserLDAPConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +53,6 @@ import org.slf4j.LoggerFactory;
  * Service providing convenience functions for the LDAP AuthenticationProvider
  * implementation.
  */
-@Service
 public class AuthenticationProviderService {
 
     /**

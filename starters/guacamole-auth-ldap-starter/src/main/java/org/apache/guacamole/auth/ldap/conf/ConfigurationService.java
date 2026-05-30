@@ -24,7 +24,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -39,7 +38,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Service for retrieving configuration information regarding LDAP servers.
  */
-@Service
 public class ConfigurationService {
 
     /**

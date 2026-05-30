@@ -19,7 +19,6 @@
 
 package org.apache.guacamole.auth.ldap;
 
-import org.springframework.stereotype.Service;
 import org.apache.directory.api.ldap.model.exception.LdapAuthenticationException;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
@@ -42,7 +41,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Service for creating and managing connections to LDAP servers.
  */
-@Service
 public class LDAPConnectionService {
 
     /**

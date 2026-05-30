@@ -20,7 +20,6 @@
 package org.apache.guacamole.auth.ldap.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,7 +47,6 @@ import org.slf4j.LoggerFactory;
  * Service for queries the users visible to a particular Guacamole user
  * according to an LDAP directory.
  */
-@Service
 public class UserService {
 
     /**

@@ -16,11 +16,15 @@ guacamole:
     json:
       enabled: true
     ldap:
-      enabled: false
+      enabled: true
+      ldap-hostname: your-ldap-server.com
+      ldap-port: 389
+      ldap-user-base-dn: ou=users,dc=example,dc=com
+      ldap-username-attribute: uid
     totp:
       enabled: false
     radius:
-      enabled: false
+      enabled: true
     quickconnect:
       enabled: true
     mysql:
