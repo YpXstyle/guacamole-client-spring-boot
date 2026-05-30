@@ -36,7 +36,6 @@
         <zxing.version>3.5.3</zxing.version>
         <apache-ldap.version>2.1.6</apache-ldap.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
-        <guice.version>7.0.0</guice.version>
     </properties>
 
     <modules>
@@ -228,13 +227,6 @@
                 <artifactId>api-all</artifactId>
                 <version>${apache-ldap.version}</version>
             </dependency>
-
-            <!-- Guice (annotations only) -->
-<!--            <dependency>-->
-<!--                <groupId>com.google.inject.extensions</groupId>-->
-<!--                <artifactId>guice-assistedinject</artifactId>-->
-<!--                <version>${guice.version}</version>-->
-<!--            </dependency>-->
 
             <!-- Apache Commons -->
             <dependency>
