@@ -92,10 +92,16 @@
             <artifactId>guacamole-auth-sso-saml-starter</artifactId>
         </dependency>
 
-        <!-- Starter: Vault Base -->
+        <!-- Vault Base -->
         <dependency>
             <groupId>com.yourcompany</groupId>
-            <artifactId>guacamole-vault-base-starter</artifactId>
+            <artifactId>guacamole-vault-base</artifactId>
+        </dependency>
+
+        <!-- Starter: Vault KSM -->
+        <dependency>
+            <groupId>com.yourcompany</groupId>
+            <artifactId>guacamole-vault-ksm-starter</artifactId>
         </dependency>
 
         <!-- Starter: History Recording Storage -->

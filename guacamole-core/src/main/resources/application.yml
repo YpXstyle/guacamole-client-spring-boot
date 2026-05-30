@@ -30,12 +30,12 @@ guacamole:
     mysql:
       enabled: false
     postgresql:
-      enabled: false
+      enabled: true
     sqlserver:
       enabled: false
     # CAS 单点登录配置
     sso-cas:
-      enabled: true
+      enabled: false
       cas-authorization-endpoint: https://cas.example.org/cas
       cas-redirect-uri: http://localhost:8080/
 
