@@ -3,12 +3,15 @@ package org.apache.guacamole.auth.ldap;
 import org.apache.guacamole.auth.ldap.conf.ConfigurationService;
 import org.apache.guacamole.auth.ldap.connection.ConnectionService;
 import org.apache.guacamole.auth.ldap.group.UserGroupService;
+import org.apache.guacamole.auth.ldap.user.LDAPAuthenticatedUser;
+import org.apache.guacamole.auth.ldap.user.LDAPUserContext;
 import org.apache.guacamole.auth.ldap.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 
 @Configuration
 @ConditionalOnProperty(prefix = "guacamole.auth.ldap", name = "enabled", havingValue = "true")
@@ -55,5 +58,17 @@ public class LDAPAuthenticationAutoConfiguration {
     public LDAPAuthenticationProvider ldapAuthenticationProvider() {
         logger.info("LDAP authentication extension enabled.");
         return new LDAPAuthenticationProvider();
+    }
+
+    @Bean
+    @Scope("prototype")
+    public LDAPAuthenticatedUser ldapAuthenticatedUser() {
+        return new LDAPAuthenticatedUser();
+    }
+
+    @Bean
+    @Scope("prototype")
+    public LDAPUserContext ldapUserContext() {
+        return new LDAPUserContext();
     }
 }

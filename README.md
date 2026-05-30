@@ -135,13 +135,43 @@ guacamole:
       json-secret-key: your-secret-key-here
 ```
 
+### LDAP 配置
+
+```yaml
+guacamole:
+  auth:
+    ldap:
+      enabled: true
+      ldap-hostname: ldap.example.com
+      ldap-port: 389
+      ldap-user-base-dn: ou=users,dc=example,dc=com
+      ldap-username-attribute: uid
+```
+
+**LDAP 认证逻辑：**
+- LDAP 负责认证（验证用户身份）和授权（从 LDAP 目录查询连接）
+- `LDAPUserContext` 从 LDAP 目录中查询该用户可用的连接
+- 认证成功后，用户看到的是 LDAP 目录中配置的连接
+
+### 多认证链
+
+多个认证模块可同时启用，Guacamole 按顺序尝试每个 provider：
+1. 第一个成功认证的 provider 决定用户身份
+2. 如果所有 provider 都失败，登录失败
+3. 每个 provider 独立，互不影响
+
+示例：同时启用 LDAP + PostgreSQL
+- 用户 `einstein`（LDAP 用户）→ LDAP 认证成功
+- 用户 `admin`（数据库用户）→ LDAP 失败 → PostgreSQL 认证成功
+- 用户 `unknown`（两边都没有）→ 所有 provider 失败 → 登录失败
+
 ## 扩展模块说明
 
 ### 已验证通过 ✅
 
 | 模块 | 作用 | 测试状态 | 说明 |
 |------|------|---------|------|
-| **Header Auth** | 反向代理认证，从 HTTP 头读取用户名 | ✅ 已验证 | 需配置 `REMOTE_USER` 头 |
+| **Header Auth** | 反向代理认证，从 HTTP 头读取用户名 | ✅ 已验证 | 需配置 `REMOTE_USER` 头，无头时抛异常 |
 | **JSON Auth** | 加密 Token 认证，无持久化存储 | ✅ 已验证 | 使用 AES/CBC/PKCS5Padding + HMAC-SHA256 |
 | **TOTP** | 基于时间的一次性密码（Google Authenticator 等） | ✅ 已验证 | 需用户自行绑定 |
 | **Quick Connect** | 快速创建连接（输入 `rdp://host:3389`） | ✅ 已验证 | 支持 RDP/VNC/SSH/Telnet |
@@ -149,13 +179,13 @@ guacamole:
 | **PostgreSQL** | PostgreSQL 数据库认证 | ✅ 已验证 | 需配置 `spring.datasource` |
 | **MySQL** | MySQL 数据库认证 | ✅ 已验证 | 需配置 `spring.datasource` |
 | **SQL Server** | SQL Server 数据库认证 | ✅ 已验证 | 需配置 `spring.datasource` |
+| **LDAP** | LDAP/AD 目录认证 | ✅ 已验证 | 标准 Starter 模式，支持多认证链 |
 
 ### 启动验证通过 ⏳
 
 | 模块 | 作用 | 测试状态 | 说明 |
 |------|------|---------|------|
 | **DUO** | Duo Security 双因素认证 | ⏳ 启动验证通过 | 需升级到 Web SDK v4（见下方说明） |
-| **LDAP** | LDAP/AD 目录认证 | ⏳ 启动验证通过 | 需配置 LDAP 服务器 |
 | **RADIUS** | RADIUS 认证 | ⏳ 启动验证通过 | 需配置 RADIUS 服务器 |
 
 ### 待验证
@@ -189,11 +219,20 @@ guacamole:
 
 ### Starter 模式
 
-所有扩展模块采用标准 Spring Boot Starter 模式：
+扩展模块采用标准 Spring Boot Starter 模式：
 - `@ConditionalOnProperty` 控制模块启用/禁用
 - `@Bean` 集中在 AutoConfiguration 类中定义
 - 通过 `AutoConfiguration.imports` 注册
 - 未启用的模块不会加载任何 Bean
+- Prototype Bean 用于需要每次创建新实例的类（如 `AuthenticatedUser`、`UserContext`）
+
+**已转换为标准模式的模块：**
+- Header Auth、JSON Auth、TOTP、QuickConnect、History
+- MySQL、PostgreSQL、SQL Server（JDBC）
+- LDAP
+
+**待转换的模块：**
+- DUO、RADIUS、SSO 系列、Vault
 
 ### 与原项目的主要差异
 

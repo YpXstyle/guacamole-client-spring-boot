@@ -17,9 +17,9 @@ guacamole:
       enabled: true
     ldap:
       enabled: true
-      ldap-hostname: your-ldap-server.com
+      ldap-hostname: ldap.forumsys.com
       ldap-port: 389
-      ldap-user-base-dn: ou=users,dc=example,dc=com
+      ldap-user-base-dn: dc=example,dc=com
       ldap-username-attribute: uid
     totp:
       enabled: false
