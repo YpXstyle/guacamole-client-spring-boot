@@ -58,10 +58,7 @@
         <module>starters/guacamole-auth-totp-starter</module>
         <module>starters/guacamole-auth-radius-starter</module>
         <module>starters/guacamole-auth-quickconnect-starter</module>
-        <module>starters/guacamole-auth-sso-base-starter</module>
-        <module>starters/guacamole-auth-sso-cas-starter</module>
-        <module>starters/guacamole-auth-sso-openid-starter</module>
-        <module>starters/guacamole-auth-sso-saml-starter</module>
+        <module>starters/guacamole-auth-sso</module>
         <!-- Vault: Base可用, KSM需Fortanix SDK (非Maven Central) -->
         <module>starters/guacamole-vault-base-starter</module>
         <!--module>starters/guacamole-vault-ksm-starter</module-->
@@ -154,7 +151,7 @@
             </dependency>
             <dependency>
                 <groupId>com.yourcompany</groupId>
-                <artifactId>guacamole-auth-sso-base-starter</artifactId>
+                <artifactId>guacamole-auth-sso-base</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

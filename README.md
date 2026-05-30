@@ -171,6 +171,47 @@ guacamole:
 - 需要配置 RADIUS 服务器地址、端口、密钥和认证协议
 - 支持 PAP、CHAP、MSCHAPv1/v2、EAP-TLS 等协议
 
+### SSO 配置
+
+#### CAS 单点登录
+
+```yaml
+guacamole:
+  auth:
+    sso-cas:
+      enabled: true
+      cas-authorization-endpoint: https://cas-server.com/cas
+      cas-redirect-uri: http://localhost:8080/
+```
+
+#### OpenID Connect
+
+```yaml
+guacamole:
+  auth:
+    sso-openid:
+      enabled: true
+      openid-authorization-endpoint: https://openid-provider.com/auth
+      openid-jwks-endpoint: https://openid-provider.com/.well-known/jwks.json
+      openid-issuer: https://openid-provider.com
+      openid-client-id: your-client-id
+      openid-redirect-uri: http://localhost:8080/
+```
+
+#### SAML 单点登录
+
+```yaml
+guacamole:
+  auth:
+    sso-saml:
+      enabled: true
+      saml-callback-url: http://localhost:8080/
+      saml-idp-metadata-url: https://idp.example.com/metadata.xml
+      # 或使用单独配置
+      saml-idp-url: https://idp.example.com/sso
+      saml-entity-id: http://localhost:8080/
+```
+
 ### 多认证链
 
 多个认证模块可同时启用，Guacamole 按顺序尝试每个 provider：
@@ -205,15 +246,15 @@ guacamole:
 |------|------|---------|------|
 | **DUO** | Duo Security 双因素认证 | ⏳ 启动验证通过 | 需升级到 Web SDK v4（见下方说明） |
 | **RADIUS** | RADIUS 认证 | ✅ 启动验证通过 | 标准 Starter 模式，需配置 RADIUS 服务器 |
+| **SSO CAS** | CAS 单点登录 | ✅ 启动验证通过 | 标准 Starter 模式，需配置 CAS 服务器 |
+| **SSO OpenID** | OpenID Connect 认证 | ⏳ 启动验证通过 | 标准 Starter 模式，需配置 OpenID Provider |
+| **SSO SAML** | SAML 单点登录 | ⏳ 启动验证通过 | 标准 Starter 模式，需配置 SAML IdP |
 
 ### 待验证
 
 | 模块 | 作用 | 测试状态 | 说明 |
 |------|------|---------|------|
-| **SSO Base** | SSO 基础模块（供 CAS/OpenID/SAML 使用） | 待验证 | 库模块，无独立功能 |
-| **SSO CAS** | CAS 单点登录 | 待验证 | 需 CAS 服务器 |
-| **SSO OpenID** | OpenID Connect 认证 | 待验证 | 需 OpenID Provider |
-| **SSO SAML** | SAML 单点登录 | 待验证 | 需 SAML IdP |
+| **SSO Base** | SSO 基础模块（供 CAS/OpenID/SAML 使用） | ✅ 已验证 | 库模块，提供共享资源和基类 |
 | **Vault Base** | Vault 基础模块 | 待验证 | 库模块 |
 | **Vault KSM** | Keeper Secrets Manager | 待验证 | 依赖非 Maven Central，已注释 |
 
@@ -248,9 +289,10 @@ guacamole:
 - Header Auth、JSON Auth、TOTP、QuickConnect、History
 - MySQL、PostgreSQL、SQL Server（JDBC）
 - LDAP、RADIUS
+- SSO 系列：CAS、OpenID、SAML
 
 **待转换的模块：**
-- DUO、SSO 系列、Vault
+- DUO、Vault
 
 ### 与原项目的主要差异
 

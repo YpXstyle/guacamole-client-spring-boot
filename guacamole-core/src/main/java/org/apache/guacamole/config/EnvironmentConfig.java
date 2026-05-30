@@ -17,23 +17,44 @@ public class EnvironmentConfig {
     private org.springframework.core.env.Environment springEnv;
 
     @PostConstruct
-    public void validateJdbcModules() {
+    public void validateModules() {
+        // Validate JDBC modules (only one can be enabled)
         boolean mysql = springEnv.getProperty("guacamole.auth.mysql.enabled", Boolean.class, false);
         boolean postgresql = springEnv.getProperty("guacamole.auth.postgresql.enabled", Boolean.class, false);
         boolean sqlserver = springEnv.getProperty("guacamole.auth.sqlserver.enabled", Boolean.class, false);
 
-        int count = 0;
-        if (mysql) count++;
-        if (postgresql) count++;
-        if (sqlserver) count++;
+        int jdbcCount = 0;
+        if (mysql) jdbcCount++;
+        if (postgresql) jdbcCount++;
+        if (sqlserver) jdbcCount++;
 
-        if (count > 1) {
+        if (jdbcCount > 1) {
             throw new IllegalStateException(
                 "Only one JDBC authentication module can be enabled at a time. "
                 + "Currently enabled: "
                 + (mysql ? "[MySQL] " : "")
                 + (postgresql ? "[PostgreSQL] " : "")
                 + (sqlserver ? "[SQLServer] " : "")
+                + ". Please disable all but one in application.yml.");
+        }
+
+        // Validate SSO modules (only one can be enabled)
+        boolean cas = springEnv.getProperty("guacamole.auth.sso-cas.enabled", Boolean.class, false);
+        boolean openid = springEnv.getProperty("guacamole.auth.sso-openid.enabled", Boolean.class, false);
+        boolean saml = springEnv.getProperty("guacamole.auth.sso-saml.enabled", Boolean.class, false);
+
+        int ssoCount = 0;
+        if (cas) ssoCount++;
+        if (openid) ssoCount++;
+        if (saml) ssoCount++;
+
+        if (ssoCount > 1) {
+            throw new IllegalStateException(
+                "Only one SSO authentication module can be enabled at a time. "
+                + "Currently enabled: "
+                + (cas ? "[CAS] " : "")
+                + (openid ? "[OpenID] " : "")
+                + (saml ? "[SAML] " : "")
                 + ". Please disable all but one in application.yml.");
         }
     }

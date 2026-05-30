@@ -74,12 +74,6 @@
             <artifactId>guacamole-auth-radius-starter</artifactId>
         </dependency>
 
-        <!-- Starter: SSO Base -->
-        <dependency>
-            <groupId>com.yourcompany</groupId>
-            <artifactId>guacamole-auth-sso-base-starter</artifactId>
-        </dependency>
-
         <!-- Starter: SSO CAS -->
         <dependency>
             <groupId>com.yourcompany</groupId>

@@ -191,12 +191,12 @@ public class AuthenticationService {
                     return authenticatedUser;
             }
 
-            // Insufficient credentials should take precedence
+            // Insufficient credentials should take precedence over invalid credentials
             catch (GuacamoleInsufficientCredentialsException e) {
                 if (authFailure == null || authFailure instanceof GuacamoleInvalidCredentialsException)
                     authFailure = e;
             }
-            
+
             // Catch other credentials exceptions and assign the first one
             catch (GuacamoleCredentialsException e) {
                 if (authFailure == null)
