@@ -4,12 +4,14 @@ import org.apache.guacamole.auth.radius.RadiusAuthenticationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
 @Configuration
 @ConditionalOnProperty(prefix = "guacamole.auth.radius", name = "enabled", havingValue = "true")
+@ComponentScan(basePackages = "org.apache.guacamole.auth.radius")
 public class RadiusAuthenticationAutoConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(RadiusAuthenticationAutoConfiguration.class);

@@ -137,6 +137,41 @@
                 <artifactId>guacamole-vault-base-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-auth-duo-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-auth-ldap-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-auth-radius-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-auth-sso-base-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-auth-sso-cas-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-auth-sso-openid-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yourcompany</groupId>
+                <artifactId>guacamole-auth-sso-saml-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!-- Guava -->
             <dependency>

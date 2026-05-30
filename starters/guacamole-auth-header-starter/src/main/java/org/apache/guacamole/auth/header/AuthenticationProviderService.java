@@ -21,20 +21,17 @@ package org.apache.guacamole.auth.header;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.guacamole.GuacamoleException;
 import org.apache.guacamole.net.auth.Credentials;
 import org.apache.guacamole.net.auth.credentials.CredentialsInfo;
 import org.apache.guacamole.net.auth.credentials.GuacamoleInvalidCredentialsException;
 import org.apache.guacamole.auth.header.user.AuthenticatedUser;
-import java.security.Principal;
 
 /**
  * Service providing convenience functions for the HTTP Header
  * AuthenticationProvider implementation.
  */
-@Service
 public class AuthenticationProviderService {
 
     /**

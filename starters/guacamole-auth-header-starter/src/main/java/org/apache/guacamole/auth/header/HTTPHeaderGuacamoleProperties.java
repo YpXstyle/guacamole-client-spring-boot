@@ -19,7 +19,6 @@
 
 package org.apache.guacamole.auth.header;
 
-import org.apache.guacamole.properties.IntegerGuacamoleProperty;
 import org.apache.guacamole.properties.StringGuacamoleProperty;
 
 

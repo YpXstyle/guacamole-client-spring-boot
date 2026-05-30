@@ -20,15 +20,13 @@
 package org.apache.guacamole.auth.header;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.apache.guacamole.GuacamoleException;
 import org.apache.guacamole.environment.Environment;
 
 /**
- * Service for retrieving configuration information for HTTP header-based 
+ * Service for retrieving configuration information for HTTP header-based
  * authentication.
  */
-@Service
 public class ConfigurationService {
 
     /**

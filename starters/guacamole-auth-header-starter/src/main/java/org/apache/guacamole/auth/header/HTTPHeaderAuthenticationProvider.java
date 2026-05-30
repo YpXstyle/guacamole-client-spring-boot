@@ -23,7 +23,6 @@ import org.apache.guacamole.GuacamoleException;
 import org.apache.guacamole.net.auth.AbstractAuthenticationProvider;
 import org.apache.guacamole.net.auth.AuthenticatedUser;
 import org.apache.guacamole.net.auth.Credentials;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Guacamole authentication backend which authenticates users using an
@@ -36,8 +35,17 @@ public class HTTPHeaderAuthenticationProvider extends AbstractAuthenticationProv
     /**
      * Service for authenticating users via HTTP headers.
      */
-    @Autowired
-    private AuthenticationProviderService authProviderService;
+    private final AuthenticationProviderService authProviderService;
+
+    /**
+     * Creates a new HTTPHeaderAuthenticationProvider with the given service.
+     *
+     * @param authProviderService
+     *     Service for authenticating users via HTTP headers.
+     */
+    public HTTPHeaderAuthenticationProvider(AuthenticationProviderService authProviderService) {
+        this.authProviderService = authProviderService;
+    }
 
     @Override
     public String getIdentifier() {

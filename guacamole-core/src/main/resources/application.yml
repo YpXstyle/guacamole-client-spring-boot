@@ -10,7 +10,7 @@ guacamole:
   # Authentication extensions (enable via Maven dependency + set to true)
   auth:
     header:
-      enabled: false
+      enabled: true
     duo:
       enabled: false
     json:

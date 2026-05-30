@@ -50,6 +50,60 @@
             <artifactId>guacamole-auth-json-starter</artifactId>
         </dependency>
 
+        <!-- Starter: HTTP Header Auth -->
+        <dependency>
+            <groupId>com.yourcompany</groupId>
+            <artifactId>guacamole-auth-header-starter</artifactId>
+        </dependency>
+
+        <!-- Starter: DUO Auth -->
+        <dependency>
+            <groupId>com.yourcompany</groupId>
+            <artifactId>guacamole-auth-duo-starter</artifactId>
+        </dependency>
+
+        <!-- Starter: LDAP Auth -->
+        <dependency>
+            <groupId>com.yourcompany</groupId>
+            <artifactId>guacamole-auth-ldap-starter</artifactId>
+        </dependency>
+
+        <!-- Starter: RADIUS Auth -->
+        <dependency>
+            <groupId>com.yourcompany</groupId>
+            <artifactId>guacamole-auth-radius-starter</artifactId>
+        </dependency>
+
+        <!-- Starter: SSO Base -->
+        <dependency>
+            <groupId>com.yourcompany</groupId>
+            <artifactId>guacamole-auth-sso-base-starter</artifactId>
+        </dependency>
+
+        <!-- Starter: SSO CAS -->
+        <dependency>
+            <groupId>com.yourcompany</groupId>
+            <artifactId>guacamole-auth-sso-cas-starter</artifactId>
+        </dependency>
+
+        <!-- Starter: SSO OpenID -->
+        <dependency>
+            <groupId>com.yourcompany</groupId>
+            <artifactId>guacamole-auth-sso-openid-starter</artifactId>
+        </dependency>
+
+        <!-- Starter: SSO SAML -->
+        <dependency>
+            <groupId>com.yourcompany</groupId>
+            <artifactId>guacamole-auth-sso-saml-starter</artifactId>
+        </dependency>
+
+        <!-- Starter: Vault Base -->
+        <dependency>
+            <groupId>com.yourcompany</groupId>
+            <artifactId>guacamole-vault-base-starter</artifactId>
+        </dependency>
+
         <!-- Starter: History Recording Storage -->
         <dependency>
             <groupId>com.yourcompany</groupId>

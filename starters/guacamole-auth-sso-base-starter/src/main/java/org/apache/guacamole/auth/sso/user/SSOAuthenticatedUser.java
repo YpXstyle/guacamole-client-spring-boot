@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.apache.guacamole.net.auth.AbstractAuthenticatedUser;
 import org.apache.guacamole.net.auth.AuthenticationProvider;
 import org.apache.guacamole.net.auth.Credentials;
@@ -15,7 +14,6 @@ import org.apache.guacamole.net.auth.Credentials;
  * of user-specific parameter tokens to be injected into any connections used
  * by that user.
  */
-@Service
 public class SSOAuthenticatedUser extends AbstractAuthenticatedUser {
 
     /**
