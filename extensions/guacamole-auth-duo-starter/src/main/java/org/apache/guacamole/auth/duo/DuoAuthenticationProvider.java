@@ -23,7 +23,6 @@ import org.apache.guacamole.GuacamoleException;
 import org.apache.guacamole.net.auth.AbstractAuthenticationProvider;
 import org.apache.guacamole.net.auth.AuthenticatedUser;
 import org.apache.guacamole.net.auth.UserContext;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * AuthenticationProvider implementation which uses Duo as an additional
@@ -35,8 +34,17 @@ public class DuoAuthenticationProvider extends AbstractAuthenticationProvider {
     /**
      * Service for verifying users against Duo.
      */
-    @Autowired
-    private UserVerificationService verificationService;
+    private final UserVerificationService verificationService;
+
+    /**
+     * Creates a new DuoAuthenticationProvider with the given verification service.
+     *
+     * @param verificationService
+     *     Service for verifying users against Duo.
+     */
+    public DuoAuthenticationProvider(UserVerificationService verificationService) {
+        this.verificationService = verificationService;
+    }
 
     @Override
     public String getIdentifier() {

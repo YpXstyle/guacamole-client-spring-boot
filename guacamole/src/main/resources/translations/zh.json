@@ -4,6 +4,9 @@
     
     "APP" : {
 
+        "NAME"    : "Apache Guacamole",
+        "VERSION" : "1.5.5",
+
         "ACTION_ACKNOWLEDGE"        : "确定",
         "ACTION_CANCEL"             : "取消",
         "ACTION_CLONE"              : "克隆",
@@ -22,11 +25,14 @@
         "ACTION_MANAGE_USER_GROUPS" : "用户组",
         "ACTION_NAVIGATE_BACK"      : "返回",
         "ACTION_NAVIGATE_HOME"      : "首页",
+        "ACTION_PAUSE"              : "暂停",
+        "ACTION_PLAY"               : "播放",
         "ACTION_SAVE"               : "保存",
         "ACTION_SEARCH"             : "搜索",
         "ACTION_SHARE"              : "共享",
         "ACTION_UPDATE_PASSWORD"    : "更新密码",
         "ACTION_VIEW_HISTORY"       : "历史",
+        "ACTION_VIEW_RECORDING"     : "查看",
 
         "DIALOG_HEADER_ERROR" : "出错",
 
@@ -44,14 +50,18 @@
         "INFO_ACTIVE_USER_COUNT" : "正在被{USERS}用户使用。",
         "INFO_LOGGED_OUT"        : "您已登出。",
         "TEXT_ANONYMOUS_USER"   : "匿名",
-        "TEXT_HISTORY_DURATION" : "{VALUE} {UNIT, select, second{秒} minute{分} hour{小时} day{天} other{}}"
+        "TEXT_HISTORY_DURATION" : "{VALUE} {UNIT, select, second{秒} minute{分} hour{小时} day{天} other{}}",
+        "TEXT_UNTRANSLATED" : "{MESSAGE}"
 
     },
 
     "CLIENT" : {
 
         "ACTION_ACKNOWLEDGE"               : "@:APP.ACTION_ACKNOWLEDGE",
+        "ACTION_CANCEL"                    : "@:APP.ACTION_CANCEL",
+        "ACTION_CLEAR_CLIENT_MESSAGES"     : "清除消息",
         "ACTION_CLEAR_COMPLETED_TRANSFERS" : "清除",
+        "ACTION_CONTINUE"                  : "@:APP.ACTION_CONTINUE",
         "ACTION_DISCONNECT"                : "断开连接",
         "ACTION_LOGOUT"                    : "@:APP.ACTION_LOGOUT",
         "ACTION_NAVIGATE_BACK"             : "@:APP.ACTION_NAVIGATE_BACK",
@@ -115,8 +125,10 @@
         "HELP_MOUSE_MODE_RELATIVE" : "拖拽时移动鼠标，再点击时触发按键。在鼠标当前所在的位置触发按键事件。",
         "HELP_SHARE_LINK"          : "正在共享当前连接，并可被使用以下链接的任何人使用：",
 
+        "INFO_ANONYMOUS_USER_COUNT" : "匿名用户{COUNT, plural, one{} other{(#)}}",
         "INFO_CONNECTION_SHARED" : "此连接已被共享。",
         "INFO_NO_FILE_TRANSFERS" : "无文件传输任务。",
+        "INFO_USER_COUNT" : "{USERNAME}{COUNT, plural, one{} other{(#)}}",
 
         "NAME_INPUT_METHOD_NONE"   : "无输入法",
         "NAME_INPUT_METHOD_OSK"    : "屏幕键盘",
@@ -128,6 +140,7 @@
         "NAME_MOUSE_MODE_ABSOLUTE" : "触控屏",
         "NAME_MOUSE_MODE_RELATIVE" : "触控板",
 
+        "SECTION_HEADER_CLIENT_MESSAGES" : "消息",
         "SECTION_HEADER_CLIPBOARD"      : "剪贴板",
         "SECTION_HEADER_DEVICES"        : "设备",
         "SECTION_HEADER_DISPLAY"        : "显示",
@@ -135,12 +148,16 @@
         "SECTION_HEADER_INPUT_METHOD"   : "输入法",
         "SECTION_HEADER_MOUSE_MODE"     : "模拟鼠标模式",
 
+        "TEXT_ANONYMOUS_USER_JOINED"      : "一位匿名用户加入了连接。",
+        "TEXT_ANONYMOUS_USER_LEFT"        : "一位匿名用户离开了连接。",
         "TEXT_ZOOM_AUTO_FIT"              : "自适应浏览器窗口大小",
         "TEXT_CLIENT_STATUS_IDLE"         : "空闲。",
         "TEXT_CLIENT_STATUS_CONNECTING"   : "正在连接Guacamole……",
         "TEXT_CLIENT_STATUS_DISCONNECTED" : "您的连接已断开。",
         "TEXT_CLIENT_STATUS_UNSTABLE"     : "到Guacamole服务器的网络连接似乎不太稳定。",
         "TEXT_CLIENT_STATUS_WAITING"      : "已连接到Guacamole。正在等候应答……",
+        "TEXT_USER_JOINED"                : "{USERNAME} 加入了连接。",
+        "TEXT_USER_LEFT"                  : "{USERNAME} 离开了连接。",
         "TEXT_RECONNECT_COUNTDOWN"        : "在{REMAINING}秒后重连……",
         "TEXT_FILE_TRANSFER_PROGRESS"     : "{PROGRESS} {UNIT, select, b{B} kb{KB} mb{MB} gb{GB} other{}}",
 
@@ -378,7 +395,18 @@
         "TEXT_CONFIRM_DELETE" : "删除组后将无法还原。 您确定要删除该组吗？"
 
     },
-    
+
+    "PLAYER" : {
+
+        "ACTION_CANCEL" : "@:APP.ACTION_CANCEL",
+        "ACTION_PAUSE"  : "@:APP.ACTION_PAUSE",
+        "ACTION_PLAY"   : "@:APP.ACTION_PLAY",
+
+        "INFO_LOADING_RECORDING" : "正在加载录像，请稍候……",
+        "INFO_SEEK_IN_PROGRESS"  : "正在定位到请求的位置。请稍候……"
+
+    },
+
     "PROTOCOL_KUBERNETES" : {
 
         "FIELD_HEADER_BACKSPACE"      : "发送退格键：",
@@ -389,6 +417,7 @@
         "FIELD_HEADER_CONTAINER"       : "容器名称:",
         "FIELD_HEADER_CREATE_RECORDING_PATH" : "自动建立录像目录：",
         "FIELD_HEADER_CREATE_TYPESCRIPT_PATH" : "自动建立打字稿目录：",
+        "FIELD_HEADER_EXEC_COMMAND"    : "命令（exec）：",
         "FIELD_HEADER_FONT_NAME"      : "字体名：",
         "FIELD_HEADER_FONT_SIZE"      : "字体大小：",
         "FIELD_HEADER_HOSTNAME"       : "主机名：",
@@ -456,7 +485,9 @@
         "FIELD_HEADER_DISABLE_AUDIO"   : "禁用音频：",
         "FIELD_HEADER_DISABLE_AUTH"    : "禁用认证：",
         "FIELD_HEADER_DISABLE_COPY"    : "禁用从远程桌面复制:",
+        "FIELD_HEADER_DISABLE_DOWNLOAD" : "禁用文件下载：",
         "FIELD_HEADER_DISABLE_PASTE"   : "禁用从客户端粘贴:",
+        "FIELD_HEADER_DISABLE_UPLOAD"   : "禁用文件上传：",
         "FIELD_HEADER_DOMAIN"          : "域：",
         "FIELD_HEADER_DPI"             : "分辨率（DPI）：",
         "FIELD_HEADER_DRIVE_NAME"      : "驱动器名称:",
@@ -474,6 +505,8 @@
         "FIELD_HEADER_ENABLE_SFTP"     : "启用SFTP：",
         "FIELD_HEADER_ENABLE_THEMING"             : "启用桌面主题：",
         "FIELD_HEADER_ENABLE_WALLPAPER"           : "启用桌面墙纸：",
+        "FIELD_HEADER_ENABLE_TOUCH"               : "启用多点触控：",
+        "FIELD_HEADER_FORCE_LOSSLESS"             : "强制无损压缩：",
         "FIELD_HEADER_GATEWAY_DOMAIN"   : "域：",
         "FIELD_HEADER_GATEWAY_HOSTNAME" : "主机名：",
         "FIELD_HEADER_GATEWAY_PASSWORD" : "密码：",
@@ -484,6 +517,7 @@
         "FIELD_HEADER_IGNORE_CERT"     : "忽略服务器证书：",
         "FIELD_HEADER_INITIAL_PROGRAM" : "初始程序：",
         "FIELD_HEADER_LOAD_BALANCE_INFO" : "负载平衡信息/cookie：",
+        "FIELD_HEADER_NORMALIZE_CLIPBOARD" : "换行符格式：",
         "FIELD_HEADER_PASSWORD"        : "密码：",
         "FIELD_HEADER_PORT"            : "端口：",
         "FIELD_HEADER_PRINTER_NAME"    : "重定向的打印机名称:",
@@ -492,6 +526,7 @@
         "FIELD_HEADER_READ_ONLY"      : "只读：",
         "FIELD_HEADER_RECORDING_EXCLUDE_MOUSE"  : "排除鼠标：",
         "FIELD_HEADER_RECORDING_EXCLUDE_OUTPUT" : "排除图像/数据流：",
+        "FIELD_HEADER_RECORDING_EXCLUDE_TOUCH"  : "排除触控事件：",
         "FIELD_HEADER_RECORDING_INCLUDE_KEYS"   : "包含按键事件：",
         "FIELD_HEADER_RECORDING_NAME" : "录像名：",
         "FIELD_HEADER_RECORDING_PATH" : "录像路径：",
@@ -502,6 +537,7 @@
         "FIELD_HEADER_SECURITY"        : "安全模式：",
         "FIELD_HEADER_SERVER_LAYOUT"   : "键盘布局：",
         "FIELD_HEADER_SFTP_DIRECTORY"             : "缺省文件上传目录：",
+        "FIELD_HEADER_SFTP_DISABLE_DOWNLOAD"      : "禁用文件下载：",
         "FIELD_HEADER_SFTP_HOST_KEY"              : "公钥(Base64):",
         "FIELD_HEADER_SFTP_HOSTNAME"              : "主机名：",
         "FIELD_HEADER_SFTP_SERVER_ALIVE_INTERVAL" : "SFTP keepalive时间间隔：",
@@ -510,11 +546,22 @@
         "FIELD_HEADER_SFTP_PORT"                  : "端口：",
         "FIELD_HEADER_SFTP_PRIVATE_KEY"           : "私钥：",
         "FIELD_HEADER_SFTP_ROOT_DIRECTORY"        : "文件浏览器根目录：",
+        "FIELD_HEADER_SFTP_DISABLE_UPLOAD"        : "禁用文件上传：",
         "FIELD_HEADER_SFTP_USERNAME"              : "用户名：",
         "FIELD_HEADER_STATIC_CHANNELS" : "静态通道名：",
         "FIELD_HEADER_TIMEZONE"        : "时区:",
         "FIELD_HEADER_USERNAME"        : "用户名：",
         "FIELD_HEADER_WIDTH"           : "宽度：",
+        "FIELD_HEADER_WOL_BROADCAST_ADDR" : "网络唤醒(WoL)广播地址：",
+        "FIELD_HEADER_WOL_MAC_ADDR"       : "远程主机MAC地址：",
+        "FIELD_HEADER_WOL_SEND_PACKET"    : "发送网络唤醒(WoL)数据包：",
+        "FIELD_HEADER_WOL_UDP_PORT"       : "网络唤醒(WoL)UDP端口：",
+        "FIELD_HEADER_WOL_WAIT_TIME"      : "主机启动等待时间：",
+
+        "FIELD_OPTION_NORMALIZE_CLIPBOARD_EMPTY"    : "",
+        "FIELD_OPTION_NORMALIZE_CLIPBOARD_PRESERVE" : "保持原样",
+        "FIELD_OPTION_NORMALIZE_CLIPBOARD_UNIX"     : "Linux/Mac/Unix (LF)",
+        "FIELD_OPTION_NORMALIZE_CLIPBOARD_WINDOWS"  : "Windows (CRLF)",
 
         "FIELD_OPTION_COLOR_DEPTH_16"    : "低色（16位）",
         "FIELD_OPTION_COLOR_DEPTH_24"    : "真彩（24位）",
@@ -531,6 +578,7 @@
         "FIELD_OPTION_SECURITY_NLA"   : "NLA（网络级别认证）",
         "FIELD_OPTION_SECURITY_RDP"   : "RDP加密",
         "FIELD_OPTION_SECURITY_TLS"   : "TLS加密",
+        "FIELD_OPTION_SECURITY_VMCONNECT" : "Hyper-V / VMConnect",
 
         "FIELD_OPTION_SERVER_LAYOUT_DE_CH_QWERTZ" : "Swiss German (Qwertz)",
         "FIELD_OPTION_SERVER_LAYOUT_DE_DE_QWERTZ" : "German (Qwertz)",
@@ -538,12 +586,15 @@
         "FIELD_OPTION_SERVER_LAYOUT_EN_GB_QWERTY" : "UK English (Qwerty)",
         "FIELD_OPTION_SERVER_LAYOUT_EN_US_QWERTY" : "US English (Qwerty)",
         "FIELD_OPTION_SERVER_LAYOUT_ES_ES_QWERTY" : "Spanish (Qwerty)",
+        "FIELD_OPTION_SERVER_LAYOUT_ES_LATAM_QWERTY" : "Latin American (Qwerty)",
         "FIELD_OPTION_SERVER_LAYOUT_FAILSAFE"     : "Unicode",
+        "FIELD_OPTION_SERVER_LAYOUT_FR_BE_AZERTY" : "Belgian French (Azerty)",
         "FIELD_OPTION_SERVER_LAYOUT_FR_CH_QWERTZ" : "Swiss French (Qwertz)",
         "FIELD_OPTION_SERVER_LAYOUT_FR_FR_AZERTY" : "French (Azerty)",
         "FIELD_OPTION_SERVER_LAYOUT_HU_HU_QWERTZ" : "Hungarian (Qwertz)",
         "FIELD_OPTION_SERVER_LAYOUT_IT_IT_QWERTY" : "Italian (Qwerty)",
         "FIELD_OPTION_SERVER_LAYOUT_JA_JP_QWERTY" : "Japanese (Qwerty)",
+        "FIELD_OPTION_SERVER_LAYOUT_NO_NO_QWERTY" : "Norwegian (Qwerty)",
         "FIELD_OPTION_SERVER_LAYOUT_PL_PL_QWERTY" : "Polish (Qwerty)",
         "FIELD_OPTION_SERVER_LAYOUT_PT_BR_QWERTY" : "Portuguese Brazilian (Qwerty)",
         "FIELD_OPTION_SERVER_LAYOUT_SV_SE_QWERTY" : "Swedish (Qwerty)",
@@ -564,7 +615,8 @@
         "SECTION_HEADER_PRECONNECTION_PDU"  : "预连接PDU / Hyper-V",
         "SECTION_HEADER_RECORDING"          : "屏幕录像",
         "SECTION_HEADER_REMOTEAPP"          : "RemoteApp",
-        "SECTION_HEADER_SFTP"               : "SFTP"
+        "SECTION_HEADER_SFTP"               : "SFTP",
+        "SECTION_HEADER_WOL"                : "网络唤醒 (WoL)"
 
     },
 
@@ -597,11 +649,18 @@
         "FIELD_HEADER_RECORDING_PATH" : "录像路径：",
         "FIELD_HEADER_SERVER_ALIVE_INTERVAL" : "服务器keepalive时间间隔：",
 
+        "FIELD_HEADER_SFTP_DISABLE_DOWNLOAD" : "禁用文件下载：",
         "FIELD_HEADER_SFTP_ROOT_DIRECTORY"   : "文件浏览器根目录：",
+        "FIELD_HEADER_SFTP_DISABLE_UPLOAD"   : "禁用文件上传：",
         "FIELD_HEADER_TERMINAL_TYPE"   : "终端类型:",
         "FIELD_HEADER_TIMEZONE"        : "时区($TZ):",
         "FIELD_HEADER_TYPESCRIPT_NAME" : "打字稿名称：",
         "FIELD_HEADER_TYPESCRIPT_PATH" : "打字稿路径：",
+        "FIELD_HEADER_WOL_BROADCAST_ADDR" : "网络唤醒(WoL)广播地址：",
+        "FIELD_HEADER_WOL_MAC_ADDR"       : "远程主机MAC地址：",
+        "FIELD_HEADER_WOL_SEND_PACKET"    : "发送网络唤醒(WoL)数据包：",
+        "FIELD_HEADER_WOL_UDP_PORT"       : "网络唤醒(WoL)UDP端口：",
+        "FIELD_HEADER_WOL_WAIT_TIME"      : "主机启动等待时间：",
 
         "FIELD_OPTION_BACKSPACE_EMPTY" : "",
         "FIELD_OPTION_BACKSPACE_8"     : "退格键（Ctrl-H）",
@@ -647,7 +706,8 @@
         "SECTION_HEADER_RECORDING"      : "屏幕录像",
         "SECTION_HEADER_SESSION"        : "会话 / 环境",
         "SECTION_HEADER_TYPESCRIPT"     : "打字稿（文本会话录像）",
-        "SECTION_HEADER_SFTP"           : "SFTP"
+        "SECTION_HEADER_SFTP"           : "SFTP",
+        "SECTION_HEADER_WOL"            : "网络唤醒 (WoL)"
 
     },
 
@@ -679,6 +739,11 @@
         "FIELD_HEADER_TERMINAL_TYPE"   : "终端类型:",
         "FIELD_HEADER_TYPESCRIPT_NAME" : "打字稿名称:",
         "FIELD_HEADER_TYPESCRIPT_PATH" : "打字稿路径:",
+        "FIELD_HEADER_WOL_BROADCAST_ADDR" : "网络唤醒(WoL)广播地址：",
+        "FIELD_HEADER_WOL_MAC_ADDR"       : "远程主机MAC地址：",
+        "FIELD_HEADER_WOL_SEND_PACKET"    : "发送网络唤醒(WoL)数据包：",
+        "FIELD_HEADER_WOL_UDP_PORT"       : "网络唤醒(WoL)UDP端口：",
+        "FIELD_HEADER_WOL_WAIT_TIME"      : "主机启动等待时间：",
 
         "FIELD_OPTION_BACKSPACE_EMPTY" : "",
         "FIELD_OPTION_BACKSPACE_8"     : "退格键(Ctrl-H)",
@@ -722,7 +787,8 @@
         "SECTION_HEADER_DISPLAY"        : "显示",
         "SECTION_HEADER_RECORDING"      : "屏幕录像",
         "SECTION_HEADER_TYPESCRIPT"     : "打字稿（文本会话录像）",
-        "SECTION_HEADER_NETWORK"        : "网络"
+        "SECTION_HEADER_NETWORK"        : "网络",
+        "SECTION_HEADER_WOL"            : "网络唤醒 (WoL)"
 
     },
 
@@ -739,6 +805,7 @@
         "FIELD_HEADER_DISABLE_PASTE"    : "禁用从客户端粘贴:",
         "FIELD_HEADER_ENABLE_AUDIO"     : "启用音频：",
         "FIELD_HEADER_ENABLE_SFTP"      : "启用SFTP：",
+        "FIELD_HEADER_FORCE_LOSSLESS"   : "强制无损压缩：",
         "FIELD_HEADER_HOSTNAME"         : "主机名：",
         "FIELD_HEADER_USERNAME"         : "用户名：",
         "FIELD_HEADER_PASSWORD"         : "密码：",
@@ -750,6 +817,7 @@
         "FIELD_HEADER_RECORDING_NAME" : "录像名：",
         "FIELD_HEADER_RECORDING_PATH" : "录像路径：",
         "FIELD_HEADER_SFTP_DIRECTORY"             : "缺省文件上传目录：",
+        "FIELD_HEADER_SFTP_DISABLE_DOWNLOAD"      : "禁用文件下载：",
         "FIELD_HEADER_SFTP_HOST_KEY"              : "公钥(Base64):",
         "FIELD_HEADER_SFTP_HOSTNAME"              : "主机名：",
         "FIELD_HEADER_SFTP_SERVER_ALIVE_INTERVAL" : "SFTP keepalive时间间隔：",
@@ -758,8 +826,14 @@
         "FIELD_HEADER_SFTP_PORT"                  : "端口：",
         "FIELD_HEADER_SFTP_PRIVATE_KEY"           : "私钥：",
         "FIELD_HEADER_SFTP_ROOT_DIRECTORY"        : "文件浏览器根目录：",
+        "FIELD_HEADER_SFTP_DISABLE_UPLOAD"        : "禁用文件上传：",
         "FIELD_HEADER_SFTP_USERNAME"              : "用户名：",
         "FIELD_HEADER_SWAP_RED_BLUE"    : "交换红/蓝成分：",
+        "FIELD_HEADER_WOL_BROADCAST_ADDR" : "网络唤醒(WoL)广播地址：",
+        "FIELD_HEADER_WOL_MAC_ADDR"       : "远程主机MAC地址：",
+        "FIELD_HEADER_WOL_SEND_PACKET"    : "发送网络唤醒(WoL)数据包：",
+        "FIELD_HEADER_WOL_UDP_PORT"       : "网络唤醒(WoL)UDP端口：",
+        "FIELD_HEADER_WOL_WAIT_TIME"      : "主机启动等待时间：",
 
         "FIELD_OPTION_COLOR_DEPTH_8"     : "256色",
         "FIELD_OPTION_COLOR_DEPTH_16"    : "低色（16位）",
@@ -786,7 +860,8 @@
         "SECTION_HEADER_NETWORK"        : "网络",
         "SECTION_HEADER_RECORDING"      : "屏幕录像",
         "SECTION_HEADER_REPEATER"       : "VNC中继",
-        "SECTION_HEADER_SFTP"           : "SFTP"
+        "SECTION_HEADER_SFTP"           : "SFTP",
+        "SECTION_HEADER_WOL"            : "网络唤醒 (WoL)"
 
     },
 
@@ -800,6 +875,7 @@
 
         "ACTION_DOWNLOAD" : "@:APP.ACTION_DOWNLOAD",
         "ACTION_SEARCH"   : "@:APP.ACTION_SEARCH",
+        "ACTION_VIEW_RECORDING" : "@:APP.ACTION_VIEW_RECORDING",
 
         "FIELD_PLACEHOLDER_FILTER" : "@:APP.FIELD_PLACEHOLDER_FILTER",
 
@@ -814,6 +890,7 @@
 
         "TABLE_HEADER_SESSION_CONNECTION_NAME" : "连接名",
         "TABLE_HEADER_SESSION_DURATION"        : "持续时间",
+        "TABLE_HEADER_SESSION_LOGS"            : "日志",
         "TABLE_HEADER_SESSION_REMOTEHOST"      : "远程主机",
         "TABLE_HEADER_SESSION_STARTDATE"       : "起始时间",
         "TABLE_HEADER_SESSION_USERNAME"        : "用户名",

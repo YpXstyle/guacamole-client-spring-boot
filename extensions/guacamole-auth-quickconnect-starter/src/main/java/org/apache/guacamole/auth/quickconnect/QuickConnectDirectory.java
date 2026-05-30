@@ -119,16 +119,6 @@ public class QuickConnectDirectory extends SimpleDirectory<Connection> {
         // Parse the URI into a configuration
         GuacamoleConfiguration config = parser.getConfiguration(uri);
 
-        // Default RDP parameters for Quick Connect (matching common admin UI behavior)
-        if ("rdp".equals(config.getProtocol())) {
-            if (config.getParameter("ignore-cert") == null)
-                config.setParameter("ignore-cert", "true");
-            if (config.getParameter("disable-auth") == null)
-                config.setParameter("disable-auth", "false");
-            if (config.getParameter("security-mode") == null)
-                config.setParameter("security-mode", "nla");
-        }
-
         // Generate a name for the configuration.
         String name = parser.getName(config);
 

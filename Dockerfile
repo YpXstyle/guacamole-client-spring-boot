@@ -12,5 +12,10 @@ RUN mvn clean package -pl guacamole -am -DskipTests
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY --from=build /app/guacamole/target/*.jar app.jar
+
+# Create non-root user for security
+RUN addgroup -S guacamole && adduser -S guacamole -G guacamole
+USER guacamole
+
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]

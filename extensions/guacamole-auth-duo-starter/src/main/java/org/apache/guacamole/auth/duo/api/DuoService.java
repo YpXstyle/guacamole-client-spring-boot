@@ -20,7 +20,6 @@
 package org.apache.guacamole.auth.duo.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.guacamole.GuacamoleException;
@@ -33,7 +32,6 @@ import org.slf4j.LoggerFactory;
  * Service which produces signed requests and parses/verifies signed responses
  * as required by Duo's API.
  */
-@Service
 public class DuoService {
 
     /**

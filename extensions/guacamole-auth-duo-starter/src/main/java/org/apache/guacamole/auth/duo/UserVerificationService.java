@@ -20,7 +20,6 @@
 package org.apache.guacamole.auth.duo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.Collections;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.guacamole.GuacamoleException;
@@ -37,7 +36,6 @@ import org.apache.guacamole.net.auth.credentials.CredentialsInfo;
 /**
  * Service for verifying the identity of a user against Duo.
  */
-@Service
 public class UserVerificationService {
 
     /**

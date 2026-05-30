@@ -1,25 +1,38 @@
 package org.apache.guacamole.auth.duo;
 
-import org.apache.guacamole.auth.duo.DuoAuthenticationProvider;
+import org.apache.guacamole.auth.duo.api.DuoService;
+import org.apache.guacamole.auth.duo.conf.ConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConditionalOnProperty(prefix = "guacamole.auth.duo", name = "enabled", havingValue = "true")
-@ComponentScan(basePackages = "org.apache.guacamole.auth.duo")
 public class DuoAuthenticationAutoConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(DuoAuthenticationAutoConfiguration.class);
 
     @Bean
-    @ConditionalOnMissingBean
-    public DuoAuthenticationProvider duoAuthenticationProvider() {
+    public ConfigurationService duoConfigurationService() {
+        return new ConfigurationService();
+    }
+
+    @Bean
+    public DuoService duoApiService() {
+        return new DuoService();
+    }
+
+    @Bean
+    public UserVerificationService duoUserVerificationService() {
+        return new UserVerificationService();
+    }
+
+    @Bean
+    public DuoAuthenticationProvider duoAuthenticationProvider(
+            UserVerificationService verificationService) {
         logger.info("Duo authentication extension enabled.");
-        return new DuoAuthenticationProvider();
+        return new DuoAuthenticationProvider(verificationService);
     }
 }

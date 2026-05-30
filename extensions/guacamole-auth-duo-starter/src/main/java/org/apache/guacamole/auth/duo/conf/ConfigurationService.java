@@ -29,7 +29,6 @@ import org.apache.guacamole.properties.StringGuacamoleProperty;
  * Service for retrieving configuration information regarding the Duo
  * authentication extension.
  */
-@Service
 public class ConfigurationService {
 
     /**

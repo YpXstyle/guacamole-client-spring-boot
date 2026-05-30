@@ -8,8 +8,19 @@
         "NAME" : "OpenID SSO后端"
     },
 
+    "DATA_SOURCE_SAML" : {
+        "NAME" : "SAML SSO后端"
+    },
+
     "LOGIN" : {
-        "INFO_IDP_REDIRECT_PENDING" : "请稍候，正在重定向到身份提供者..."
+        "FIELD_HEADER_ID_TOKEN"      : "ID 令牌",
+        "FIELD_HEADER_STATE"         : "状态",
+        "FIELD_HEADER_TICKET"        : "票据",
+        "INFO_IDP_REDIRECT_PENDING"  : "请稍候，正在重定向到身份提供者...",
+        "NAME_IDP_CAS"               : "CAS",
+        "NAME_IDP_OPENID"            : "OpenID",
+        "NAME_IDP_SAML"              : "SAML",
+        "SECTION_HEADER_SSO_OPTIONS" : "登录方式："
     }
 
 }
