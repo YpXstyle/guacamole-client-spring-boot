@@ -7,13 +7,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.yourcompany</groupId>
-        <artifactId>guacamole-spring-boot</artifactId>
+        <groupId>com.right</groupId>
+        <artifactId>guacamole-client-spring-boot</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>guacamole-common</artifactId>
-    <name>Guacamole Common</name>
     <description>Core protocol layer for Guacamole - direct reuse from original project</description>
 
     <dependencies>

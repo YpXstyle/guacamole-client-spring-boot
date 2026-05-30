@@ -15,8 +15,8 @@ Vault 模块是 Guacamole Spring Boot 的扩展模块，用于集成 Keeper Secr
 ## 🏗️ 模块结构
 
 ```
-guacamole-spring-boot/
-├── starters/
+guacamole-client-spring-boot/
+├── extensions/
 │   └── guacamole-vault/
 │       ├── pom.xml                    # 父 POM
 │       ├── guacamole-vault-base/      # 基础模块
@@ -257,7 +257,7 @@ mvn clean compile -q
 ### **2. 启动测试**
 ```bash
 mvn clean install -q
-java -jar guacamole-core/target/guacamole-core-1.0.0-SNAPSHOT.jar
+java -jar guacamole/target/guacamole-1.0.0-SNAPSHOT.jar
 ```
 
 ### **3. 日志验证**

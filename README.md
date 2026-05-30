@@ -1,4 +1,4 @@
-# Guacamole Spring Boot
+# Guacamole Client Spring Boot
 
 Apache Guacamole 1.5.5 迁移至 Spring Boot 3.3.5 + JDK 17 的远程桌面网关。
 
@@ -18,10 +18,11 @@ Apache Guacamole 1.5.5 迁移至 Spring Boot 3.3.5 + JDK 17 的远程桌面网�
 ## 项目结构
 
 ```
-guacamole-spring-boot/
-├── guacamole-core/                    # 核心应用模块
+guacamole-client-spring-boot/
+├── guacamole/                         # 核心应用模块（对应原项目 guacamole）
+├── guacamole-common/                  # 核心协议层
 ├── guacamole-ext/                     # 扩展 API 模块
-└── starters/                          # 扩展 Starter 模块
+└── extensions/                        # 扩展 Starter 模块（对应原项目 extensions）
     ├── guacamole-auth-header-starter/ # HTTP Header 认证
     ├── guacamole-auth-json-starter/   # JSON Token 认证
     ├── guacamole-auth-totp-starter/   # TOTP 双因素认证
@@ -29,12 +30,14 @@ guacamole-spring-boot/
     ├── guacamole-auth-duo-starter/    # Duo 双因素认证
     ├── guacamole-auth-ldap-starter/   # LDAP 认证
     ├── guacamole-auth-radius-starter/ # RADIUS 认证
-    ├── guacamole-auth-sso-base-starter/ # SSO 基础模块
-    ├── guacamole-auth-sso-cas-starter/ # CAS 单点登录
-    ├── guacamole-auth-sso-openid-starter/ # OpenID Connect
-    ├── guacamole-auth-sso-saml-starter/ # SAML 单点登录
-    ├── guacamole-vault-base-starter/  # Vault 基础模块
-    ├── guacamole-vault-ksm-starter/   # Keeper Vault
+    ├── guacamole-auth-sso/            # SSO 单点登录
+    │   ├── guacamole-auth-sso-base/
+    │   ├── guacamole-auth-sso-cas-starter/
+    │   ├── guacamole-auth-sso-openid-starter/
+    │   └── guacamole-auth-sso-saml-starter/
+    ├── guacamole-vault/               # Vault 密钥管理
+    │   ├── guacamole-vault-base/
+    │   └── guacamole-vault-ksm-starter/
     ├── guacamole-history-starter/     # 历史记录
     └── guacamole-auth-jdbc/           # JDBC 数据库认证
         ├── guacamole-auth-jdbc-base/  # 共享代码
@@ -50,10 +53,10 @@ guacamole-spring-boot/
 mvn clean package -DskipTests
 
 # 运行
-java -jar guacamole-core/target/guacamole-core-1.0.0-SNAPSHOT.jar
+java -jar guacamole/target/guacamole-1.0.0-SNAPSHOT.jar
 
 # 或
-mvn spring-boot:run -pl guacamole-core
+mvn spring-boot:run -pl guacamole
 
 # Docker
 docker-compose up -d
@@ -61,7 +64,7 @@ docker-compose up -d
 
 ## 配置说明
 
-配置文件: `guacamole-core/src/main/resources/application.yml`
+配置文件: `guacamole/src/main/resources/application.yml`
 
 ### 完整配置示例
 

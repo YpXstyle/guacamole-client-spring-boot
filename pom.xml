@@ -13,11 +13,10 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.yourcompany</groupId>
-    <artifactId>guacamole-spring-boot</artifactId>
+    <groupId>com.right</groupId>
+    <artifactId>guacamole-client-spring-boot</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Guacamole Spring Boot</name>
     <description>Apache Guacamole migrated to Spring Boot</description>
 
     <properties>
@@ -46,21 +45,21 @@
         <module>guacamole-ext</module>
 
         <!-- Web 应用核心 -->
-        <module>guacamole-core</module>
+        <module>guacamole</module>
 
         <!-- 认证扩展 Starters -->
-        <module>starters/guacamole-auth-jdbc</module>
-        <module>starters/guacamole-auth-header-starter</module>
-        <module>starters/guacamole-auth-duo-starter</module>
-        <module>starters/guacamole-auth-json-starter</module>
-        <module>starters/guacamole-auth-ldap-starter</module>
-        <module>starters/guacamole-auth-totp-starter</module>
-        <module>starters/guacamole-auth-radius-starter</module>
-        <module>starters/guacamole-auth-quickconnect-starter</module>
-        <module>starters/guacamole-auth-sso</module>
+        <module>extensions/guacamole-auth-jdbc</module>
+        <module>extensions/guacamole-auth-header-starter</module>
+        <module>extensions/guacamole-auth-duo-starter</module>
+        <module>extensions/guacamole-auth-json-starter</module>
+        <module>extensions/guacamole-auth-ldap-starter</module>
+        <module>extensions/guacamole-auth-totp-starter</module>
+        <module>extensions/guacamole-auth-radius-starter</module>
+        <module>extensions/guacamole-auth-quickconnect-starter</module>
+        <module>extensions/guacamole-auth-sso</module>
         <!-- Vault -->
-        <module>starters/guacamole-vault</module>
-        <module>starters/guacamole-history-starter</module>
+        <module>extensions/guacamole-vault</module>
+        <module>extensions/guacamole-history-starter</module>
     </modules>
 
     <dependencyManagement>
@@ -68,107 +67,107 @@
 
             <!-- 内部模块 -->
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-ext</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
-                <artifactId>guacamole-core</artifactId>
+                <groupId>com.right</groupId>
+                <artifactId>guacamole</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-auth-jdbc-base</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-auth-postgresql-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-auth-sqlserver-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-auth-header-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-auth-mysql-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-auth-quickconnect-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-auth-totp-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-auth-json-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-history-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-vault-base</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-vault-ksm-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-auth-duo-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-auth-ldap-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-auth-radius-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-auth-sso-base</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-auth-sso-cas-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-auth-sso-openid-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yourcompany</groupId>
+                <groupId>com.right</groupId>
                 <artifactId>guacamole-auth-sso-saml-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>

@@ -3,14 +3,14 @@ WORKDIR /app
 COPY pom.xml .
 COPY guacamole-common/pom.xml guacamole-common/
 COPY guacamole-ext/pom.xml guacamole-ext/
-COPY guacamole-core/pom.xml guacamole-core/
-COPY starters/ starters/
+COPY guacamole/pom.xml guacamole/
+COPY extensions/ extensions/
 RUN mvn dependency:go-offline -B -q
 COPY . .
-RUN mvn clean package -pl guacamole-core -am -DskipTests
+RUN mvn clean package -pl guacamole -am -DskipTests
 
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-COPY --from=build /app/guacamole-core/target/*.jar app.jar
+COPY --from=build /app/guacamole/target/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]

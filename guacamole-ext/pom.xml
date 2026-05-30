@@ -7,19 +7,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.yourcompany</groupId>
-        <artifactId>guacamole-spring-boot</artifactId>
+        <groupId>com.right</groupId>
+        <artifactId>guacamole-client-spring-boot</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>guacamole-ext</artifactId>
-    <name>Guacamole Extension API</name>
     <description>Extension API layer for Guacamole - adapted for Spring Boot</description>
 
     <dependencies>
         <!-- Guacamole Common -->
         <dependency>
-            <groupId>com.yourcompany</groupId>
+            <groupId>com.right</groupId>
             <artifactId>guacamole-common</artifactId>
         </dependency>
 
