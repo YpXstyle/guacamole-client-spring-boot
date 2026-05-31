@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.right</groupId>
         <artifactId>guacamole-auth-sso</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <artifactId>guacamole-auth-sso-saml-starter</artifactId>
     <name>Guacamole SAML SSO Authentication Starter</name>
