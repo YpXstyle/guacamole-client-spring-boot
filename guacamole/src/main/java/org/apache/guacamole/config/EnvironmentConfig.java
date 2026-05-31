@@ -74,12 +74,14 @@ public class EnvironmentConfig {
                 // e.g., "json-secret-key" → "guacamole.auth.json.json-secret-key"
                 // e.g., "mysql-hostname"   → "guacamole.auth.mysql.hostname"
                 for (String prefix : new String[]{
-                        "guacamole.auth.header", "guacamole.auth.duo",
-                        "guacamole.auth.json", "guacamole.auth.ldap",
-                        "guacamole.auth.totp", "guacamole.auth.radius",
-                        "guacamole.auth.quickconnect", "guacamole.auth.sso-cas",
-                        "guacamole.auth.sso-openid", "guacamole.auth.sso-saml",
-                        "guacamole.vault.ksm", "guacamole.history"}) {
+                        "guacamole.auth.mysql", "guacamole.auth.postgresql",
+                        "guacamole.auth.sqlserver", "guacamole.auth.header",
+                        "guacamole.auth.duo", "guacamole.auth.json",
+                        "guacamole.auth.ldap", "guacamole.auth.totp",
+                        "guacamole.auth.radius", "guacamole.auth.quickconnect",
+                        "guacamole.auth.sso-cas", "guacamole.auth.sso-openid",
+                        "guacamole.auth.sso-saml", "guacamole.vault.ksm",
+                        "guacamole.history"}) {
                     value = springEnv.getProperty(prefix + "." + name);
                     if (value != null)
                         return value;

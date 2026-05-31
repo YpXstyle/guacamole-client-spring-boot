@@ -1,210 +1,177 @@
-# Vault 模块文档
+# Vault 模块 — Keeper Secrets Manager 集成
 
-## 📋 概述
+## 概述
 
-Vault 模块是 Guacamole Spring Boot 的扩展模块，用于集成 Keeper Secrets Manager (KSM)，实现密钥的自动管理和注入。
+Vault 模块将 Keeper Secrets Manager（KSM）集成到 Guacamole 中，实现凭据的自动获取和注入。连接配置中的密码等敏感信息不再需要硬编码，而是在连接建立时从 KSM 动态获取。
 
 **主要功能：**
 - 从 Keeper Secrets Manager 获取密钥
-- 自动注入密钥到连接参数
-- 支持 Token 映射和替换
-- 缓存密钥，优化性能
+- 通过 `${TOKEN}` 替换机制自动注入凭据
+- 支持自定义 Token 映射路径
+- 内存缓存，优化性能（5 秒 TTL）
 
 ---
 
-## 🏗️ 模块结构
+## 模块结构
 
 ```
-guacamole-client-spring-boot/
-├── extensions/
-│   └── guacamole-vault/
-│       ├── pom.xml                    # 父 POM
-│       ├── guacamole-vault-base/      # 基础模块
-│       │   ├── pom.xml
-│       │   └── src/main/java/
-│       │       └── org/apache/guacamole/vault/
-│       │           ├── VaultAuthenticationProvider.java
-│       │           ├── conf/
-│       │           │   └── VaultConfigurationService.java
-│       │           ├── secret/
-│       │           │   ├── VaultSecretService.java
-│       │           │   └── CachedVaultSecretService.java
-│       │           └── user/
-│       │               ├── VaultUserContext.java
-│       │               └── VaultUserContextFactory.java
-│       └── guacamole-vault-ksm-starter/  # KSM 实现
-│           ├── pom.xml
-│           └── src/main/java/
-│               └── org/apache/guacamole/vault/ksm/
-│                   ├── KsmAuthenticationProvider.java
-│                   ├── KsmAuthenticationAutoConfiguration.java
-│                   ├── conf/
-│                   │   ├── KsmConfigurationService.java
-│                   │   └── KsmConfigProperty.java
-│                   └── secret/
-│                       ├── KsmClient.java
-│                       ├── KsmRecordService.java
-│                       └── KsmSecretService.java
+extensions/guacamole-vault/
+├── pom.xml
+├── guacamole-vault-base/                    # Vault 抽象层
+│   └── src/main/java/org/apache/guacamole/vault/
+│       ├── VaultAuthenticationProvider.java        # Vault 基类
+│       ├── conf/VaultConfigurationService.java     # Vault 配置服务
+│       ├── secret/
+│       │   ├── VaultSecretService.java             # 密钥获取接口
+│       │   └── CachedVaultSecretService.java       # 带缓存的装饰器
+│       └── user/
+│           ├── VaultUserContext.java               # Vault 感知的用户上下文
+│           └── VaultUserContextFactory.java        # 上下文工厂
+└── guacamole-vault-ksm-starter/             # KSM 实现
+    └── src/main/java/org/apache/guacamole/vault/ksm/
+        ├── KsmAuthenticationProvider.java          # KSM 认证提供者
+        ├── KsmAuthenticationAutoConfiguration.java # Spring 自动配置
+        ├── conf/
+        │   ├── KsmConfigurationService.java        # KSM 配置
+        │   └── KsmConfigProperty.java              # KSM 属性定义
+        └── secret/
+            ├── KsmClient.java                      # KSM API 客户端
+            ├── KsmRecordService.java               # KSM 记录管理
+            └── KsmSecretService.java               # KSM 密钥解析
 ```
 
 ---
 
-## 🔧 配置说明
+## 配置说明
 
-### **1. 启用 Vault 模块**
+### 启用 Vault 模块
 
 ```yaml
-# application.yml
 guacamole:
   vault:
     ksm:
       enabled: true
 ```
 
-### **2. 配置 KSM 连接**
+### KSM 连接配置
 
 ```yaml
-# application.yml
 guacamole:
   vault:
     ksm:
       enabled: true
       config:
-        ksm-config: "keeper://your-ksm-config"
+        ksm-config: "keeper://<base64编码的配置>"
         allow-unverified-cert: false
 ```
 
-**配置说明：**
-- `ksm-config`: KSM 配置信息，从 Keeper Commander CLI 生成
-- `allow-unverified-cert`: 是否允许未验证的 SSL 证书（默认 false）
+| 属性 | 必填 | 默认值 | 说明 |
+|------|------|--------|------|
+| `guacamole.vault.ksm.enabled` | 是 | `false` | 启用 KSM Vault |
+| `config.ksm-config` | **是** | — | Base64 编码的 KSM 配置（由 Keeper Commander CLI 生成） |
+| `config.allow-unverified-cert` | 否 | `false` | 是否允许未验证的 SSL 证书 |
 
-### **3. Token 映射文件**
-
-创建文件：`~/.guacamole/ksm-token-mapping.yml`
-
-```yaml
-# Token 映射配置
-# 格式：TOKEN_NAME: "secret/path"
-USERNAME: "my-server/username"
-PASSWORD: "my-server/password"
-CONNECTION_HOSTNAME: "my-server/hostname"
-```
-
-### **4. 属性文件（可选）**
-
-创建文件：`~/.guacamole/guacamole.properties.ksm`
-
-```properties
-# 属性文件配置
-# 格式：property.name=secret/path
-guacd.hostname=my-server/guacd-hostname
-guacd.port=my-server/guacd-port
+**生成 KSM 配置：**
+```bash
+keeper commander client --config --output=base64
 ```
 
 ---
 
-## 🔄 自动处理流程
+## Token 映射
 
-### **1. 启动阶段**
+创建 Token 映射文件：`~/.guacamole/ksm-token-mapping.yml`
+
+```yaml
+# 格式：TOKEN名称: "KSM中的密钥路径"
+USERNAME: "production/server-01/username"
+PASSWORD: "production/server-01/password"
+CONNECTION_HOSTNAME: "production/server-01/hostname"
+CONNECTION_USERNAME: "production/server-01/username"
+```
+
+### 支持的 Token
+
+| Token | 说明 | 使用示例 |
+|-------|------|---------|
+| `${USERNAME}` | 当前用户名 | 连接的用户名字段 |
+| `${CONNECTION_NAME}` | 连接显示名称 | 主机名参数 |
+| `${CONNECTION_ID}` | 连接数据库 ID | 自定义属性 |
+| `${CONNECTION_HOSTNAME}` | 连接主机名 | VNC/RDP 主机字段 |
+| `${CONNECTION_USERNAME}` | 连接用户名 | SSH 用户字段 |
+| `${CONNECTION_GROUP_NAME}` | 父级组名称 | 标记用 |
+| `${CONNECTION_GROUP_ID}` | 父级组数据库 ID | 过滤用 |
+
+### 连接配置中使用 Token
+
+```
+连接名称：生产服务器
+主机名：  ${CONNECTION_HOSTNAME}
+用户名：  ${USERNAME}
+密码：    ${PASSWORD}
+```
+
+建立连接时，`${USERNAME}` 会被替换为 KSM 中 `production/server-01/username` 的实际值。
+
+---
+
+## 属性文件（可选）
+
+创建 `~/.guacamole/guacamole.properties.ksm`：
+
+```properties
+# 格式：属性名=KSM中的密钥路径
+guacd.hostname=production/guacd-hostname
+guacd.port=production/guacd-port
+```
+
+---
+
+## 处理流程
+
+### 启动阶段
 
 ```
 Spring Boot 启动
-→ 加载 KsmAuthenticationAutoConfiguration
-→ 创建所有 Bean (KsmClient, KsmSecretService, etc.)
-→ 注册 KsmAuthenticationProvider
+  → KsmAuthenticationAutoConfiguration 加载
+  → 创建 KsmClient、KsmSecretService、KsmRecordService Bean
+  → 注册 KsmAuthenticationProvider
 ```
 
-**自动完成：**
-- ✅ 创建 KsmConfigurationService
-- ✅ 创建 KsmRecordService
-- ✅ 创建 KsmClient
-- ✅ 创建 KsmSecretService
-- ✅ 创建 KsmAuthenticationProvider
-
-### **2. 用户登录**
+### 用户登录
 
 ```
-用户提交登录请求
-→ Spring Security 调用 KsmAuthenticationProvider
-→ 认证成功
-→ 创建 VaultUserContext
+用户提交登录 → KsmAuthenticationProvider → 认证成功
+  → 创建 VaultUserContext
+  → 加载 Token 映射
 ```
 
-**自动完成：**
-- ✅ 用户认证
-- ✅ 创建 VaultUserContext
-- ✅ 准备注入 Token
-
-### **3. 用户访问连接**
+### 连接访问
 
 ```
 用户点击连接
-→ VaultUserContext.getConfiguration()
-→ 获取 Token 映射
-→ 注入 Token
+  → VaultUserContext.getConfiguration()
+  → 扫描配置中的 ${TOKEN} 模式
+  → 对每个 Token：
+      → KsmSecretService.getValue(token, path)
+        → 检查缓存（5 秒 TTL）
+        → 缓存未命中 → KsmClient.getSecret(path)
+        → 缓存命中 → 返回缓存值
+      → 将 ${TOKEN} 替换为密钥值
+  → 返回已解析的配置
 ```
-
-**自动完成：**
-- ✅ 获取连接配置
-- ✅ 读取 Token 映射文件
-- ✅ 替换 Token
-
-### **4. 密钥获取**
-
-```
-KsmSecretService.getValue()
-→ KsmClient.getSecret()
-→ 检查缓存 (5秒 TTL)
-→ 从 KSM 获取密钥
-→ 更新缓存
-```
-
-**自动完成：**
-- ✅ 检查缓存
-- ✅ 从 KSM 获取密钥
-- ✅ 更新缓存
-- ✅ 返回密钥值
-
-### **5. Token 替换**
-
-```
-TokenFilter.filter()
-→ 替换 ${TOKEN} 格式
-→ 生成最终配置
-→ 建立连接
-```
-
-**自动完成：**
-- ✅ 替换所有 Token
-- ✅ 生成最终配置
-- ✅ 建立连接
 
 ---
 
-## 📊 支持的 Token
+## 错误处理
 
-| Token 名称 | 说明 | 示例 |
-|-----------|------|------|
-| `USERNAME` | 当前用户名 | `${USERNAME}` |
-| `CONNECTION_NAME` | 连接名称 | `${CONNECTION_NAME}` |
-| `CONNECTION_ID` | 连接 ID | `${CONNECTION_ID}` |
-| `CONNECTION_HOSTNAME` | 连接主机名 | `${CONNECTION_HOSTNAME}` |
-| `CONNECTION_USERNAME` | 连接用户名 | `${CONNECTION_USERNAME}` |
-| `CONNECTION_GROUP_NAME` | 连接组名称 | `${CONNECTION_GROUP_NAME}` |
-| `CONNECTION_GROUP_ID` | 连接组 ID | `${CONNECTION_GROUP_ID}` |
+### 缺少 KSM 配置
 
----
-
-## 🛡️ 错误处理
-
-### **常见错误**
-
-#### **1. 缺少 KSM 配置**
 ```
 ERROR: Property ksm-config is required.
 ```
 
-**原因：** 没有配置 `ksm-config` 属性
+**原因：** 未在 `application.yml` 中配置 `config.ksm-config`。
 
 **解决：**
 ```yaml
@@ -212,175 +179,136 @@ guacamole:
   vault:
     ksm:
       config:
-        ksm-config: "keeper://your-ksm-config"
+        ksm-config: "keeper://<base64编码的配置>"
 ```
 
-#### **2. Token 映射文件不存在**
+### Token 映射文件不存在
+
 ```
 WARN: Token mapping file not found: ksm-token-mapping.yml
 ```
 
-**原因：** 没有创建 Token 映射文件
+**原因：** `~/.guacamole/ksm-token-mapping.yml` 文件不存在。
 
-**解决：** 创建 `~/.guacamole/ksm-token-mapping.yml` 文件
+**解决：** 创建该文件并填入相应的 Token 映射。
 
-#### **3. KSM 连接失败**
+### KSM 连接失败
+
 ```
 ERROR: Failed to connect to Keeper Secrets Manager
 ```
 
-**原因：** 网络问题或 KSM 配置错误
+**原因：** 网络问题或 KSM 配置无效。
 
 **解决：**
-- 检查网络连接
-- 验证 KSM 配置
+- 检查到 KSM 服务器的网络连接
+- 验证 `ksm-config` 有效且未过期
 - 检查防火墙设置
 
-#### **4. Token 未替换**
+### Token 未被替换
+
 ```
 WARN: Token "${USERNAME}" not replaced
 ```
 
-**原因：** Token 在 KSM 中不存在
+**原因：** Token 名称在映射文件中没有对应条目，或者密钥路径在 KSM 中不存在。
 
-**解决：** 检查 Token 映射配置
+**解决：** 检查 Token 映射文件，确认密钥路径在 KSM 中存在。
 
 ---
 
-## 🧪 测试验证
+## 验证
 
-### **1. 编译测试**
+### 编译检查
+
 ```bash
 mvn clean compile -q
 ```
 
-### **2. 启动测试**
+### 启动检查
+
 ```bash
-mvn clean install -q
-java -jar guacamole/target/guacamole-1.0.0-SNAPSHOT.jar
+java -jar guacamole/target/guacamole-*.jar
 ```
 
-### **3. 日志验证**
-```bash
-# 检查 Vault 模块日志
-grep -i "vault\|ksm" logs/guacamole.log
-
-# 预期日志
+预期的启动日志：
+```
 INFO  KsmAuthenticationAutoConfiguration : Keeper Secrets Manager vault extension enabled.
 INFO  ExtensionResourceConfig : Loaded extension manifest: Keeper Secrets Manager
 ```
 
-### **4. 功能测试**
-1. 启动应用
+### 功能测试
+
+1. 启用并配置 KSM 后启动应用
 2. 登录 Guacamole
-3. 创建连接（使用 Token）
-4. 访问连接
-5. 验证 Token 是否替换
+3. 创建使用 `${TOKEN}` 占位符的连接
+4. 访问该连接
+5. 验证 Token 被替换为 KSM 中的实际密钥值
 
 ---
 
-## 📝 配置示例
+## 故障排除
 
-### **完整配置示例**
+### 应用启动失败
 
-```yaml
-# application.yml
-guacamole:
-  vault:
-    ksm:
-      enabled: true
-      config:
-        ksm-config: "keeper://your-base64-encoded-config"
-        allow-unverified-cert: false
-
-# Token 映射文件
-# ~/.guacamole/ksm-token-mapping.yml
-USERNAME: "my-server/username"
-PASSWORD: "my-server/password"
-CONNECTION_HOSTNAME: "my-server/hostname"
-```
-
-### **连接配置示例**
-
-```
-连接名称: My Server
-主机名: ${CONNECTION_HOSTNAME}
-用户名: ${USERNAME}
-密码: ${PASSWORD}
-```
-
----
-
-## 🔍 故障排除
-
-### **问题 1：启动失败**
-
-**症状：** 应用启动失败，日志显示 Bean 创建错误
+**症状：** 启动时 Bean 创建错误。
 
 **可能原因：**
-- 循环依赖
-- 配置错误
+- Vault Bean 之间存在循环依赖
+- `ksm-config` 格式无效
 
 **解决：**
 - 检查日志中的详细错误信息
-- 验证配置文件语法
-- 确保所有依赖正确
+- 验证 `ksm-config` 是否正确 Base64 编码
+- 确保 classpath 上有所有 Vault 依赖
 
-### **问题 2：Token 不替换**
+### Token 不替换
 
-**症状：** 连接使用原始 Token，没有替换为密钥值
-
-**可能原因：**
-- Token 映射文件不存在
-- Token 名称错误
-- KSM 中没有对应的密钥
-
-**解决：**
-- 检查 Token 映射文件是否存在
-- 验证 Token 名称是否正确
-- 检查 KSM 中是否有对应的密钥
-
-### **问题 3：连接失败**
-
-**症状：** 访问连接时失败，日志显示密钥获取错误
+**症状：** 连接使用了字面量 `${TOKEN}` 文本而非解析后的值。
 
 **可能原因：**
-- KSM 配置错误
-- 网络问题
-- 密钥不存在
+- Token 映射文件缺失或格式错误
+- Token 名称大小写不匹配
+- 密钥路径在 KSM 中找不到
 
 **解决：**
-- 检查 KSM 配置
-- 验证网络连接
-- 检查 KSM 中的密钥
+- 检查 Token 映射文件位置：`~/.guacamole/ksm-token-mapping.yml`
+- 验证 Token 名称完全匹配（区分大小写）
+- 通过 KSM API 直接测试密钥获取
+
+### 启用 Vault 后连接失败
+
+**症状：** 之前可用的连接，启用 Vault 后失败。
+
+**可能原因：**
+- KSM 不可访问（网络/凭据问题）
+- 密钥已被更改或撤销
+- KSM 限流
+
+**解决：**
+- 检查 KSM 连接和凭据
+- 验证 KSM 中的密钥值是否正确
+- 检查限流或服务可用性
 
 ---
 
-## 📚 相关文档
+## 参考
 
 - [Keeper Secrets Manager 官方文档](https://docs.keeper.io/secrets-manager/)
-- [Guacamole 官方文档](https://guacamole.apache.org/doc/gug/)
+- [Apache Guacamole 官方手册](https://guacamole.apache.org/doc/gug/)
 - [Spring Boot AutoConfiguration](https://docs.spring.io/spring-boot/docs/current/reference/html/using.html#using.auto-configuration)
 
----
+## 当前状态
 
-## 🎯 待办事项
-
-- [ ] 添加配置验证（启动时检查 KSM 配置）
-- [ ] 添加优雅降级（Vault 失败时不影响正常连接）
-- [ ] 添加单元测试
-- [ ] 添加集成测试
-- [ ] 完善错误信息
-- [ ] 添加监控指标
+**✅ 模块开发完成，等待 KSM 账号进行集成测试。**
 
 ---
 
-## 📞 技术支持
+## 开发计划
 
-如有问题，请检查：
-1. 日志文件中的错误信息
-2. 配置文件语法
-3. KSM 账号和配置
-4. 网络连接
-
-**当前状态：** ✅ 模块已开发完成，等待 KSM 账号测试
+- [ ] 启动时配置校验（KSM 配置无效时快速失败）
+- [ ] 优雅降级（Vault 失败不影响非 Token 连接）
+- [ ] 添加 Token 解析逻辑的单元测试
+- [ ] 使用模拟 KSM 服务器添加集成测试
+- [ ] 添加监控指标（缓存命中率、密钥获取延迟）
+- [ ] 改进错误信息，提供可操作的解决建议

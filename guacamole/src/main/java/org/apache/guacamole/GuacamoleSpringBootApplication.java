@@ -24,7 +24,10 @@ import java.util.TimeZone;
 @Slf4j
 public class GuacamoleSpringBootApplication {
     public static void main(String[] args) throws UnknownHostException {
-        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
+        String tz = System.getProperty("user.timezone");
+        if (tz != null && !tz.isEmpty()) {
+            TimeZone.setDefault(TimeZone.getTimeZone(tz));
+        }
 
         ConfigurableApplicationContext run = SpringApplication.run(GuacamoleSpringBootApplication.class, args);
         Environment env = run.getEnvironment();

@@ -6,6 +6,21 @@ services:
     ports:
       - "4822:4822"
 
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: guacamole
+      POSTGRES_USER: guacamole
+      POSTGRES_PASSWORD: ${GUACAMOLE_DB_PASSWORD:-guacamole}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U guacamole"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   guacamole:
     build: .
     restart: unless-stopped
@@ -13,5 +28,17 @@ services:
       - "8080:8080"
     environment:
       GUACAMOLE_HOME: /guacamole
+      GUACAMOLE_DB_PASSWORD: ${GUACAMOLE_DB_PASSWORD:-guacamole}
+      GUACAMOLE_HISTORY_RECORDING_PATH: ${GUACAMOLE_HISTORY_RECORDING_PATH:-/tmp/guacamole/recordings}
+      # Override datasource for Docker: spring.datasource.url=jdbc:postgresql://postgres:5432/guacamole
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:-jdbc:postgresql://postgres:5432/guacamole}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-guacamole}
+      JAVA_TOOL_OPTIONS: ${JAVA_TIMEZONE:--Duser.timezone=Asia/Shanghai}
     depends_on:
-      - guacd
+      guacd:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres-data:

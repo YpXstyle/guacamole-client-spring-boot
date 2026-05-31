@@ -4,6 +4,7 @@ COPY pom.xml .
 COPY guacamole-common/pom.xml guacamole-common/
 COPY guacamole-ext/pom.xml guacamole-ext/
 COPY guacamole/pom.xml guacamole/
+COPY guacamole-common-js/pom.xml guacamole-common-js/
 COPY extensions/ extensions/
 RUN mvn dependency:go-offline -B -q
 COPY . .

@@ -70,13 +70,13 @@ guacamole:
 # History configuration 录像名配置为：${HISTORY_UUID}
   history:
     enabled: true
-    recording-search-path: /tmp/guacamole/recordings
+    recording-search-path: ${GUACAMOLE_HISTORY_RECORDING_PATH:/tmp/guacamole/recordings}
 
 spring:
   datasource:
     url: jdbc:postgresql://192.168.5.188:5432/guacamole
     username: guacamole
-    password: guacamole
+    password: ${GUACAMOLE_DB_PASSWORD:guacamole}
     driver-class-name: org.postgresql.Driver
   main:
     banner-mode: "off"
