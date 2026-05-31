@@ -31,6 +31,19 @@
         <dependency>
             <groupId>net.jradius</groupId>
             <artifactId>jradius-core</artifactId>
+            <exclusions>
+                <!-- Exclude log4j 1.x bridge to avoid SLF4J multiple providers
+                     warning. jradius uses commons-logging which Spring Boot
+                     already routes to SLF4J → logback -->
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-reload4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.jradius</groupId>

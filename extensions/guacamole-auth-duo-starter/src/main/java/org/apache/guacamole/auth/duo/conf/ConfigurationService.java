@@ -20,7 +20,6 @@
 package org.apache.guacamole.auth.duo.conf;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.apache.guacamole.GuacamoleException;
 import org.apache.guacamole.environment.Environment;
 import org.apache.guacamole.properties.StringGuacamoleProperty;

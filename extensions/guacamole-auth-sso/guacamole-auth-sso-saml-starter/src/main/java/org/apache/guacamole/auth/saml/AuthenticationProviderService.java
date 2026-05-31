@@ -20,6 +20,7 @@
 package org.apache.guacamole.auth.saml;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.ObjectProvider;
 import java.net.URI;
 import java.util.Arrays;
@@ -53,6 +54,7 @@ public class AuthenticationProviderService implements SSOAuthenticationProviderS
      * Provider for AuthenticatedUser objects.
      */
     @Autowired
+    @Qualifier("saml")
     private ObjectProvider<SAMLAuthenticatedUser> authenticatedUserProvider;
 
     /**

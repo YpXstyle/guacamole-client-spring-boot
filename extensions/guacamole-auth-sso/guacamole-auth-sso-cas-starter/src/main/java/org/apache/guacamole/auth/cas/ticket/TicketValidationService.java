@@ -21,6 +21,7 @@ package org.apache.guacamole.auth.cas.ticket;
 
 import com.google.common.io.BaseEncoding;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.ObjectProvider;
 import java.net.URI;
 import java.security.InvalidKeyException;
@@ -77,6 +78,7 @@ public class TicketValidationService {
      * Provider for AuthenticatedUser objects.
      */
     @Autowired
+    @Qualifier("cas")
     private ObjectProvider<SSOAuthenticatedUser> authenticatedUserProvider;
 
     /**

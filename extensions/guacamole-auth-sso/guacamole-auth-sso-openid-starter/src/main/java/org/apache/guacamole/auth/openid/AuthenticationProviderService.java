@@ -20,6 +20,7 @@
 package org.apache.guacamole.auth.openid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
@@ -74,6 +75,7 @@ public class AuthenticationProviderService implements SSOAuthenticationProviderS
      * Provider for AuthenticatedUser objects.
      */
     @Autowired
+    @Qualifier("openid")
     private ObjectProvider<SSOAuthenticatedUser> authenticatedUserProvider;
 
     @Override

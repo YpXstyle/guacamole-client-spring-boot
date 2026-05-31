@@ -4,11 +4,14 @@ import org.apache.guacamole.auth.openid.conf.ConfigurationService;
 import org.apache.guacamole.auth.openid.token.NonceService;
 import org.apache.guacamole.auth.openid.token.TokenValidationService;
 import org.apache.guacamole.auth.sso.SSOResource;
+import org.apache.guacamole.auth.sso.user.SSOAuthenticatedUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 
 @Configuration
 @ConditionalOnProperty(prefix = "guacamole.auth.sso-openid", name = "enabled", havingValue = "true")
@@ -39,6 +42,13 @@ public class OpenIDAuthenticationAutoConfiguration {
     @Bean("openIdAuthenticationProviderService")
     public AuthenticationProviderService openIdAuthenticationProviderService() {
         return new AuthenticationProviderService();
+    }
+
+    @Bean
+    @Qualifier("openid")
+    @Scope("prototype")
+    public SSOAuthenticatedUser openIdAuthenticatedUser() {
+        return new SSOAuthenticatedUser();
     }
 
     @Bean("openIdAuthenticationProvider")

@@ -19,7 +19,6 @@
         <dependency>
             <groupId>com.right</groupId>
             <artifactId>guacamole-ext</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <!-- Spring Context for @Autowired support -->

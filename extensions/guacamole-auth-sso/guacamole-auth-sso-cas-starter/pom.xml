@@ -14,7 +14,6 @@
         <dependency>
             <groupId>com.right</groupId>
             <artifactId>guacamole-auth-sso-base</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jasig.cas.client</groupId>

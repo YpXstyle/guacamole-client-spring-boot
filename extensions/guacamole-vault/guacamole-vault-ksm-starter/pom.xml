@@ -18,7 +18,6 @@
         <dependency>
             <groupId>com.right</groupId>
             <artifactId>guacamole-vault-base</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

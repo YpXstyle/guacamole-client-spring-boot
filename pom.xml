@@ -51,6 +51,7 @@
         <jradius.version>1.1.5</jradius.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-collections.version>3.2.2</commons-collections.version>
+        <commons-codec.version>1.16.1</commons-codec.version>
         <cas-client.version>3.6.4</cas-client.version>
         <jose4j.version>0.9.6</jose4j.version>
         <java-saml.version>2.9.0</java-saml.version>
@@ -314,6 +315,13 @@
                 <groupId>commons-collections</groupId>
                 <artifactId>commons-collections</artifactId>
                 <version>${commons-collections.version}</version>
+            </dependency>
+
+            <!-- Commons Codec -->
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
             </dependency>
 
             <!-- CAS Client -->
