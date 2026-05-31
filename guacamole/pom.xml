@@ -109,6 +109,12 @@
             <artifactId>guacamole-history-starter</artifactId>
         </dependency>
 
+        <!-- Guacamole JavaScript API -->
+        <dependency>
+            <groupId>com.right</groupId>
+            <artifactId>guacamole-common-js</artifactId>
+        </dependency>
+
         <!-- Guacamole Extension API -->
         <dependency>
             <groupId>com.right</groupId>
@@ -180,6 +186,143 @@
 
     <build>
         <plugins>
+            <!-- ============================================================
+                 Frontend Build Integration (frontend-maven-plugin)
+                 Automates: install Node.js → npm ci → webpack build
+                 Same approach as original Apache Guacamole project.
+                 Output directory: src/main/resources/static/
+                 ============================================================ -->
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.12.1</version>
+                <configuration>
+                    <workingDirectory>frontend</workingDirectory>
+                    <installDirectory>${project.build.directory}/node</installDirectory>
+                </configuration>
+                <executions>
+                    <!-- ① Install Node.js and npm -->
+                    <execution>
+                        <id>install-node-and-npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <configuration>
+                            <nodeVersion>v18.18.0</nodeVersion>
+                            <npmVersion>9.8.1</npmVersion>
+                        </configuration>
+                    </execution>
+                    <!-- ② Install npm dependencies (ci for reproducible builds) -->
+                    <execution>
+                        <id>npm-ci</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>ci</arguments>
+                        </configuration>
+                    </execution>
+                    <!-- ③ Run webpack build (generates static/ resources) -->
+                    <execution>
+                        <id>npm-build</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Copy guacamole-common-js resources to static directory.
+                 Runs at process-resources phase so files are available
+                 regardless of build mode (IDE, mvn compile, mvn package).
+                 Uses direct source copy instead of dependency unpack to
+                 work correctly with Maven reactor builds. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <!-- Filter template files: replaces ${guacamole.build.identifier}
+                         with build timestamp. Mirrors original Apache Guacamole's
+                         maven-war-plugin selective filtering approach. -->
+                    <execution>
+                        <id>filter-template-files</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Override Spring Boot's @ delimiter: use Maven
+                                 default ${*} so ${guacamole.build.identifier}
+                                 is properly replaced. -->
+                            <delimiters>
+                                <delimiter>${*}</delimiter>
+                            </delimiters>
+                            <useDefaultDelimiters>true</useDefaultDelimiters>
+                            <outputDirectory>${project.build.directory}/classes/static</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources/static</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>index.html</include>
+                                        <include>verifyCachedVersion.js</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-guacamole-common-js</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/classes/static/guacamole-common-js</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+                                    <directory>../guacamole-common-js/src/main/resources</directory>
+                                    <includes>
+                                        <include>all.js</include>
+                                        <include>all.min.js</include>
+                                        <include>modules/**</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <!-- Copy core translation files from frontend source to
+                         classpath:translations/. Mirrors original project where
+                         webpack CopyPlugin copies translations to dist/ and
+                         maven-war-plugin includes them. TranslationController
+                         serves these at runtime via LanguageResourceService. -->
+                    <execution>
+                        <id>copy-core-translations</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/classes/translations</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+                                    <directory>frontend/src/translations</directory>
+                                    <includes>
+                                        <include>*.json</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

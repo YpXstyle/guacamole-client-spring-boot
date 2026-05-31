@@ -43,13 +43,13 @@
 
     // Verify that index.html came from the same build as this JavaScript file,
     // forcing a reload if out-of-date
-    if (!buildMeta || buildMeta.content !== '20240330042611') {
+    if (!buildMeta || buildMeta.content !== '${guacamole.build.identifier}') {
 
         if (sessionStorage) {
 
             // Bail out if we have already tried to automatically refresh the
             // cache but were unsuccessful
-            if (sessionStorage.getItem('reloadedFor') === '20240330042611') {
+            if (sessionStorage.getItem('reloadedFor') === '${guacamole.build.identifier}') {
                 console.warn('The version of Guacamole cached by your '
                     + 'browser does not match the version of Guacamole on the '
                     + 'server. To avoid unexpected errors, please clear your '
@@ -57,7 +57,7 @@
                 return;
             }
 
-            sessionStorage.setItem('reloadedFor', '20240330042611');
+            sessionStorage.setItem('reloadedFor', '${guacamole.build.identifier}');
 
         }
 
