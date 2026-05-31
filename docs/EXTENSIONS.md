@@ -481,3 +481,66 @@ Manifest 中列出的 HTML 文件通过 `PatchResourceService` 注入到 DOM 中
 插件在 `target/classes/` 中生成 `myprovider.min.js`。manifest 应引用 `.min.*` 文件。
 
 **注意：** 如果多个扩展共享一个 CSS 文件（如 sso-base 的 `sso-providers.css`），压缩配置必须放在拥有源文件的模块中，而不是消费模块中。
+
+---
+
+## LDAP 扩展：Schema 参考
+
+LDAP 认证扩展支持通过 LDAP 目录存储 Guacamole 连接配置。这需要在 LDAP 服务器（如 Apache Directory Server 或 OpenLDAP）上加载自定义 schema。
+
+### Schema 定义
+
+以下 OID 用于 Apache Guacamole LDAP schema：
+
+```
+attributetype ( 1.3.6.1.4.1.38971.1.1.1 NAME 'guacConfigProtocol'
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.38971.1.1.2 NAME 'guacConfigParameter'
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectClass ( 1.3.6.1.4.1.38971.1.2.1 NAME 'guacConfigGroup'
+    DESC 'Guacamole configuration group'
+    SUP groupOfNames
+    MUST guacConfigProtocol
+    MAY guacConfigParameter )
+```
+
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `guacConfigProtocol` | STRING (OID 1.3.6.1.4.1.38971.1.1.1) | 连接协议（如 `vnc`, `rdp`, `ssh`） |
+| `guacConfigParameter` | STRING (OID 1.3.6.1.4.1.38971.1.1.2) | Guacamole 连接参数（`key=value` 格式） |
+| `guacConfigGroup` | objectClass (OID 1.3.6.1.4.1.38971.1.2.1) | 继承 `groupOfNames`，表示一组 Guacamole 连接配置 |
+
+### 加载 Schema（Apache Directory Server）
+
+将 schema 保存为 `guacConfigGroup.ldif`：
+
+```ldif
+dn: cn=guacConfigGroup, ou=schema
+objectclass: metaSchema
+objectclass: top
+cn: guacConfigGroup
+m-dependencies: system
+m-dependencies: core
+```
+
+然后通过 Apache Directory Studio 或命令行导入。
+
+### 配置示例
+
+```ldif
+dn: cn=Example Config,dc=guac-dev,dc=org
+objectClass: guacConfigGroup
+objectClass: groupOfNames
+cn: Example Config
+guacConfigProtocol: vnc
+guacConfigParameter: hostname=localhost
+guacConfigParameter: port=5900
+guacConfigParameter: password=secret
+member: cn=user1,dc=example,dc=com
+member: cn=user2,dc=example,dc=com
+seeAlso: cn=admins,ou=groups,dc=example,dc=com
+```
+
+`guacConfigParameter` 的值是 `key=value` 格式。可用的参数取决于 `guacConfigProtocol` 指定的协议，参见各协议对应的 `guacamole-ext` 中 `protocols/*.json` 的定义。
