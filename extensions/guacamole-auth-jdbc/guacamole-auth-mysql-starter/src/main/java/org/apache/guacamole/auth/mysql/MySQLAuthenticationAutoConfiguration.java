@@ -30,4 +30,11 @@ public class MySQLAuthenticationAutoConfiguration {
         logger.info("MySQL authentication extension enabled.");
         return new MySQLAuthenticationProvider();
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public MySQLSharedAuthenticationProvider mySQLSharedAuthenticationProvider() {
+        logger.info("MySQL shared authentication provider registered.");
+        return new MySQLSharedAuthenticationProvider();
+    }
 }

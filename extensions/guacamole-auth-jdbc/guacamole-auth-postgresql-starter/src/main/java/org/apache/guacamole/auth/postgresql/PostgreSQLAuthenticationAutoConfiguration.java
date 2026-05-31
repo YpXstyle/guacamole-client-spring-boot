@@ -30,4 +30,11 @@ public class PostgreSQLAuthenticationAutoConfiguration {
         logger.info("PostgreSQL authentication extension enabled.");
         return new PostgreSQLAuthenticationProvider();
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public PostgreSQLSharedAuthenticationProvider postgreSQLSharedAuthenticationProvider() {
+        logger.info("PostgreSQL shared authentication provider registered.");
+        return new PostgreSQLSharedAuthenticationProvider();
+    }
 }

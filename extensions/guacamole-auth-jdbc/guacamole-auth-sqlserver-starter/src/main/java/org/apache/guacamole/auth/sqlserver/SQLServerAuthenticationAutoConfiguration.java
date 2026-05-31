@@ -30,4 +30,11 @@ public class SQLServerAuthenticationAutoConfiguration {
         logger.info("SQL Server authentication extension enabled.");
         return new SQLServerAuthenticationProvider();
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public SQLServerSharedAuthenticationProvider sQLServerSharedAuthenticationProvider() {
+        logger.info("SQL Server shared authentication provider registered.");
+        return new SQLServerSharedAuthenticationProvider();
+    }
 }
