@@ -17,7 +17,23 @@
     <artifactId>guacamole-client-spring-boot</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
-    <description>Apache Guacamole migrated to Spring Boot</description>
+    <description>Apache Guacamole 1.5.5 migrated from Google Guice to Spring Boot 3.3.5</description>
+    <url>https://guacamole.apache.org/</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Apache Guacamole Community</name>
+            <url>https://guacamole.apache.org/</url>
+        </developer>
+    </developers>
 
     <properties>
         <java.version>17</java.version>

@@ -1,3 +1,22 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package org.apache.guacamole.config;
 
 import org.apache.guacamole.environment.Environment;
@@ -70,9 +89,19 @@ public class EnvironmentConfig {
                 String value = springEnv.getProperty(name);
                 if (value != null)
                     return value;
+
+                // Map legacy guacd property names to their Spring namespace keys
+                // e.g., "guacd-hostname" → "guacamole.guacd.hostname"
+                if ("guacd-hostname".equals(name))
+                    return springEnv.getProperty("guacamole.guacd.hostname");
+                if ("guacd-port".equals(name))
+                    return springEnv.getProperty("guacamole.guacd.port");
+                if ("guacd-ssl".equals(name))
+                    return springEnv.getProperty("guacamole.guacd.ssl");
+
                 // Check under each guacamole sub-namespace
                 // e.g., "json-secret-key" → "guacamole.auth.json.json-secret-key"
-                // e.g., "mysql-hostname"   → "guacamole.auth.mysql.hostname"
+                // e.g., "mysql-hostname"   → "guacamole.auth.mysql.mysql-hostname"
                 for (String prefix : new String[]{
                         "guacamole.auth.mysql", "guacamole.auth.postgresql",
                         "guacamole.auth.sqlserver", "guacamole.auth.header",
@@ -81,7 +110,8 @@ public class EnvironmentConfig {
                         "guacamole.auth.radius", "guacamole.auth.quickconnect",
                         "guacamole.auth.sso-cas", "guacamole.auth.sso-openid",
                         "guacamole.auth.sso-saml", "guacamole.vault.ksm",
-                        "guacamole.history"}) {
+                        "guacamole.history",
+                        "guacamole.guacd"}) {
                     value = springEnv.getProperty(prefix + "." + name);
                     if (value != null)
                         return value;

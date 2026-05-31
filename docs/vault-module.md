@@ -25,8 +25,7 @@ extensions/guacamole-vault/
 │       │   ├── VaultSecretService.java             # 密钥获取接口
 │       │   └── CachedVaultSecretService.java       # 带缓存的装饰器
 │       └── user/
-│           ├── VaultUserContext.java               # Vault 感知的用户上下文
-│           └── VaultUserContextFactory.java        # 上下文工厂
+│           └── VaultUserContext.java               # Vault 感知的用户上下文
 └── guacamole-vault-ksm-starter/             # KSM 实现
     └── src/main/java/org/apache/guacamole/vault/ksm/
         ├── KsmAuthenticationProvider.java          # KSM 认证提供者
