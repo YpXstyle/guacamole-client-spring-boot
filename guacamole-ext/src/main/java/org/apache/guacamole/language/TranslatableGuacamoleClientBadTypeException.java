@@ -27,6 +27,7 @@ import org.apache.guacamole.GuacamoleClientBadTypeException;
  * producing a human-readable message in the user's native language.
  */
 public class TranslatableGuacamoleClientBadTypeException extends GuacamoleClientBadTypeException implements Translatable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * A translatable, human-readable description of the exception that

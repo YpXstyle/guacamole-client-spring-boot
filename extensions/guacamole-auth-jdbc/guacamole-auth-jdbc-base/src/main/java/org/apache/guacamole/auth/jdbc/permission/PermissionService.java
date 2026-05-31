@@ -41,7 +41,7 @@ import org.apache.guacamole.net.auth.permission.PermissionSet;
  *     The type of permission this service provides access to.
  */
 public interface PermissionService<PermissionSetType extends PermissionSet<PermissionType>,
-        PermissionType extends Permission> {
+        PermissionType extends Permission<?>> {
 
     /**
      * Returns a permission set that can be used to retrieve and manipulate the

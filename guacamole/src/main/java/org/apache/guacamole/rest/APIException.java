@@ -31,6 +31,7 @@ import org.apache.guacamole.GuacamoleException;
  * the body of the response as an APIError structure.
  */
 public class APIException extends WebApplicationException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Construct a new APIException based on the given GuacamoleException. The

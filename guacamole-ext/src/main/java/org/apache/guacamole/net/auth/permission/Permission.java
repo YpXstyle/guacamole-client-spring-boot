@@ -28,7 +28,7 @@ package org.apache.guacamole.net.auth.permission;
  *     The enumeration of all available operation types that this permission
  *     can affect.
  */
-public interface Permission<Type extends Enum> {
+public interface Permission<Type extends Enum<?>> {
 
     /**
      * Returns the type of operation affected by this permission.

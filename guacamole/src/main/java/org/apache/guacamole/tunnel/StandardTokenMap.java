@@ -30,6 +30,7 @@ import org.apache.guacamole.net.auth.Credentials;
  * standardized tokens available for a particular AuthenticatedUser.
  */
 public class StandardTokenMap extends HashMap<String, String> {
+    private static final long serialVersionUID = 1L;
 
     /**
      * The name of the token containing the user's username.

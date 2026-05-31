@@ -29,7 +29,7 @@ import org.apache.guacamole.GuacamoleException;
  * @param <PermissionType>
  *     The type of permission stored within this PermissionSet.
  */
-public interface PermissionSet<PermissionType extends Permission> {
+public interface PermissionSet<PermissionType extends Permission<?>> {
 
     /**
      * Returns a Set which contains all permissions granted within this

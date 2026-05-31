@@ -26,6 +26,7 @@ import org.apache.guacamole.protocol.GuacamoleStatus;
  * as the remote desktop) has ended because it appeared to be inactive.
  */
 public class GuacamoleSessionTimeoutException extends GuacamoleUpstreamException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new GuacamoleSessionTimeoutException with the given message

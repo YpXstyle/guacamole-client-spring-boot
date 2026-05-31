@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
  * resource was modified.
  */
 public class ResourceServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Logger for this class.

@@ -28,6 +28,7 @@ import org.apache.guacamole.protocol.GuacamoleStatus;
  * temporarily or permanently.
  */
 public class GuacamoleClientTooManyException extends GuacamoleClientException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new GuacamoleClientTooManyException with the given message and cause.

@@ -32,7 +32,7 @@ import org.apache.guacamole.net.auth.permission.PermissionSet;
  * @param <PermissionType>
  *     The type of permissions being added and removed.
  */
-public class PermissionSetPatch<PermissionType extends Permission> {
+public class PermissionSetPatch<PermissionType extends Permission<?>> {
 
     /**
      * The set of all permissions being added.

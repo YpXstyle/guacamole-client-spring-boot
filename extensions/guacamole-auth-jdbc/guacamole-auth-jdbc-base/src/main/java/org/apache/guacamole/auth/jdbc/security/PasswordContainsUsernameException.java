@@ -24,6 +24,7 @@ package org.apache.guacamole.auth.jdbc.security;
  * contains their own username, in violation of the defined password policy.
  */
 public class PasswordContainsUsernameException extends PasswordPolicyException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new PasswordContainsUsernameException with the given

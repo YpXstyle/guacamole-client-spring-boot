@@ -218,42 +218,51 @@
         </resources>
         <plugins>
             <!-- ============================================================
-                 Frontend Build Integration (frontend-maven-plugin)
-                 Automates: install Node.js → npm ci → webpack build
-                 Same approach as original Apache Guacamole project.
-                 Output directory: src/main/resources/static/
+                 Frontend Build (frontend-maven-plugin)
+                 install Node → npm install → webpack → static/
+
+                 npm install: auto-skipped when node_modules exists
+                   (dependencies rarely change — no need to reinstall)
+                 webpack: always runs (must compile latest frontend)
+
+                 Manual overrides:
+                   -Dforce.npm.install → force npm install even if
+                    node_modules exists (after package.json changes)
+                   -Dskip.frontend → skip entire frontend (webpack too)
                  ============================================================ -->
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.12.1</version>
+                <version>${frontend-maven-plugin.version}</version>
                 <configuration>
                     <workingDirectory>frontend</workingDirectory>
                     <installDirectory>${project.build.directory}/node</installDirectory>
                 </configuration>
                 <executions>
-                    <!-- ① Install Node.js and npm -->
+                    <!-- ① Install Node.js (cached in target/node/, fast) -->
                     <execution>
                         <id>install-node-and-npm</id>
                         <goals>
                             <goal>install-node-and-npm</goal>
                         </goals>
                         <configuration>
-                            <nodeVersion>v18.18.0</nodeVersion>
-                            <npmVersion>9.8.1</npmVersion>
+                            <nodeVersion>${node.version}</nodeVersion>
+                            <npmVersion>${npm.version}</npmVersion>
                         </configuration>
                     </execution>
-                    <!-- ② Install npm dependencies (ci for reproducible builds) -->
+                    <!-- ② npm install — SKIPS when node_modules already exists
+                         (profile skip-npm-install sets npm.install.skip=true) -->
                     <execution>
-                        <id>npm-ci</id>
+                        <id>npm-install</id>
                         <goals>
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>ci</arguments>
+                            <arguments>install</arguments>
+                            <skip>${npm.install.skip}</skip>
                         </configuration>
                     </execution>
-                    <!-- ③ Run webpack build (generates static/ resources) -->
+                    <!-- ③ Webpack build → always runs (must compile latest) -->
                     <execution>
                         <id>npm-build</id>
                         <phase>generate-resources</phase>
@@ -338,5 +347,41 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- ================================================================
+         Profiles
+
+         "native" / "nativeTest" are from Spring Boot parent POM
+         (GraalVM native image). Don't affect normal builds.
+
+         skip-npm-install: auto-skips "npm install" when node_modules
+         already exists. This is the biggest time saver because npm
+         install downloads packages every time but dependencies rarely
+         change. webpack (npm build) still runs every time to compile
+         the latest frontend.
+
+         Override: mvn <goal> -Dforce.npm.install
+         Skip all: mvn <goal> -Dskip.frontend
+         ================================================================ -->
+    <profiles>
+        <!-- Auto-skip npm install when node_modules already exists.
+             npm install is the slowest step (~30-60s) — it should only
+             run when dependencies change (package.json updated).
+             webpack build still runs every time (must compile latest). -->
+        <profile>
+            <id>skip-npm-install</id>
+            <activation>
+                <file>
+                    <exists>frontend/node_modules</exists>
+                </file>
+                <property>
+                    <name>!force.npm.install</name>
+                </property>
+            </activation>
+            <properties>
+                <npm.install.skip>true</npm.install.skip>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

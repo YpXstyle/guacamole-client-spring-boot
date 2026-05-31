@@ -25,6 +25,7 @@ package org.apache.guacamole.net.auth.credentials;
  * the form of valid credentials is provided.
  */
 public class GuacamoleInvalidCredentialsException extends GuacamoleCredentialsException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new GuacamoleInvalidCredentialsException with the given

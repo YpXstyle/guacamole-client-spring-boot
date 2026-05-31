@@ -44,6 +44,28 @@
         <apache-ldap.version>2.1.6</apache-ldap.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
         <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
+
+        <!-- Third-party dependency versions (centralized management) -->
+        <ipaddress.version>5.5.0</ipaddress.version>
+        <jakarta-ws-rs.version>3.1.0</jakarta-ws-rs.version>
+        <jradius.version>1.1.5</jradius.version>
+        <commons-logging.version>1.2</commons-logging.version>
+        <commons-collections.version>3.2.2</commons-collections.version>
+        <cas-client.version>3.6.4</cas-client.version>
+        <jose4j.version>0.9.6</jose4j.version>
+        <java-saml.version>2.9.0</java-saml.version>
+        <woodstox.version>5.4.0</woodstox.version>
+        <xmlsec.version>2.2.6</xmlsec.version>
+        <keeper.version>16.6.3</keeper.version>
+        <kotlin.version>1.9.23</kotlin.version>
+        <bouncycastle.version>1.0.2.4</bouncycastle.version>
+
+        <!-- Plugin versions (centralized management) -->
+        <minify-maven-plugin.version>2.0.1</minify-maven-plugin.version>
+        <plexus-utils.version>3.5.1</plexus-utils.version>
+        <frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
+        <node.version>v18.18.0</node.version>
+        <npm.version>9.8.1</npm.version>
     </properties>
 
     <modules>
@@ -253,111 +275,111 @@
             <dependency>
                 <groupId>com.github.seancfoley</groupId>
                 <artifactId>ipaddress</artifactId>
-                <version>5.5.0</version>
+                <version>${ipaddress.version}</version>
             </dependency>
 
             <!-- Jakarta REST API -->
             <dependency>
                 <groupId>jakarta.ws.rs</groupId>
                 <artifactId>jakarta.ws.rs-api</artifactId>
-                <version>3.1.0</version>
+                <version>${jakarta-ws-rs.version}</version>
             </dependency>
 
             <!-- JRadius RADIUS library -->
             <dependency>
                 <groupId>net.jradius</groupId>
                 <artifactId>jradius-core</artifactId>
-                <version>1.1.5</version>
+                <version>${jradius.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.jradius</groupId>
                 <artifactId>jradius-dictionary</artifactId>
-                <version>1.1.5</version>
+                <version>${jradius.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.jradius</groupId>
                 <artifactId>jradius-extended</artifactId>
-                <version>1.1.5</version>
+                <version>${jradius.version}</version>
             </dependency>
 
             <!-- Commons Logging -->
             <dependency>
                 <groupId>commons-logging</groupId>
                 <artifactId>commons-logging</artifactId>
-                <version>1.2</version>
+                <version>${commons-logging.version}</version>
             </dependency>
 
             <!-- Commons Collections -->
             <dependency>
                 <groupId>commons-collections</groupId>
                 <artifactId>commons-collections</artifactId>
-                <version>3.2.2</version>
+                <version>${commons-collections.version}</version>
             </dependency>
 
             <!-- CAS Client -->
             <dependency>
                 <groupId>org.jasig.cas.client</groupId>
                 <artifactId>cas-client-core</artifactId>
-                <version>3.6.4</version>
+                <version>${cas-client.version}</version>
             </dependency>
 
             <!-- jose4j (JOSE implementation) -->
             <dependency>
                 <groupId>org.bitbucket.b_c</groupId>
                 <artifactId>jose4j</artifactId>
-                <version>0.9.6</version>
+                <version>${jose4j.version}</version>
             </dependency>
 
             <!-- OneLogin SAML -->
             <dependency>
                 <groupId>com.onelogin</groupId>
                 <artifactId>java-saml</artifactId>
-                <version>2.9.0</version>
+                <version>${java-saml.version}</version>
             </dependency>
 
             <!-- Woodstox -->
             <dependency>
                 <groupId>com.fasterxml.woodstox</groupId>
                 <artifactId>woodstox-core</artifactId>
-                <version>5.4.0</version>
+                <version>${woodstox.version}</version>
             </dependency>
 
             <!-- Apache XML Security -->
             <dependency>
                 <groupId>org.apache.santuario</groupId>
                 <artifactId>xmlsec</artifactId>
-                <version>2.2.6</version>
+                <version>${xmlsec.version}</version>
             </dependency>
 
             <!-- Keeper Security Secrets Manager -->
             <dependency>
                 <groupId>com.keepersecurity.secrets-manager</groupId>
                 <artifactId>core</artifactId>
-                <version>16.6.3</version>
+                <version>${keeper.version}</version>
             </dependency>
 
             <!-- Kotlin -->
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-reflect</artifactId>
-                <version>1.9.23</version>
+                <version>${kotlin.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib</artifactId>
-                <version>1.9.23</version>
+                <version>${kotlin.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib-jdk8</artifactId>
-                <version>1.9.23</version>
+                <version>${kotlin.version}</version>
             </dependency>
 
             <!-- Bouncy Castle FIPS -->
             <dependency>
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bc-fips</artifactId>
-                <version>1.0.2.4</version>
+                <version>${bouncycastle.version}</version>
             </dependency>
 
         </dependencies>
@@ -372,12 +394,12 @@
                 <plugin>
                     <groupId>com.github.buckelieg</groupId>
                     <artifactId>minify-maven-plugin</artifactId>
-                    <version>2.0.1</version>
+                    <version>${minify-maven-plugin.version}</version>
                     <dependencies>
                         <dependency>
                             <groupId>org.codehaus.plexus</groupId>
                             <artifactId>plexus-utils</artifactId>
-                            <version>3.5.1</version>
+                            <version>${plexus-utils.version}</version>
                         </dependency>
                     </dependencies>
                 </plugin>

@@ -86,6 +86,7 @@ public class SimpleDirectory<ObjectType extends Identifiable>
      *     The objects that should be present in this directory.
      */
     @SafeVarargs
+    @SuppressWarnings("varargs")
     public SimpleDirectory(ObjectType... objects) {
         this(Arrays.asList(objects));
     }

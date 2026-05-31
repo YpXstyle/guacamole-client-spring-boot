@@ -26,6 +26,7 @@ import org.apache.guacamole.protocol.GuacamoleStatus;
  * as the remote desktop) has been forcibly terminated.
  */
 public class GuacamoleSessionClosedException extends GuacamoleUpstreamException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new GuacamoleSessionClosedException with the given message and

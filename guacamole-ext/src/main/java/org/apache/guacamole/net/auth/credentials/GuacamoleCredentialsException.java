@@ -27,6 +27,7 @@ import org.apache.guacamole.GuacamoleUnauthorizedException;
  * describing the form of valid credentials is provided.
  */
 public class GuacamoleCredentialsException extends GuacamoleUnauthorizedException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Information describing the form of valid credentials.

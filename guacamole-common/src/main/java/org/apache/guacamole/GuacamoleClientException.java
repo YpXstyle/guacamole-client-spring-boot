@@ -28,6 +28,7 @@ import org.apache.guacamole.protocol.GuacamoleStatus;
  * requires correction on the client side, not the server.
  */
 public class GuacamoleClientException extends GuacamoleException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new GuacamoleException with the given message and cause.

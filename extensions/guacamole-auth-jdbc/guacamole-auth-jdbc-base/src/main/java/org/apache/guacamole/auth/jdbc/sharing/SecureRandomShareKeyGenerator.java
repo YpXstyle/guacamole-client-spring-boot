@@ -30,6 +30,8 @@ import java.security.SecureRandom;
 public class SecureRandomShareKeyGenerator extends SecureRandom
         implements ShareKeyGenerator {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * The length of each generated share key, in base64-digits.
      */

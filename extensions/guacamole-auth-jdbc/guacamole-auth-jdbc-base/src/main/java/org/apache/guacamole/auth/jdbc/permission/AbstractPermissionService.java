@@ -40,7 +40,7 @@ import org.apache.guacamole.net.auth.permission.PermissionSet;
  *     The type of permission this service provides access to.
  */
 public abstract class AbstractPermissionService<PermissionSetType extends PermissionSet<PermissionType>,
-        PermissionType extends Permission>
+        PermissionType extends Permission<?>>
     implements PermissionService<PermissionSetType, PermissionType> {
 
     /**

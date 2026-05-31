@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
  * HTTP implementation of the JavaScript Guacamole client's tunnel.
  */
 public abstract class GuacamoleHTTPTunnelServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Logger for this class.

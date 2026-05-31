@@ -30,6 +30,8 @@ import org.apache.guacamole.net.auth.credentials.GuacamoleCredentialsException;
 public class TranslatableGuacamoleCredentialsException
         extends GuacamoleCredentialsException implements Translatable {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * A translatable, human-readable description of the exception that
      * occurred.

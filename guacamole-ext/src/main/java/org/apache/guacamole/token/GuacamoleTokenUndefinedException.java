@@ -27,6 +27,7 @@ import org.apache.guacamole.GuacamoleServerException;
  * is provided.
  */
 public class GuacamoleTokenUndefinedException extends GuacamoleServerException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * The name of the token that is undefined.

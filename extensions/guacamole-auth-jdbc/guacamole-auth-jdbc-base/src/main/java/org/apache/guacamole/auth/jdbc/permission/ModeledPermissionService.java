@@ -55,7 +55,7 @@ import org.springframework.stereotype.Service;
  *     database.
  */
 public abstract class ModeledPermissionService<PermissionSetType extends PermissionSet<PermissionType>,
-        PermissionType extends Permission, ModelType>
+        PermissionType extends Permission<?>, ModelType>
     extends AbstractPermissionService<PermissionSetType, PermissionType> {
 
     /**

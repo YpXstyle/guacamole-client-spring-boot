@@ -27,6 +27,7 @@ import org.apache.guacamole.protocol.GuacamoleStatus;
  * desktop) is returning an error or is otherwise unreachable.
  */
 public class GuacamoleUpstreamException extends GuacamoleException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new GuacamoleUpstreamException with the given message and

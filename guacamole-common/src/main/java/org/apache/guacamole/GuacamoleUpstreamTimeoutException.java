@@ -27,6 +27,7 @@ import org.apache.guacamole.protocol.GuacamoleStatus;
  * desktop) is taking too long to respond.
  */
 public class GuacamoleUpstreamTimeoutException extends GuacamoleUpstreamException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new GuacamoleUpstreamException with the given message and

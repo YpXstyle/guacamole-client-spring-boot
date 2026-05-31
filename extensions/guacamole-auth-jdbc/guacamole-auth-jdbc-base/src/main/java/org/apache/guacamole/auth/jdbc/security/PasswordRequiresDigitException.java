@@ -25,6 +25,7 @@ package org.apache.guacamole.auth.jdbc.security;
  * policy.
  */
 public class PasswordRequiresDigitException extends PasswordPolicyException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new PasswordRequiresDigitException with the given

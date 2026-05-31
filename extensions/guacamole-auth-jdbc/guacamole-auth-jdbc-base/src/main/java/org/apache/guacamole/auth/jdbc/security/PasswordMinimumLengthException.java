@@ -27,6 +27,7 @@ import org.apache.guacamole.language.TranslatableMessage;
  * too short, in violation of the defined password policy.
  */
 public class PasswordMinimumLengthException extends PasswordPolicyException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new PasswordMinimumLengthException with the given

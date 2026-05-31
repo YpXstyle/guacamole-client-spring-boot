@@ -25,6 +25,7 @@ package org.apache.guacamole.auth.jdbc.security;
  * defined password policy.
  */
 public class PasswordRequiresMultipleCaseException extends PasswordPolicyException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new PasswordRequiresMultipleCaseException with the given

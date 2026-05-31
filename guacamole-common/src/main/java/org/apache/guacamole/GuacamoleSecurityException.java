@@ -27,6 +27,7 @@ import org.apache.guacamole.protocol.GuacamoleStatus;
  * denying access to a resource.
  */
 public class GuacamoleSecurityException extends GuacamoleClientException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new GuacamoleSecurityException with the given message and cause.

@@ -27,6 +27,7 @@ import org.apache.guacamole.protocol.GuacamoleStatus;
  * a requested resource, such as a configuration or tunnel.
  */
 public class GuacamoleResourceNotFoundException extends GuacamoleClientException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new GuacamoleResourceNotFoundException with the given message

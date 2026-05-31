@@ -26,6 +26,7 @@ import org.apache.guacamole.protocol.GuacamoleStatus;
  * as the remote desktop) has ended because it conflicted with another session.
  */
 public class GuacamoleSessionConflictException extends GuacamoleUpstreamException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new GuacamoleSessionConflictException with the given message

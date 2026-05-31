@@ -30,6 +30,8 @@ import org.apache.guacamole.net.auth.credentials.GuacamoleInsufficientCredential
 public class TranslatableGuacamoleInsufficientCredentialsException
         extends GuacamoleInsufficientCredentialsException implements Translatable {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * A translatable, human-readable description of the exception that
      * occurred.

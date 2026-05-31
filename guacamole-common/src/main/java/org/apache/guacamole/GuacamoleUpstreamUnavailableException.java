@@ -26,6 +26,7 @@ import org.apache.guacamole.protocol.GuacamoleStatus;
  * desktop) is not available to service the request.
  */
 public class GuacamoleUpstreamUnavailableException extends GuacamoleUpstreamException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new GuacamoleUpstreamUnavailableException with the given

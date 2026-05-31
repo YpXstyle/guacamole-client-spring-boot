@@ -138,7 +138,7 @@ public class PermissionSetResource {
      * @throws GuacamoleException
      *     If the requested patch operation is not supported.
      */
-    private <PermissionType extends Permission> void updatePermissionSet(
+    private <PermissionType extends Permission<?>> void updatePermissionSet(
             APIPatch.Operation operation,
             PermissionSetPatch<PermissionType> permissionSetPatch,
             PermissionType permission) throws GuacamoleException {

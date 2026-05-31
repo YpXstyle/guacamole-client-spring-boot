@@ -28,6 +28,7 @@ import org.apache.guacamole.protocol.GuacamoleStatus;
  * instruction, which provides a status code and human-readable message.
  */
 public class GuacamoleStreamException extends GuacamoleServerException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * The error condition reported by the intercepted Guacamole stream.

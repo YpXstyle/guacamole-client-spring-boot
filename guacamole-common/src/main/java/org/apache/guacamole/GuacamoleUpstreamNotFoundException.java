@@ -26,6 +26,7 @@ import org.apache.guacamole.protocol.GuacamoleStatus;
  * desktop) does not appear to exist.
  */
 public class GuacamoleUpstreamNotFoundException extends GuacamoleUpstreamException {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates a new GuacamoleUpstreamNotFoundException with the given message

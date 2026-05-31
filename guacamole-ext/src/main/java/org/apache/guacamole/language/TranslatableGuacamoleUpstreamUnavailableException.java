@@ -27,6 +27,7 @@ import org.apache.guacamole.GuacamoleUpstreamUnavailableException;
  * producing a human-readable message in the user's native language.
  */
 public class TranslatableGuacamoleUpstreamUnavailableException extends GuacamoleUpstreamUnavailableException implements Translatable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * A translatable, human-readable description of the exception that
