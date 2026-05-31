@@ -11,13 +11,11 @@
     ],
 
     "js" : [
-        "quickconnectModule.js",
-        "controllers/quickconnectController.js",
-        "services/quickConnectService.js"
+        "quickconnect.min.js"
     ],
 
     "css" : [
-        "styles/quickconnect.css"
+        "quickconnect.min.css"
     ],
 
     "html" : [

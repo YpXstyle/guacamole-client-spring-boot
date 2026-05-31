@@ -12,13 +12,11 @@
     ],
 
     "js" : [
-        "totpModule.js",
-        "config/totpConfig.js",
-        "controllers/authenticationCodeFieldController.js"
+        "totp.min.js"
     ],
 
     "css" : [
-        "styles/totp.css"
+        "totp.min.css"
     ],
 
     "html" : [

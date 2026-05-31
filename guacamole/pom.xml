@@ -185,6 +185,37 @@
     </dependencies>
 
     <build>
+        <!-- Selective Maven resource filtering:
+             - index.html + verifyCachedVersion.js: filtering=ON
+               → ${guacamole.build.identifier} replaced with timestamp
+             - application*.yml/properties: filtering=ON
+               → Spring placeholder @...@ supported
+             - everything else: filtering=OFF
+               → JSON, JS, CSS, images passed through untouched -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>static/index.html</include>
+                    <include>static/verifyCachedVersion.js</include>
+                    <include>**/application*.yml</include>
+                    <include>**/application*.yaml</include>
+                    <include>**/application*.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>static/index.html</exclude>
+                    <exclude>static/verifyCachedVersion.js</exclude>
+                    <exclude>**/application*.yml</exclude>
+                    <exclude>**/application*.yaml</exclude>
+                    <exclude>**/application*.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <plugins>
             <!-- ============================================================
                  Frontend Build Integration (frontend-maven-plugin)
@@ -245,37 +276,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
-                    <!-- Filter template files: replaces ${guacamole.build.identifier}
-                         with build timestamp. Mirrors original Apache Guacamole's
-                         maven-war-plugin selective filtering approach. -->
-                    <execution>
-                        <id>filter-template-files</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Override Spring Boot's @ delimiter: use Maven
-                                 default ${*} so ${guacamole.build.identifier}
-                                 is properly replaced. -->
-                            <delimiters>
-                                <delimiter>${*}</delimiter>
-                            </delimiters>
-                            <useDefaultDelimiters>true</useDefaultDelimiters>
-                            <outputDirectory>${project.build.directory}/classes/static</outputDirectory>
-                            <overwrite>true</overwrite>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/resources/static</directory>
-                                    <filtering>true</filtering>
-                                    <includes>
-                                        <include>index.html</include>
-                                        <include>verifyCachedVersion.js</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
                     <execution>
                         <id>copy-guacamole-common-js</id>
                         <phase>process-resources</phase>

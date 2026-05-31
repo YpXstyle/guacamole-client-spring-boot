@@ -12,7 +12,7 @@
     ],
 
     "css" : [
-        "styles/sso-providers.css"
+        "sso-providers.min.css"
     ],
 
     "html" : [

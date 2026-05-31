@@ -12,14 +12,11 @@
     ],
 
     "js" : [
-        "lib/DuoWeb/Duo-Web-v2.js",
-        "duoModule.js",
-        "config/duoConfig.js",
-        "controllers/duoSignedResponseController.js"
+        "duo.min.js"
     ],
 
     "css" : [
-        "styles/duo.css"
+        "duo.min.css"
     ],
 
     "html" : [

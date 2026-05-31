@@ -25,13 +25,6 @@ import java.util.TimeZone;
 public class GuacamoleSpringBootApplication {
     public static void main(String[] args) throws UnknownHostException {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
-        // 解析命令行参数，第一个参数作为静态文件路径
-        if (args != null && args.length > 0 && StringUtils.isNotBlank(args[0])) {
-            String staticPath = args[0].trim();
-            // 设置系统属性，供配置类使用（不添加末尾斜杠，由配置类统一处理）
-            System.setProperty("app.static.file.path", staticPath);
-            log.info("静态文件路径已设置为: {}", staticPath);
-        }
 
         ConfigurableApplicationContext run = SpringApplication.run(GuacamoleSpringBootApplication.class, args);
         Environment env = run.getEnvironment();

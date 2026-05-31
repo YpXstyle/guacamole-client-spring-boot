@@ -362,6 +362,37 @@
     </dependencyManagement>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <!-- JavaScript / CSS minification for extension frontend
+                     resources.  Same plugin and engine (Google Closure
+                     Compiler) as the original Apache Guacamole project. -->
+                <plugin>
+                    <groupId>com.github.buckelieg</groupId>
+                    <artifactId>minify-maven-plugin</artifactId>
+                    <version>2.0.1</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.codehaus.plexus</groupId>
+                            <artifactId>plexus-utils</artifactId>
+                            <version>3.5.1</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <!-- Restore Maven-native ${*} delimiter for all modules.
+                     Spring Boot's parent POM replaces ${*} with @ to avoid
+                     conflicts with application property placeholders, but
+                     our build identifier uses ${guacamole.build.identifier}
+                     just like the original Apache Guacamole project. -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <configuration>
+                        <useDefaultDelimiters>true</useDefaultDelimiters>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

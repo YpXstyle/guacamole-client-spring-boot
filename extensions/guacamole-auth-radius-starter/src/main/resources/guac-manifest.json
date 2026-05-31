@@ -12,9 +12,7 @@
     ],
 
     "js" : [
-        "radiusModule.js",
-        "config/radiusConfig.js",
-        "controllers/radiusStateController.js"
+        "radius.min.js"
     ],
 
     "html" : [

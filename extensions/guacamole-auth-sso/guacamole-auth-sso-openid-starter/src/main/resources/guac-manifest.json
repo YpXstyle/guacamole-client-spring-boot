@@ -12,11 +12,11 @@
     ],
 
     "js" : [
-        "transformToken.js"
+        "openid.min.js"
     ],
 
     "css" : [
-        "styles/sso-providers.css"
+        "sso-providers.min.css"
     ],
 
     "html" : [
