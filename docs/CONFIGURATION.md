@@ -498,7 +498,7 @@ guacamole:
       enabled: true
       radius-hostname: radius.example.com
       radius-shared-secret: ${RADIUS_SECRET}
-      radius-auth-protocol: PAP
+      radius-auth-protocol: pap
 ```
 
 | 属性 | 类型 | 必填 | 默认值 | 说明 |
@@ -508,7 +508,7 @@ guacamole:
 | `guacamole.auth.radius.radius-auth-port` | int | 否 | `1812` | RADIUS 认证端口 |
 | `guacamole.auth.radius.radius-acct-port` | int | 否 | `1813` | RADIUS 计费端口 |
 | `guacamole.auth.radius.radius-shared-secret` | string | **是** | -- | RADIUS 共享密钥 |
-| `guacamole.auth.radius.radius-auth-protocol` | enum | **是** | -- | 认证协议：`PAP`、`CHAP`、`MSCHAPv1`、`MSCHAPv2`、`EAP-TLS`、`EAP-TTLS` |
+| `guacamole.auth.radius.radius-auth-protocol` | enum | **是** | -- | 认证协议（小写）：`pap`、`chap`、`mschapv1`、`mschapv2`、`eap-md5`、`eap-tls`、`eap-ttls` |
 | `guacamole.auth.radius.radius-max-retries` | int | 否 | `5` | 最大重试次数 |
 | `guacamole.auth.radius.radius-timeout` | int | 否 | `60` | 超时（秒） |
 | `guacamole.auth.radius.radius-ca-file` | string | 否 | `{guacamoleHome}/ca.crt` | CA 证书文件路径 |
@@ -520,6 +520,8 @@ guacamole:
 | `guacamole.auth.radius.radius-trust-all` | boolean | 否 | `false` | 信任所有服务器证书 |
 | `guacamole.auth.radius.radius-eap-ttls-inner-protocol` | enum | 仅 EAP-TTLS | -- | EAP-TTLS 的内部协议 |
 | `guacamole.auth.radius.radius-nas-ip` | string | 否 | 自动检测 | 发送给 RADIUS 服务器的 NAS IP 地址 |
+
+> **注意：** RADIUS 是外部认证源，不管理 Guacamole 数据库中的用户和权限。RADIUS 认证成功后，需配合 JDBC 扩展的 `auto-create-accounts: true` 自动创建数据库账户。详见[多认证链配置](#多认证链配置)。
 
 ---
 
@@ -907,8 +909,21 @@ Guacamole 原生 guacamole.properties 属性
 - JDBC + LDAP + TOTP -- 允许
 - LDAP + JSON + QuickConnect -- 允许
 - PostgreSQL + CAS -- 允许
+- PostgreSQL + RADIUS -- 允许（RADIUS 作为外部认证源，需配合 `auto-create-accounts: true` 自动创建数据库账户）
 - MySQL + PostgreSQL -- **拒绝**（JDBC 冲突）
 - CAS + OpenID -- **拒绝**（SSO 冲突）
+
+### 外部认证源与自动创建账户
+
+RADIUS、LDAP、Header、SSO 等外部认证源只负责**验证密码**，不管理用户授权。认证成功后，JDBC 模块的 `getUserContext()` 会检查用户是否在数据库中存在：
+
+| `auto-create-accounts` | 外部认证成功后 | 结果 |
+|-----------------------|-------------|------|
+| `false`（默认） | 用户不存在于数据库 | 能登录但无连接权限（白屏） |
+| `true` | 用户不存在于数据库 | 自动在 `guacamole_user` 表中创建账号，登录成功 |
+| `true` | 用户已存在于数据库 | 直接使用现有账号（保留已有权限） |
+
+> **注意：** 自动创建的账号没有任何连接权限，管理员需在 Guacamole 管理界面手动分配权限。
 
 ### 示例：LDAP + PostgreSQL + TOTP
 

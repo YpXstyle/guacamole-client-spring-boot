@@ -369,7 +369,7 @@ guacamole:
       radius-hostname: radius.example.com
       radius-auth-port: 1812
       radius-shared-secret: ${RADIUS_SECRET}
-      radius-auth-protocol: PAP
+      radius-auth-protocol: pap
       radius-timeout: 30
       radius-nas-ip: 192.168.1.100
 ```
