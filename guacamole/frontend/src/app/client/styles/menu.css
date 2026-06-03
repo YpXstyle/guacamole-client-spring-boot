@@ -24,8 +24,8 @@
     height: 100%;
     max-width: 100%;
     width: 480px;
-    background: #EEE;
-    box-shadow: inset -1px 0 2px white, 1px 0 2px black;
+    background: var(--gc-color-bg-secondary);
+    box-shadow: inset -1px 0 2px var(--gc-color-text-inverse), 1px 0 2px var(--gc-color-text);
     z-index: 100;
     -webkit-transition: left 0.125s, opacity 0.125s;
     -moz-transition: left 0.125s, opacity 0.125s;

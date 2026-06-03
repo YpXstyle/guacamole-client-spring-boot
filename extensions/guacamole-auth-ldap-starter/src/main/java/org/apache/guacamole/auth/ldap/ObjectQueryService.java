@@ -144,7 +144,7 @@ public class ObjectQueryService {
         searchFilter.addNode(filter);
 
         // If no attributes provided, we're done.
-        if (attributes.size() < 1)
+        if (attributes.isEmpty())
             return searchFilter;
 
         // Include all attributes within OR clause
@@ -153,7 +153,7 @@ public class ObjectQueryService {
         // If value is defined, check each attribute for that value.
         if (attributeValue != null) {
             attributes.forEach(attribute ->
-                attributeFilter.addNode(new EqualityNode(attribute,
+                attributeFilter.addNode(new EqualityNode<>(attribute,
                         attributeValue))
             );
         }

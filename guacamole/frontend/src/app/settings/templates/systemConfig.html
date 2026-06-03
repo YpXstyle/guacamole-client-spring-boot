@@ -1,0 +1,274 @@
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<div class="system-config-view">
+
+    <div class="header">
+        <h2>{{'SETTINGS.SECTION_HEADER_SYSTEM_CONFIG' | translate}}</h2>
+    </div>
+
+    <!-- Tab navigation -->
+    <div class="config-tabs">
+        <ul>
+            <li ng-class="{active: activeTab === 'branding'}">
+                <a ng-click="activeTab = 'branding'">{{'SETTINGS.TAB_BRANDING' | translate}}</a>
+            </li>
+            <li ng-class="{active: activeTab === 'theme'}">
+                <a ng-click="activeTab = 'theme'">{{'SETTINGS.TAB_THEME' | translate}}</a>
+            </li>
+            <li ng-class="{active: activeTab === 'security'}">
+                <a ng-click="activeTab = 'security'">{{'SETTINGS.TAB_SECURITY' | translate}}</a>
+            </li>
+            <li ng-class="{active: activeTab === 'announcement'}">
+                <a ng-click="activeTab = 'announcement'">{{'SETTINGS.TAB_ANNOUNCEMENT' | translate}}</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Branding tab -->
+    <div class="config-section" ng-show="activeTab === 'branding'">
+        <h3>{{'SETTINGS.BRANDING.TITLE' | translate}}</h3>
+
+        <table class="config-fields">
+            <tr>
+                <td class="field-header">{{'SETTINGS.BRANDING.SITE_NAME' | translate}}</td>
+                <td><input type="text" ng-model="configs['branding.site_name'].value"
+                           ng-change="markDirty('branding.site_name')"></td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.BRANDING.SITE_NAME_SHORT' | translate}}</td>
+                <td><input type="text" ng-model="configs['branding.site_name_short'].value"
+                           ng-change="markDirty('branding.site_name_short')"></td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.BRANDING.LOGO' | translate}}</td>
+                <td>
+                    <guac-file-upload category="branding"
+                                      current-url="configs['branding.logo'].value"
+                                      on-upload="onFileUploaded('branding.logo', url)"></guac-file-upload>
+                </td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.BRANDING.LOGO_DARK' | translate}}</td>
+                <td>
+                    <guac-file-upload category="branding"
+                                      current-url="configs['branding.logo_dark'].value"
+                                      on-upload="onFileUploaded('branding.logo_dark', url)"></guac-file-upload>
+                </td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.BRANDING.FAVICON' | translate}}</td>
+                <td>
+                    <guac-file-upload category="branding"
+                                      current-url="configs['branding.favicon'].value"
+                                      on-upload="onFileUploaded('branding.favicon', url)"></guac-file-upload>
+                </td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.BRANDING.LOGIN_BACKGROUND' | translate}}</td>
+                <td>
+                    <guac-file-upload category="branding"
+                                      current-url="configs['branding.login_background'].value"
+                                      on-upload="onFileUploaded('branding.login_background', url)"></guac-file-upload>
+                </td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.BRANDING.COPYRIGHT' | translate}}</td>
+                <td><input type="text" ng-model="configs['branding.copyright'].value"
+                           ng-change="markDirty('branding.copyright')"></td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.BRANDING.SUPPORT_URL' | translate}}</td>
+                <td><input type="url" ng-model="configs['branding.support_url'].value"
+                           ng-change="markDirty('branding.support_url')"></td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.BRANDING.HELP_URL' | translate}}</td>
+                <td><input type="url" ng-model="configs['branding.help_url'].value"
+                           ng-change="markDirty('branding.help_url')"></td>
+            </tr>
+        </table>
+
+        <div class="config-actions">
+            <button ng-click="saveAll()" ng-disabled="!hasDirty()">{{'SETTINGS.ACTION_SAVE' | translate}}</button>
+            <button class="danger" ng-click="resetAll('branding')">{{'SETTINGS.ACTION_RESET' | translate}}</button>
+        </div>
+    </div>
+
+    <!-- Theme tab -->
+    <div class="config-section" ng-show="activeTab === 'theme'">
+        <h3>{{'SETTINGS.THEME.TITLE' | translate}}</h3>
+
+        <table class="config-fields">
+            <tr>
+                <td class="field-header">{{'SETTINGS.THEME.PRIMARY_COLOR' | translate}}</td>
+                <td>
+                    <input type="color" ng-model="configs['theme.primary_color'].value"
+                           ng-model-options="{ updateOn: 'input' }"
+                           ng-change="markDirty('theme.primary_color'); previewTheme()">
+                    <span class="color-value">{{configs['theme.primary_color'].value}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.THEME.ACCENT_COLOR' | translate}}</td>
+                <td>
+                    <input type="color" ng-model="configs['theme.accent_color'].value"
+                           ng-model-options="{ updateOn: 'input' }"
+                           ng-change="markDirty('theme.accent_color'); previewTheme()">
+                    <span class="color-value">{{configs['theme.accent_color'].value}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.THEME.SUCCESS_COLOR' | translate}}</td>
+                <td>
+                    <input type="color" ng-model="configs['theme.success_color'].value"
+                           ng-model-options="{ updateOn: 'input' }"
+                           ng-change="markDirty('theme.success_color')">
+                </td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.THEME.WARNING_COLOR' | translate}}</td>
+                <td>
+                    <input type="color" ng-model="configs['theme.warning_color'].value"
+                           ng-model-options="{ updateOn: 'input' }"
+                           ng-change="markDirty('theme.warning_color')">
+                </td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.THEME.DANGER_COLOR' | translate}}</td>
+                <td>
+                    <input type="color" ng-model="configs['theme.danger_color'].value"
+                           ng-model-options="{ updateOn: 'input' }"
+                           ng-change="markDirty('theme.danger_color')">
+                </td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.THEME.MODE' | translate}}</td>
+                <td>
+                    <select ng-model="configs['theme.mode'].value"
+                            ng-change="markDirty('theme.mode'); previewTheme()">
+                        <option value="light">{{'SETTINGS.THEME.MODE_LIGHT' | translate}}</option>
+                        <option value="dark">{{'SETTINGS.THEME.MODE_DARK' | translate}}</option>
+                        <option value="auto">{{'SETTINGS.THEME.MODE_AUTO' | translate}}</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Theme preview -->
+        <div class="theme-preview">
+            <h4>{{'SETTINGS.THEME.PREVIEW' | translate}}</h4>
+            <div class="preview-buttons">
+                <button class="preview-primary">{{'SETTINGS.THEME.PREVIEW_PRIMARY' | translate}}</button>
+                <button class="preview-danger">{{'SETTINGS.THEME.PREVIEW_DANGER' | translate}}</button>
+                <a class="preview-link">{{'SETTINGS.THEME.PREVIEW_LINK' | translate}}</a>
+            </div>
+            <div class="preview-card">
+                <div class="preview-card-header">{{'SETTINGS.THEME.PREVIEW_CARD' | translate}}</div>
+                <div class="preview-card-body">{{'SETTINGS.THEME.PREVIEW_CONTENT' | translate}}</div>
+            </div>
+        </div>
+
+        <div class="config-actions">
+            <button ng-click="saveAll()" ng-disabled="!hasDirty()">{{'SETTINGS.ACTION_SAVE' | translate}}</button>
+            <button class="danger" ng-click="resetAll('theme')">{{'SETTINGS.ACTION_RESET' | translate}}</button>
+        </div>
+    </div>
+
+    <!-- Security tab -->
+    <div class="config-section" ng-show="activeTab === 'security'">
+        <h3>{{'SETTINGS.SECURITY.TITLE' | translate}}</h3>
+
+        <table class="config-fields">
+            <tr>
+                <td class="field-header">{{'SETTINGS.SECURITY.PASSWORD_MIN_LENGTH' | translate}}</td>
+                <td><input type="number" ng-model="configs['security.password_min_length'].value"
+                           ng-change="markDirty('security.password_min_length')" min="1" max="128"></td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.SECURITY.PASSWORD_REQUIRE_UPPERCASE' | translate}}</td>
+                <td><input type="checkbox" ng-model="configs['security.password_require_uppercase'].value"
+                           ng-change="markDirty('security.password_require_uppercase')"></td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.SECURITY.PASSWORD_REQUIRE_NUMBER' | translate}}</td>
+                <td><input type="checkbox" ng-model="configs['security.password_require_number'].value"
+                           ng-change="markDirty('security.password_require_number')"></td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.SECURITY.PASSWORD_REQUIRE_SPECIAL' | translate}}</td>
+                <td><input type="checkbox" ng-model="configs['security.password_require_special'].value"
+                           ng-change="markDirty('security.password_require_special')"></td>
+            </tr>
+        </table>
+
+        <div class="config-actions">
+            <button ng-click="saveAll()" ng-disabled="!hasDirty()">{{'SETTINGS.ACTION_SAVE' | translate}}</button>
+        </div>
+    </div>
+
+    <!-- Announcement tab -->
+    <div class="config-section" ng-show="activeTab === 'announcement'">
+        <h3>{{'SETTINGS.ANNOUNCEMENT.TITLE' | translate}}</h3>
+
+        <table class="config-fields">
+            <tr>
+                <td class="field-header">{{'SETTINGS.ANNOUNCEMENT.ENABLED' | translate}}</td>
+                <td><input type="checkbox" ng-model="configs['announcement.enabled'].value"
+                           ng-change="markDirty('announcement.enabled')"></td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.ANNOUNCEMENT.LEVEL' | translate}}</td>
+                <td>
+                    <select ng-model="configs['announcement.level'].value"
+                            ng-change="markDirty('announcement.level')">
+                        <option value="info">{{'SETTINGS.ANNOUNCEMENT.LEVEL_INFO' | translate}}</option>
+                        <option value="warning">{{'SETTINGS.ANNOUNCEMENT.LEVEL_WARNING' | translate}}</option>
+                        <option value="error">{{'SETTINGS.ANNOUNCEMENT.LEVEL_ERROR' | translate}}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.ANNOUNCEMENT.MESSAGE' | translate}}</td>
+                <td><textarea ng-model="configs['announcement.message'].value"
+                              ng-change="markDirty('announcement.message')" rows="4"></textarea></td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.ANNOUNCEMENT.START_TIME' | translate}}</td>
+                <td><input type="datetime-local" ng-model="configs['announcement.start_time'].value"
+                           ng-change="markDirty('announcement.start_time')"></td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.ANNOUNCEMENT.END_TIME' | translate}}</td>
+                <td><input type="datetime-local" ng-model="configs['announcement.end_time'].value"
+                           ng-change="markDirty('announcement.end_time')"></td>
+            </tr>
+            <tr>
+                <td class="field-header">{{'SETTINGS.ANNOUNCEMENT.CLOSABLE' | translate}}</td>
+                <td><input type="checkbox" ng-model="configs['announcement.closable'].value"
+                           ng-change="markDirty('announcement.closable')"></td>
+            </tr>
+        </table>
+
+        <div class="config-actions">
+            <button ng-click="saveAll()" ng-disabled="!hasDirty()">{{'SETTINGS.ACTION_SAVE' | translate}}</button>
+        </div>
+    </div>
+
+</div>

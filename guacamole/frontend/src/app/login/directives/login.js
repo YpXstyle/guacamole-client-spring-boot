@@ -60,7 +60,7 @@ angular.module('login').directive('guacLogin', [function guacLogin() {
     // Controller for login directive
     directive.controller = ['$scope', '$injector',
         function loginController($scope, $injector) {
-        
+
         // Required types
         var Error = $injector.get('Error');
         var Field = $injector.get('Field');
@@ -70,6 +70,54 @@ angular.module('login').directive('guacLogin', [function guacLogin() {
         var $route                = $injector.get('$route');
         var authenticationService = $injector.get('authenticationService');
         var requestService        = $injector.get('requestService');
+        var configService         = $injector.get('configService');
+
+        // Load branding configuration for login page display
+        $scope.branding = {};
+        configService.getConfig().then(function(config) {
+            if (config && config.branding) {
+                $scope.branding = config.branding;
+
+                // Apply custom logo if configured
+                if (config.branding.logo) {
+                    var logoEl = document.querySelector('.login-ui .logo');
+                    if (logoEl) {
+                        logoEl.style.backgroundImage = 'url(' + config.branding.logo + ')';
+                    }
+                }
+
+                // Apply custom background if configured
+                if (config.branding.loginBackground) {
+                    var loginEl = document.querySelector('.login-ui');
+                    if (loginEl) {
+                        if (config.branding.loginBackground.startsWith('#') ||
+                            config.branding.loginBackground.startsWith('rgb')) {
+                            loginEl.style.background = config.branding.loginBackground;
+                        } else {
+                            loginEl.style.backgroundImage = 'url(' + config.branding.loginBackground + ')';
+                            loginEl.style.backgroundSize = 'cover';
+                            loginEl.style.backgroundPosition = 'center';
+                        }
+                    }
+                }
+
+                // Apply favicon if configured - replace ALL existing icon links
+                if (config.branding.favicon && config.branding.favicon.trim()) {
+                    document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']").forEach(function(el) {
+                        el.parentNode.removeChild(el);
+                    });
+                    var link = document.createElement('link');
+                    link.rel = 'icon';
+                    // Do NOT set link.type — let HTTP Content-Type header
+                    // (returned by FileRESTService.getFile) drive the MIME
+                    // so SVG/ICO/GIF favicons render in all browsers.
+                    link.href = config.branding.favicon;
+                    document.getElementsByTagName('head')[0].appendChild(link);
+                }
+            }
+        })['catch'](function() {
+            // If config loading fails, use defaults (APP.NAME from translations)
+        });
 
         /**
          * The initial value for all login fields. Note that this value must

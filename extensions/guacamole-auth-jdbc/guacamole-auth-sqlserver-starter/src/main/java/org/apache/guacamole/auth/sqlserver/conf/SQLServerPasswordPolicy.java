@@ -22,14 +22,19 @@ package org.apache.guacamole.auth.sqlserver.conf;
 import org.apache.guacamole.GuacamoleException;
 import org.apache.guacamole.auth.jdbc.JDBCEnvironment;
 import org.apache.guacamole.auth.jdbc.security.PasswordPolicy;
+import org.apache.guacamole.auth.jdbc.system.SystemConfigService;
 import org.apache.guacamole.properties.BooleanGuacamoleProperty;
 import org.apache.guacamole.properties.IntegerGuacamoleProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * PasswordPolicy implementation which reads the details of the policy from
  * SQLServer-specific properties in guacamole.properties.
  */
 public class SQLServerPasswordPolicy implements PasswordPolicy {
+
+    private static final Logger logger = LoggerFactory.getLogger(SQLServerPasswordPolicy.class);
 
     /**
      * The property which specifies the minimum length required of all user
@@ -140,19 +145,49 @@ public class SQLServerPasswordPolicy implements PasswordPolicy {
     private final JDBCEnvironment environment;
 
     /**
+     * Service for reading system configuration from the database.
+     * May be null if the system config module is not available.
+     */
+    private final SystemConfigService systemConfigService;
+
+    /**
      * Creates a new SQLServerPasswordPolicy which reads the details of the
-     * policy from the properties exposed by the given environment.
+     * policy from the properties exposed by the given environment, with
+     * optional overrides from the database-backed system configuration.
      *
      * @param environment
      *     The environment from which password policy properties should be
-     *     read.
+     *     read as fallback defaults.
+     *
+     * @param systemConfigService
+     *     The SystemConfigService for reading DB config values, or null.
      */
-    public SQLServerPasswordPolicy(JDBCEnvironment environment) {
+    public SQLServerPasswordPolicy(JDBCEnvironment environment,
+            SystemConfigService systemConfigService) {
         this.environment = environment;
+        this.systemConfigService = systemConfigService;
+    }
+
+    private String getDBValue(String key) {
+        if (systemConfigService == null) return null;
+        try {
+            return systemConfigService.getValue(key);
+        } catch (Exception e) {
+            logger.warn("Failed to read DB config key '{}', falling back to defaults", key, e);
+            return null;
+        }
     }
 
     @Override
     public int getMinimumLength() throws GuacamoleException {
+        String dbVal = getDBValue("security.password_min_length");
+        if (dbVal != null && !dbVal.isEmpty()) {
+            try {
+                return Integer.parseInt(dbVal);
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid integer in DB for password_min_length: '{}', using default", dbVal);
+            }
+        }
         return environment.getProperty(MIN_LENGTH, 0);
     }
 
@@ -173,16 +208,28 @@ public class SQLServerPasswordPolicy implements PasswordPolicy {
 
     @Override
     public boolean isMultipleCaseRequired() throws GuacamoleException {
+        String dbVal = getDBValue("security.password_require_uppercase");
+        if (dbVal != null && !dbVal.isEmpty()) {
+            return Boolean.parseBoolean(dbVal);
+        }
         return environment.getProperty(REQUIRE_MULTIPLE_CASE, false);
     }
 
     @Override
     public boolean isNumericRequired() throws GuacamoleException {
+        String dbVal = getDBValue("security.password_require_number");
+        if (dbVal != null && !dbVal.isEmpty()) {
+            return Boolean.parseBoolean(dbVal);
+        }
         return environment.getProperty(REQUIRE_DIGIT, false);
     }
 
     @Override
     public boolean isNonAlphanumericRequired() throws GuacamoleException {
+        String dbVal = getDBValue("security.password_require_special");
+        if (dbVal != null && !dbVal.isEmpty()) {
+            return Boolean.parseBoolean(dbVal);
+        }
         return environment.getProperty(REQUIRE_SYMBOL, false);
     }
 

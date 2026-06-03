@@ -73,7 +73,7 @@
 }
 
 .settings.connectionHistory a.history-session-recording {
-    color: #0000ee;
+    color: var(--gc-color-link);
 }
 
 .settings.connectionHistory a.history-session-recording::after {

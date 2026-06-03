@@ -17,6 +17,7 @@ Guacamole Spring Boot 完整的 REST API 端点参考。所有端点与原 Apach
 - [Schema](#schema)
 - [扩展与补丁](#扩展与补丁)
 - [语言](#语言)
+- [系统配置](#系统配置)
 - [通用说明](#通用说明)
 
 ---
@@ -1006,6 +1007,128 @@ GET /translations/{lang}.json
 **支持的语言：** `ca`（加泰罗尼亚语）、`cs`（捷克语）、`de`（德语）、`en`（英语）、`es`（西班牙语）、`fr`（法语）、`it`（意大利语）、`ja`（日语）、`ko`（韩语）、`nl`（荷兰语）、`no`（挪威语）、`pt`（葡萄牙语）、`ru`（俄语）、`zh`（中文）。
 
 **返回**：语言的翻译键值对 JSON 对象。
+
+---
+
+## 系统配置
+
+系统配置模块的 REST 端点，用于品牌定制、主题配色、安全策略和公告的管理。需要启用至少一个 JDBC 扩展。
+
+### 获取公开配置
+
+```
+GET /api/config
+```
+
+**认证：** 不需要。此端点公开访问，供前端加载品牌、主题、公告等配置。
+
+**返回**：
+
+```json
+{
+    "branding": {
+        "siteName": "鹏城远程办公",
+        "logo": "/api/settings/files/a1b2c3d4",
+        "favicon": "/api/settings/files/b2c3d4e5",
+        "copyright": "© 2026 鹏城科技"
+    },
+    "theme": {
+        "primaryColor": "#1a56db",
+        "accentColor": "#0694a2",
+        "mode": "light"
+    },
+    "announcement": {
+        "message": "系统将于今晚维护",
+        "level": "warning",
+        "enabled": "true",
+        "startTime": "2026-06-15T22:00:00.000Z",
+        "endTime": "2026-06-16T06:00:00.000Z",
+        "closable": "true"
+    }
+}
+```
+
+所有值均为 String 类型，前端自行解析 boolean/integer/datetime。
+
+### 获取全部配置（管理员）
+
+```
+GET /api/settings
+Guacamole-Token: xxx
+```
+
+**认证：** 需要 Token。需要 `SYSTEM_ADMINISTER` 权限。
+
+**返回**：配置项列表（25 条），每条包含 `key`、`value`、`type`、`group`、`updatedBy`、`updatedAt` 元数据。
+
+### 更新配置项（管理员）
+
+```
+PUT /api/settings/{key}
+Content-Type: application/json
+Guacamole-Token: xxx
+
+{ "value": "#1a73e8" }
+```
+
+**认证：** 需要 Token。需要 `SYSTEM_ADMINISTER` 权限。
+
+**行为**：
+
+- 更新已存在的配置行，不创建新行（key 必须已由 DDL 预置）
+- 颜色值（`theme.*_color`）会校验 `#RRGGBB` 格式，无效返回 400
+- `null` 值存为空字符串，不删除行
+- 更新后缓存立即失效
+
+### 上传文件（管理员）
+
+```
+POST /api/settings/files
+Content-Type: multipart/form-data
+Guacamole-Token: xxx
+```
+
+**表单字段：**
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `file` | File | 是 | 上传文件（SVG/PNG/JPG/ICO/GIF，最大 2MB） |
+| `category` | String | 否 | 分类，默认 `branding` |
+
+**认证：** 需要 Token。需要 `SYSTEM_ADMINISTER` 权限。
+
+**返回**：
+
+```json
+{
+    "fileId": "a1b2c3d4-...",
+    "filename": "logo.png",
+    "mimeType": "image/png",
+    "size": 12345,
+    "url": "/api/settings/files/a1b2c3d4-..."
+}
+```
+
+### 获取文件（公开）
+
+```
+GET /api/settings/files/{fileId}
+```
+
+**认证：** 不需要。此端点公开访问（Logo、Favicon 等需被 `<img>` / `<link>` 标签直接引用）。
+
+**返回**：文件流，`Content-Type` 为文件上传时的 MIME 类型，`Cache-Control: public, max-age=86400`。
+
+### 删除文件（管理员）
+
+```
+DELETE /api/settings/files/{fileId}
+Guacamole-Token: xxx
+```
+
+**认证：** 需要 Token。需要 `SYSTEM_ADMINISTER` 权限。
+
+**行为**：同时删除文件系统和数据库记录。
 
 ---
 

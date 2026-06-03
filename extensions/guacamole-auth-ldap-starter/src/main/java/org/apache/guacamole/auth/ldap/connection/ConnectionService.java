@@ -280,11 +280,11 @@ public class ConnectionService {
         AndNode searchFilter = new AndNode();
 
         // Add the prefix to the search filter, prefix filter searches for guacConfigGroups with the userDN as the member attribute value
-        searchFilter.addNode(new EqualityNode("objectClass", CONNECTION_LDAP_OBJECT_CLASS));
-        
+        searchFilter.addNode(new EqualityNode<>("objectClass", CONNECTION_LDAP_OBJECT_CLASS));
+
         // Apply group filters
         OrNode groupFilter = new OrNode();
-        groupFilter.addNode(new EqualityNode(config.getMemberAttribute(),
+        groupFilter.addNode(new EqualityNode<>(config.getMemberAttribute(),
             userDN.toString()));
 
         // Additionally filter by group membership if the current user is a
@@ -292,7 +292,7 @@ public class ConnectionService {
         List<Entry> userGroups = userGroupService.getParentUserGroupEntries(config, userDN);
         if (!userGroups.isEmpty()) {
             userGroups.forEach(entry ->
-                groupFilter.addNode(new EqualityNode(LDAP_ATTRIBUTE_NAME_GROUPS,entry.getDn().toString()))
+                groupFilter.addNode(new EqualityNode<>(LDAP_ATTRIBUTE_NAME_GROUPS, entry.getDn().toString()))
             );
         }
 

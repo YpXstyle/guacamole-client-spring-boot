@@ -29,7 +29,7 @@
 .connection a,
 .connection-group a {
     text-decoration:none;
-    color: black;
+    color: var(--gc-color-text);
 }
 
 .user a:hover,
@@ -37,7 +37,7 @@
 .connection a:hover,
 .connection-group a:hover {
     text-decoration:none;
-    color: black;
+    color: var(--gc-color-text);
 }
 
 .user a:visited,
@@ -45,11 +45,11 @@
 .connection a:visited,
 .connection-group a:visited {
     text-decoration:none;
-    color: black;
+    color: var(--gc-color-text);
 }
 
 .recent-connections .connection:hover {
-    background: #CDA;
+    background: var(--gc-color-hover);
 }
 
 .recent-connections .connection .thumbnail {

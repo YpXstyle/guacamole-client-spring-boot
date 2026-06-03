@@ -18,7 +18,7 @@
  */
 
 .transfer-manager {
-    background: white;
+    background: var(--gc-color-bg);
 }
 
 .transfer-manager .header h2 {

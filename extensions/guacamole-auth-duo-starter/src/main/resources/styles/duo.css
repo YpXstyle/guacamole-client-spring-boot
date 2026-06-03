@@ -25,7 +25,7 @@
     left: 0;
     top: 0;
     display: table;
-    background: white;
+    background: var(--gc-color-bg);
 }
 
 .duo-signature-response-field {

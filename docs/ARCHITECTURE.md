@@ -11,6 +11,7 @@ Guacamole Spring Boot 系统的深入架构分析。本文档涵盖系统组件�
 - [资源服务](#资源服务)
 - [WebSocket 隧道](#websocket-隧道)
 - [REST API 层](#rest-api-层)
+- [系统配置模块](#系统配置模块)
 - [认证流程](#认证流程)
 - [属性解析机制](#属性解析机制)
 - [Guice 到 Spring 迁移对照](#guice-到-spring-迁移对照)
@@ -517,7 +518,81 @@ public UserContextResource getUserContextResource(@PathParam("dataSource") Strin
 - **TokenRESTService**（`/api/tokens`）：支持 HTTP Basic Auth 和表单参数认证。`POST` 创建令牌，`DELETE /{token}` 失效令牌。
 - **SessionRESTService**（`/api/session`）：入口点，通过 `@TokenParam` 注入 Token，路由到 `SessionResource`。
 - **PatchRESTService**（`/api/patches`）：提供扩展 HTML 补丁列表。
+- **SettingsRESTService**（`/api/settings`）：系统配置管理，`GET` 返回 25 条配置，`PUT/{key}` 更新单条（需 `SYSTEM_ADMINISTER`）。
+- **ConfigRESTService**（`/api/config`）：公开配置端点，无需认证，返回品牌/主题/公告配置。
+- **FileRESTService**（`/api/settings/files`）：文件上传/下载/删除，`POST` 上传（multipart），`GET/{id}` 公开获取，`DELETE/{id}` 管理员删除。
 - **ExtensionRESTService**（`/api/ext/{identifier}`）：提供扩展自定义 REST 资源。
+
+---
+
+## 系统配置模块
+
+### 数据流
+
+```
+管理员在系统配置页面修改品牌/主题/安全/公告
+  ↓ $http PUT /api/settings/{key} + Guacamole-Token
+SettingsRESTService (Jersey JAX-RS)
+  ↓ verifyAdminPermission() → SYSTEM_ADMINISTER
+SystemConfigService.updateValue()
+  ↓ SystemConfigMapper.update() (纯 UPDATE，不 INSERT)
+guacamole_system_config 表
+  ↓ configCache.invalidate(key)
+下次 /api/config 请求返回新值
+```
+
+### 配置优先级（三级 fallback）
+
+```
+1. guacamole_system_config 表（运行时修改，管理员通过 Web 界面保存）
+   ↓ 无值时 fallback
+2. application.yml 的 guacamole.system.defaults 段（构建时配置）
+   ↓ 无值时 fallback
+3. Guacamole 原生 guacamole.properties 属性（如 postgresql-user-password-min-length）
+```
+
+### 主题引擎
+
+```
+configService.getConfig() → theme 配置
+  ↓
+colorEngine.calculate(themeConfig, mode) → 35 个 CSS 变量值
+  ↓
+themeService.setThemeVariable(name, value)
+  ↓ document.documentElement.style.setProperty()
+:root 变量生效 → 全站 UI 配色更新
+```
+
+- 模式：`light` / `dark` / `auto`（跟随 `prefers-color-scheme`）
+- CSS 变量在 `variables.css` 中声明 fallback 默认值，JS 失败时 CSS 默认值兜底
+
+### 安全策略接入
+
+密码复杂度的 4 个配置项（`security.password_min_length` 等）已接入三数据库的 `PasswordPolicy`：
+
+```
+PasswordPolicyService.verifyPassword()
+  ↓
+PostgreSQLPasswordPolicy / MySQLPasswordPolicy / SQLServerPasswordPolicy
+  ↓ getDBValue("security.password_min_length")
+SystemConfigService.getValue(key)
+  ↓ 有值 → Integer.parseInt(value)
+  ↓ 无值 → environment.getProperty(MIN_LENGTH, 0)（原有属性 fallback）
+```
+
+### 文件上传架构
+
+```
+前端 guacFileUpload.js
+  ↓ FormData(file + category) + Guacamole-Token
+FileRESTService.uploadFile()
+  ↓ @FormDataParam → FormDataBodyPart (Jersey multipart)
+FileStorageService.upload()
+  ↓ validateUpload(MIME, size) + validateFilename(name) + validateCategory(cat)
+  ↓ Files.copy() → {file-storage-path}/{category}/{fileId}/{filename}
+  ↓ SystemFileMapper.insert() → guacamole_system_file 表
+返回 /api/settings/files/{fileId} URL
+```
 
 ---
 

@@ -24,6 +24,12 @@ Guacamole Spring Boot 全部配置参考。
 - [功能扩展模块配置](#功能扩展模块配置)
   - [History 会话录像](#history-会话录像)
   - [Vault KSM 密钥管理](#vault-ksm-密钥管理)
+- [系统配置模块（运行时可改）](#系统配置模块运行时可改)
+  - [品牌定制（branding）](#品牌定制branding)
+  - [主题配色（theme）](#主题配色theme)
+  - [安全策略（security）](#安全策略security)
+  - [系统公告（announcement）](#系统公告announcement)
+  - [配置优先级](#配置优先级)
 - [多认证链配置](#多认证链配置)
 - [环境变量覆盖](#环境变量覆盖)
 - [常见配置场景](#常见配置场景)
@@ -782,6 +788,92 @@ KSM 模块还读取以下文件：
 - **属性文件：** `<GUACAMOLE_HOME>/guacamole.properties.ksm` -- 将 Guacamole 属性名映射到 Keeper 密钥名
 
 详见 [vault-module.md](vault-module.md)。
+
+---
+
+## 系统配置模块（运行时可改）
+
+系统配置模块将品牌定制、主题配色、安全策略和公告管理存入数据库，支持管理员通过 Web 界面实时修改，无需重启应用。需要启用至少一个 JDBC 扩展（PostgreSQL/MySQL/SQL Server）。
+
+### 前置条件
+
+1. 执行 `003-create-system-config.sql` DDL 创建 `guacamole_system_config` 和 `guacamole_system_file` 表
+2. `application.yml` 中启用 JDBC 扩展（如 `guacamole.auth.postgresql.enabled: true`）
+
+### 品牌定制（branding）
+
+| config_key | 类型 | 默认值 | 说明 |
+|------------|------|--------|------|
+| `branding.site_name` | string | Apache Guacamole | 应用全称（显示在登录页和浏览器标题） |
+| `branding.site_name_short` | string | -- | 应用短称 |
+| `branding.logo` | file | -- | 登录页 Logo（亮色） |
+| `branding.logo_dark` | file | -- | 登录页 Logo（暗色） |
+| `branding.favicon` | file | -- | 浏览器标签页图标 |
+| `branding.login_background` | file | -- | 登录页背景图 |
+| `branding.copyright` | string | -- | 页面底部版权信息 |
+| `branding.support_url` | url | -- | 技术支持链接 |
+| `branding.help_url` | url | -- | 帮助文档链接 |
+
+### 主题配色（theme）
+
+| config_key | 类型 | 默认值 | 说明 |
+|------------|------|--------|------|
+| `theme.primary_color` | string | #1a56db | 品牌主色（#RRGGBB） |
+| `theme.accent_color` | string | #0694a2 | 品牌辅色 |
+| `theme.success_color` | string | #057a55 | 成功色 |
+| `theme.warning_color` | string | #f59e0b | 警告色 |
+| `theme.danger_color` | string | #e02424 | 危险色 |
+| `theme.mode` | enum | light | 亮色模式：`light`；暗色模式：`dark`；跟随系统：`auto` |
+
+主题配色通过 CSS 变量驱动，主色推导出 35 个变量，覆盖按钮、导航、背景、文字、边框、阴影等所有视觉元素。
+
+### 安全策略（security）— 已接入后端 PasswordPolicy
+
+| config_key | 类型 | 默认值 | 说明 |
+|------------|------|--------|------|
+| `security.password_min_length` | integer | 8 | 密码最小长度 |
+| `security.password_require_uppercase` | boolean | true | 要求包含大写字母 |
+| `security.password_require_number` | boolean | true | 要求数字 |
+| `security.password_require_special` | boolean | false | 要求特殊字符 |
+
+以上 4 项已接入三数据库（PostgreSQL/MySQL/SQL Server）的 `PasswordPolicy` 实现。修改后**即时生效**——下次用户创建或修改密码时即按新规则校验。规则：
+
+- DB 有值 → 使用 DB 值
+- DB 无值 → fallback 到 `application.yml` 中 `postgresql-user-password-min-length` 等旧属性
+- 旧属性也无值 → 不限制
+
+### 系统公告（announcement）
+
+| config_key | 类型 | 默认值 | 说明 |
+|------------|------|--------|------|
+| `announcement.message` | text | -- | 公告内容 |
+| `announcement.level` | enum | info | `info`（蓝）/ `warning`（橙）/ `error`（红） |
+| `announcement.enabled` | boolean | false | 是否启用 |
+| `announcement.start_time` | datetime | -- | 生效开始时间（UTC，不显示则始终有效） |
+| `announcement.end_time` | datetime | -- | 生效结束时间（UTC，不显示则永远有效） |
+| `announcement.closable` | boolean | true | 是否允许用户关闭公告 |
+
+公告显示为页面顶部单行横幅。`closable=true` 时用户可关闭，关闭状态保存在 `localStorage` 中，刷新不重显；管理员修改公告内容后自动重新显示。`start_time`/`end_time` 控制公告仅在指定时间窗口内显示。
+
+### 文件存储
+
+品牌定制中的 Logo、Favicon、背景图等通过文件上传组件管理，文件存储在服务器文件系统，元数据记录在 `guacamole_system_file` 表中。
+
+| 属性 | 默认值 | 说明 |
+|------|--------|------|
+| `guacamole.system.file-storage-path` | `${user.dir}/files` | 文件存储根目录，支持环境变量 |
+
+支持格式：SVG、PNG、JPG、ICO、GIF，单文件最大 2MB。
+
+### 配置优先级
+
+```
+数据库 guacamole_system_config 表（运行时修改）
+    ↓ 无值时 fallback
+application.yml 的 guacamole.system.defaults 段（构建时配置）
+    ↓ 无值时 fallback
+Guacamole 原生 guacamole.properties 属性
+```
 
 ---
 

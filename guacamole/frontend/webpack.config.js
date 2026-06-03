@@ -42,6 +42,39 @@ module.exports = {
     // Generate source maps
     devtool: 'source-map',
 
+    // webpack-dev-server configuration (npm run serve)
+    devServer: {
+        port: 3000,
+        hot: false,
+        liveReload: true,
+        static: {
+            directory: path.resolve(__dirname, 'src'),
+        },
+        proxy: [
+            {
+                context: ['/websocket-tunnel'],
+                target: 'http://localhost:8080',
+                changeOrigin: true,
+                ws: true
+            },
+            {
+                context: ['/api', '/tunnel', '/guacamole', '/app.css', '/app.js', '/app/ext', '/translations'],
+                target: 'http://localhost:8080',
+                changeOrigin: true
+            }
+        ],
+        devMiddleware: {
+            publicPath: '/',
+        },
+        historyApiFallback: true,
+        client: {
+            overlay: {
+                errors: true,
+                warnings: false,
+            },
+        },
+    },
+
     // Entry point for the Guacamole webapp is the "index" AngularJS module
     entry: './src/app/index/indexModule.js',
 

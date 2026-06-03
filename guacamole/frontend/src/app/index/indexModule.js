@@ -17,6 +17,9 @@
  * under the License.
  */
 
+// Import CSS variables first (theme system foundation)
+import './styles/variables.css';
+
 require('angular-module-shim.js');
 require('relocateParameters.js');
 

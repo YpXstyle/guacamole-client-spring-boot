@@ -28,7 +28,7 @@
 .connection-parameters .form .fields {
     display: table;
     padding-left: .5em;
-    border-left: 3px solid rgba(0,0,0,0.125);
+    border-left: 3px solid var(--gc-color-border);
     width: 100%;
 }
 

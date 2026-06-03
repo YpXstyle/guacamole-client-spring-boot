@@ -81,13 +81,10 @@
     padding: 0.25em 0.75em;
     margin: 0.25em;
 
-    -moz-border-radius: 0.5em;
-    -webkit-border-radius: 0.5em;
-    -khtml-border-radius: 0.5em;
-    border-radius: 0.5em;
+    border-radius: var(--gc-radius-lg);
 
-    color: white;
-    background: green;
+    color: var(--gc-color-text-on-primary);
+    background: var(--gc-color-success);
     font-size: 0.5em;
     font-style: italic;
     opacity: 0.5;

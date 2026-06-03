@@ -27,6 +27,7 @@ import java.util.TimeZone;
 import org.apache.guacamole.GuacamoleException;
 import org.apache.guacamole.GuacamoleServerException;
 import org.apache.guacamole.auth.jdbc.JDBCEnvironment;
+import org.apache.guacamole.auth.jdbc.system.SystemConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.guacamole.auth.jdbc.security.PasswordPolicy;
@@ -127,11 +128,15 @@ public class MySQLEnvironment extends JDBCEnvironment {
      *     If an error occurs while setting up the underlying JDBCEnvironment
      *     or while parsing legacy MySQL configuration options.
      */
+    private final SystemConfigService systemConfigService;
+
     public MySQLEnvironment() throws GuacamoleException {
+        this(null);
+    }
 
-        // Init underlying JDBC environment
+    public MySQLEnvironment(SystemConfigService systemConfigService) throws GuacamoleException {
         super();
-
+        this.systemConfigService = systemConfigService;
     }
 
     @Override
@@ -190,7 +195,7 @@ public class MySQLEnvironment extends JDBCEnvironment {
 
     @Override
     public PasswordPolicy getPasswordPolicy() {
-        return new MySQLPasswordPolicy(this);
+        return new MySQLPasswordPolicy(this, systemConfigService);
     }
 
     /**

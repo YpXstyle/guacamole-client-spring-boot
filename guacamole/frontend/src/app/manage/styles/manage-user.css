@@ -61,9 +61,9 @@
 
 .manage-user .notice.read-only {
 
-    background: #FDA;
-    border: 1px solid rgba(0, 0, 0, 0.125);
-    border-radius: 0.25em;
+    background: var(--gc-color-warning);
+    border: 1px solid var(--gc-color-shadow);
+    border-radius: var(--gc-radius);
 
     text-align: center;
     padding: 1em;

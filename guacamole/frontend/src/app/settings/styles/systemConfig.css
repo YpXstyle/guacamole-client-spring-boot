@@ -1,0 +1,325 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.system-config-view {
+    padding: 1em;
+}
+
+.system-config-view .header h2 {
+    margin-top: 0;
+}
+
+/* Tab navigation */
+.config-tabs ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--gc-color-border);
+    display: flex;
+}
+
+.config-tabs li {
+    margin: 0;
+}
+
+.config-tabs li a {
+    display: block;
+    padding: 0.75em 1em;
+    cursor: pointer;
+    color: var(--gc-color-text);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+}
+
+.config-tabs li a:hover {
+    background: var(--gc-color-hover);
+}
+
+.config-tabs li.active a {
+    border-bottom-color: var(--gc-color-primary);
+    font-weight: bold;
+}
+
+/* Config sections */
+.config-section {
+    margin-top: 1em;
+}
+
+.config-section h3 {
+    margin-top: 0;
+}
+
+/* Config fields table */
+.config-fields {
+    width: 100%;
+    max-width: 600px;
+    border-collapse: collapse;
+}
+
+.config-fields td {
+    padding: 0.5em;
+    vertical-align: top;
+}
+
+.config-fields .field-header {
+    width: 200px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.config-fields input[type="text"],
+.config-fields input[type="url"],
+.config-fields input[type="number"],
+.config-fields textarea,
+.config-fields select {
+    width: 100%;
+    max-width: 300px;
+    padding: 0.3em;
+    border: 1px solid var(--gc-color-border-input);
+    border-radius: var(--gc-radius-sm);
+    font-family: var(--gc-font-family);
+}
+
+.config-fields input[type="checkbox"] {
+    width: auto;
+}
+
+.config-fields input[type="color"] {
+    width: 50px;
+    height: 30px;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.color-value {
+    margin-left: 0.5em;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+/* Config actions */
+.config-actions {
+    margin-top: 1.5em;
+    display: flex;
+    gap: 0.5em;
+}
+
+/* Theme preview */
+.theme-preview {
+    margin-top: 2em;
+    padding: 1em;
+    border: 1px solid var(--gc-color-border);
+    border-radius: var(--gc-radius);
+    background: var(--gc-color-bg-secondary);
+}
+
+.theme-preview h4 {
+    margin-top: 0;
+}
+
+.preview-buttons {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.preview-primary {
+    background-color: var(--gc-color-primary);
+    color: var(--gc-color-text-on-primary);
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: var(--gc-radius);
+    cursor: pointer;
+}
+
+.preview-danger {
+    background-color: var(--gc-color-danger);
+    color: var(--gc-color-text-on-primary);
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: var(--gc-radius);
+    cursor: pointer;
+}
+
+.preview-link {
+    color: var(--gc-color-link);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.preview-card {
+    background: var(--gc-color-bg);
+    border: 1px solid var(--gc-color-border);
+    border-radius: var(--gc-radius);
+    overflow: hidden;
+}
+
+.preview-card-header {
+    background: var(--gc-color-primary);
+    color: var(--gc-color-text-on-primary);
+    padding: 0.5em 1em;
+    font-weight: bold;
+}
+
+.preview-card-body {
+    padding: 1em;
+    color: var(--gc-color-text);
+}
+
+/* ===== File upload component ===== */
+
+.guac-file-upload {
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+    flex-wrap: wrap;
+}
+
+/* ===== Preview ===== */
+
+.file-preview {
+    position: relative;
+    display: inline-flex;
+    border-radius: var(--gc-radius, 4px);
+    overflow: hidden;
+    border: 1px solid var(--gc-color-border);
+    background: var(--gc-color-bg);
+    flex-shrink: 0;
+}
+
+.preview-image {
+    display: block;
+    max-width: 120px;
+    max-height: 64px;
+    object-fit: contain;
+    background: repeating-conic-gradient(
+        var(--gc-color-bg-secondary, #eee) 0% 25%,
+        transparent 0% 50%
+    ) 50% / 16px 16px;
+}
+
+.preview-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.file-preview:hover .preview-overlay {
+    opacity: 1;
+}
+
+.remove-button {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gc-color-danger, #e02424);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s;
+}
+
+.remove-button:hover {
+    transform: scale(1.1);
+}
+
+.remove-button:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+/* ===== Upload area ===== */
+
+.upload-area {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.upload-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    padding: 0.35em 0.75em;
+    background: var(--gc-color-bg);
+    border: 1px dashed var(--gc-color-border);
+    border-radius: var(--gc-radius, 4px);
+    cursor: pointer;
+    font-size: 0.85em;
+    color: var(--gc-color-text-secondary);
+    transition: border-color 0.15s, color 0.15s;
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-button:hover {
+    border-color: var(--gc-color-primary);
+    color: var(--gc-color-primary);
+}
+
+.upload-icon {
+    font-size: 1.1em;
+    line-height: 1;
+}
+
+.upload-label {
+    white-space: nowrap;
+}
+
+.file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-hint {
+    font-size: 0.8em;
+    color: var(--gc-color-text-muted);
+    white-space: nowrap;
+}
+
+/* ===== Loading state ===== */
+
+.upload-loading {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    color: var(--gc-color-text-secondary);
+    font-size: 0.85em;
+}

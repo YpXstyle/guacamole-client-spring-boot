@@ -62,7 +62,7 @@ h3.totp-details-header::before {
 }
 
 .totp-hide-details, .totp-show-details {
-    color: blue;
+    color: var(--gc-color-link);
     text-decoration: underline;
     cursor: pointer;
     margin: 0 0.25em;

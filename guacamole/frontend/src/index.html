@@ -41,6 +41,9 @@
     </head>
     <body ng-cloak translate-cloak ng-class="page.bodyClassName" ng-switch="applicationState">
 
+        <!-- System announcement banner -->
+        <guac-announcement></guac-announcement>
+
         <!-- Manually logged-out -->
         <div class="logged-out-modal" ng-switch-when="loggedOut">
             <guac-modal>
@@ -85,7 +88,7 @@
                     values="acceptedCredentials"></guac-login>
 
         <!-- Content for logged-in users -->
-        <div ng-switch-when="ready">
+        <div class="app-container" ng-switch-when="ready">
 
             <!-- Global status/error dialog -->
             <guac-modal class="global-status-modal" ng-if="guacNotification.getStatus()">
@@ -98,6 +101,11 @@
             <!-- All active connections -->
             <div id="other-connections">
                 <guac-client-panel client-groups="getManagedClientGroups()"></guac-client-panel>
+            </div>
+
+            <!-- Page footer with copyright -->
+            <div class="app-footer" ng-show="copyright">
+                {{copyright}}
             </div>
 
         </div>

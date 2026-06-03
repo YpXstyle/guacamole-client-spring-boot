@@ -18,16 +18,13 @@
  */
 
 .clipboard, .clipboard-service-target {
-    background: white;
+    background: var(--gc-color-bg);
 }
 
 .clipboard  {
     position: relative;
-    border: 1px solid #AAA;
-    -moz-border-radius: 0.25em;
-    -webkit-border-radius: 0.25em;
-    -khtml-border-radius: 0.25em;
-    border-radius: 0.25em;
+    border: 1px solid var(--gc-color-border-light);
+    border-radius: var(--gc-radius);
     width: 100%;
     height: 2in;
     white-space: pre;

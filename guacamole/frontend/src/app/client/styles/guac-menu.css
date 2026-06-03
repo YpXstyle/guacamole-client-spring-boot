@@ -134,7 +134,7 @@
 
 #guac-menu #devices .device:hover {
     cursor: pointer;
-    border-color: black;
+    border-color: var(--gc-color-border);
 }
 
 #guac-menu #devices .device.filesystem {
