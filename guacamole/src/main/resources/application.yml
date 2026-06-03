@@ -10,11 +10,11 @@ guacamole:
   # Authentication extensions (enable via Maven dependency + set to true)
   auth:
     header:
-      enabled: true
+      enabled: false
     duo:
       enabled: false
     json:
-      enabled: true
+      enabled: false
     ldap:
       enabled: false
       ldap-hostname: ldap.forumsys.com
@@ -25,14 +25,20 @@ guacamole:
       enabled: false
     radius:
       enabled: false
+      radius-hostname: radius.example.com
+      radius-shared-secret: ${RADIUS_SECRET}
+      radius-auth-protocol: pap
     quickconnect:
       enabled: true
     mysql:
       enabled: false
+      auto-create-accounts: true
     postgresql:
       enabled: true
+      auto-create-accounts: true
     sqlserver:
       enabled: false
+      auto-create-accounts: true
     # CAS 单点登录配置
     sso-cas:
       enabled: false

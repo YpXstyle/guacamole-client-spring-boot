@@ -498,7 +498,7 @@ guacamole:
       enabled: true
       radius-hostname: radius.example.com
       radius-shared-secret: ${RADIUS_SECRET}
-      radius-auth-protocol: PAP
+      radius-auth-protocol: pap
 ```
 
 | Property | Type | Required | Default | Description |
@@ -508,7 +508,7 @@ guacamole:
 | `guacamole.auth.radius.radius-auth-port` | int | No | `1812` | RADIUS authentication port |
 | `guacamole.auth.radius.radius-acct-port` | int | No | `1813` | RADIUS accounting port |
 | `guacamole.auth.radius.radius-shared-secret` | string | **Yes** | -- | RADIUS shared secret |
-| `guacamole.auth.radius.radius-auth-protocol` | enum | **Yes** | -- | Authentication protocol: `PAP`, `CHAP`, `MSCHAPv1`, `MSCHAPv2`, `EAP-TLS`, `EAP-TTLS` |
+| `guacamole.auth.radius.radius-auth-protocol` | enum | **Yes** | -- | Authentication protocol (lowercase): `pap`, `chap`, `mschapv1`, `mschapv2`, `eap-md5`, `eap-tls`, `eap-ttls` |
 | `guacamole.auth.radius.radius-max-retries` | int | No | `5` | Maximum retry count |
 | `guacamole.auth.radius.radius-timeout` | int | No | `60` | Timeout (seconds) |
 | `guacamole.auth.radius.radius-ca-file` | string | No | `{guacamoleHome}/ca.crt` | CA certificate file path |
@@ -907,8 +907,21 @@ Login request
 - JDBC + LDAP + TOTP — Allowed
 - LDAP + JSON + QuickConnect — Allowed
 - PostgreSQL + CAS — Allowed
+- PostgreSQL + RADIUS — Allowed (RADIUS as external auth source, requires `auto-create-accounts: true` for automatic DB account creation)
 - MySQL + PostgreSQL — **Rejected** (JDBC conflict)
 - CAS + OpenID — **Rejected** (SSO conflict)
+
+### External Authentication Sources and Auto Account Creation
+
+External auth sources like RADIUS, LDAP, Header, and SSO only handle **password verification** — they don't manage user authorization. After authentication succeeds, the JDBC module's `getUserContext()` checks if the user exists in the database:
+
+| `auto-create-accounts` | External Auth Succeeds | Result |
+|-----------------------|--------------|--------|
+| `false` (default) | User doesn't exist in DB | Login succeeds but no connection permissions (empty page) |
+| `true` | User doesn't exist in DB | Automatically creates account in `guacamole_user` table, login successful |
+| `true` | User already exists in DB | Uses existing account directly (existing permissions preserved) |
+
+> **Note:** Auto-created accounts have no connection permissions. An administrator must manually assign permissions via the Guacamole management interface.
 
 ### Example: LDAP + PostgreSQL + TOTP
 
