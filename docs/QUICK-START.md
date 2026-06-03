@@ -1,5 +1,7 @@
 # Guacamole Spring Boot 快速入门指南
 
+[← 返回文档索引](../README_zh.md#documentation-index)
+
 本文面向首次使用的用户，手把手引导您从零搭建并运行 Guacamole Spring Boot 系统。
 
 ---

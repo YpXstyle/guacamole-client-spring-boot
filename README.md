@@ -1,78 +1,80 @@
 # Guacamole Spring Boot
 
+**[中文](README_zh.md)** | **English**
+
 [![Java](https://img.shields.io/badge/Java-17-blue.svg)](https://adoptium.net/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.5-green.svg)](https://spring.io/projects/spring-boot)
 [![Guacamole](https://img.shields.io/badge/Guacamole-1.5.5-orange.svg)](https://guacamole.apache.org/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-lightgrey.svg)](LICENSE)
 
-**Apache Guacamole 1.5.5** —— 从 Google Guice 迁移至 **Spring Boot 3.3.5 + Java 17**。
+**Apache Guacamole 1.5.5** — migrated from Google Guice to **Spring Boot 3.3.5 + Java 17**.
 
-本项目是上游 [Apache Guacamole](https://github.com/apache/guacamole-client) Web 应用程序的完整迁移，将原有的 Google Guice 依赖注入框架替换为 Spring Boot 的自动配置和 Starter 模式。所有扩展模块均已标准化为 Spring Boot Starter，同时保留了 Jersey JAX-RS REST 层、WebSocket 隧道和 AngularJS 前端。
+This project is a complete migration of the upstream [Apache Guacamole](https://github.com/apache/guacamole-client) web application, replacing the original Google Guice dependency injection framework with Spring Boot's auto-configuration and Starter pattern. All extension modules have been standardized as Spring Boot Starters while preserving the Jersey JAX-RS REST layer, WebSocket tunnel, and AngularJS frontend.
 
-Group ID 已从 `org.apache.guacamole` 变更为 `com.right`。除此之外，所有公开 REST API 均与原始项目完全兼容。
-
----
-
-## 目录
-
-- [功能特性](#功能特性)
-- [系统架构](#系统架构)
-- [扩展模块](#扩展模块)
-- [快速开始](#快速开始)
-- [配置快速参考](#配置快速参考)
-- [迁移状态总览](#迁移状态总览)
-- [构建与部署](#构建与部署)
-- [项目结构](#项目结构)
-- [已知问题](#已知问题)
-- [文档索引](#文档索引)
-- [许可证](#许可证)
+The Group ID has been changed from `org.apache.guacamole` to `com.right`. All public REST APIs remain fully compatible with the original project.
 
 ---
 
-## 功能特性
+## Table of Contents
 
-- **Spring Boot 3.3.5 + Java 17** —— 生产级基础框架，支持自动配置、Actuator 监控和简化部署
-- **17 个扩展模块** —— 全部转换为 Spring Boot Starter 构件，通过 `@ConditionalOnProperty` 控制启用/禁用
-- **完整协议支持** —— RDP、VNC、SSH、Telnet、Kubernetes（通过 guacd 1.5.5）
-- **会话录制** —— 连接历史记录的存储与回放
-- **连接共享** —— 共享活跃会话，支持细粒度权限控制
-- **Vault 集成** —— Keeper Secrets Manager (KSM) 凭据注入
-- **Docker 支持** —— 多阶段 Dockerfile + docker-compose（guacd + PostgreSQL）
-- **构建时 JS/CSS 压缩** —— Google Closure Compiler（与上游行为一致）
-- **构建标识符** —— `${guacamole.build.identifier}` 时间戳生成并注入前端资源，匹配原版 Apache Guacamole 构建行为
+- [Features](#features)
+- [Architecture](#architecture)
+- [Extensions](#extensions)
+- [Quick Start](#quick-start)
+- [Configuration Quick Reference](#configuration-quick-reference)
+- [Migration Status](#migration-status)
+- [Build and Deploy](#build-and-deploy)
+- [Project Structure](#project-structure)
+- [Known Issues](#known-issues)
+- [Documentation](#documentation)
+- [License](#license)
 
-### 扩展构件列表
+---
 
-| 分类 | Artifact ID |
-|------|-------------|
-| 认证 | `guacamole-auth-header-starter` |
-| 认证 | `guacamole-auth-json-starter` |
-| 认证 | `guacamole-auth-ldap-starter` |
-| 认证 | `guacamole-auth-radius-starter` |
-| 认证 | `guacamole-auth-totp-starter` |
-| 认证 | `guacamole-auth-duo-starter` |
-| 认证 | `guacamole-auth-mysql-starter` |
-| 认证 | `guacamole-auth-postgresql-starter` |
-| 认证 | `guacamole-auth-sqlserver-starter` |
-| 认证 | `guacamole-auth-quickconnect-starter` |
+## Features
+
+- **Spring Boot 3.3.5 + Java 17** — Production-grade framework with auto-configuration, Actuator monitoring, and simplified deployment
+- **17 Extension Modules** — All converted to Spring Boot Starter artifacts, enabled/disabled via `@ConditionalOnProperty`
+- **Full Protocol Support** — RDP, VNC, SSH, Telnet, Kubernetes (via guacd 1.5.5)
+- **Session Recording** — Storage and playback of connection history
+- **Connection Sharing** — Share active sessions with fine-grained permission control
+- **Vault Integration** — Keeper Secrets Manager (KSM) credential injection
+- **Docker Support** — Multi-stage Dockerfile + docker-compose (guacd + PostgreSQL)
+- **Build-time JS/CSS Minification** — Google Closure Compiler (consistent with upstream behavior)
+- **Build Identifier** — `${guacamole.build.identifier}` timestamp generation and injection into frontend resources, matching original Apache Guacamole build behavior
+
+### Extension Artifacts
+
+| Category | Artifact ID |
+|----------|-------------|
+| Authentication | `guacamole-auth-header-starter` |
+| Authentication | `guacamole-auth-json-starter` |
+| Authentication | `guacamole-auth-ldap-starter` |
+| Authentication | `guacamole-auth-radius-starter` |
+| Authentication | `guacamole-auth-totp-starter` |
+| Authentication | `guacamole-auth-duo-starter` |
+| Authentication | `guacamole-auth-mysql-starter` |
+| Authentication | `guacamole-auth-postgresql-starter` |
+| Authentication | `guacamole-auth-sqlserver-starter` |
+| Authentication | `guacamole-auth-quickconnect-starter` |
 | SSO | `guacamole-auth-sso-cas-starter` |
 | SSO | `guacamole-auth-sso-openid-starter` |
 | SSO | `guacamole-auth-sso-saml-starter` |
 | Vault | `guacamole-vault-ksm-starter` |
-| 历史记录 | `guacamole-history-starter` |
+| History | `guacamole-history-starter` |
 
 ---
 
-## 系统架构
+## Architecture
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│                      浏览器 (AngularJS)                       │
-│    WebSocket (guacamole 协议)   │  REST API (Jersey)         │
+│                      Browser (AngularJS)                       │
+│    WebSocket (guacamole protocol)  │  REST API (Jersey)       │
 └──────────────────┬────────────────────┬───────────────────────┘
                    │                    │
 ┌──────────────────▼────────────────────▼───────────────────────┐
-│                  Spring Boot 应用 (Fat JAR)                    │
+│                  Spring Boot Application (Fat JAR)             │
 │                                                               │
 │  ┌───────────────────────────────────────────────────────┐    │
 │  │                Jersey JAX-RS (/api/*)                  │    │
@@ -80,7 +82,7 @@ Group ID 已从 `org.apache.guacamole` 变更为 `com.right`。除此之外，�
 │  └───────────────────────────────────────────────────────┘    │
 │                                                               │
 │  ┌───────────────────────────────────────────────────────┐    │
-│  │             扩展系统 (Starter 模式)                     │    │
+│  │             Extension System (Starter Pattern)         │    │
 │  │                                                       │    │
 │  │  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────────┐   │    │
 │  │  │Header│ │JSON  │ │JDBC  │ │LDAP  │ │SSO (CAS/ │   │    │
@@ -93,14 +95,14 @@ Group ID 已从 `org.apache.guacamole` 变更为 `com.right`。除此之外，�
 │  └───────────────────────────────────────────────────────┘    │
 │                                                               │
 │  ┌───────────────────────────────────────────────────────┐    │
-│  │                   核心服务                              │    │
+│  │                   Core Services                        │    │
 │  │  Environment   TokenSessionMap   TunnelRequest         │    │
 │  │  ExtensionLoader   LanguageService   ResourceServlet   │    │
 │  └───────────────────────────────────────────────────────┘    │
 │                                                               │
 │  ┌───────────────────────────────────────────────────────┐    │
-│  │              Spring Boot 基础设施                      │    │
-│  │  Tomcat (内嵌)   Actuator   配置管理                   │    │
+│  │              Spring Boot Infrastructure                │    │
+│  │  Tomcat (embedded)   Actuator   Config Management     │    │
 │  └───────────────────────────────────────────────────────┘    │
 └───────────────────────────┬───────────────────────────────────┘
                             │
@@ -110,73 +112,108 @@ Group ID 已从 `org.apache.guacamole` 变更为 `com.right`。除此之外，�
 └───────────────────────────────────────────────────────────────┘
 ```
 
-### 关键设计决策对照
+### Key Design Decisions
 
-| 方面 | 原始版本 (Guice) | Spring Boot 迁移版 |
-|------|-------------------|---------------------|
-| DI 框架 | Google Guice `@Inject` | Spring `@Autowired` |
-| 模块加载 | `AbstractModule.bind()` | `@AutoConfiguration` + `@Bean` |
-| REST 框架 | Jersey（不变） | Jersey（不变） |
-| WebSocket | Guice 辅助的 JSR 356 | Tomcat 生命周期 + JSR 356 |
-| 配置方式 | `guacamole.properties` | `application.yml` |
-| 扩展发现 | `ServiceLoader` + `GUACAMOLE_HOME/extensions/` | `ResourcePatternResolver` 类路径扫描 |
-| 属性解析 | `LocalEnvironment` + 文件 | Spring `Environment` 桥接 |
-| 打包方式 | WAR（部署到 Tomcat） | Spring Boot Fat JAR（内嵌 Tomcat） |
-| 构建工具 | Ant / Maven WAR | Spring Boot Maven 插件 |
+| Aspect | Original (Guice) | Spring Boot Migration |
+|--------|-------------------|----------------------|
+| DI Framework | Google Guice `@Inject` | Spring `@Autowired` |
+| Module Loading | `AbstractModule.bind()` | `@AutoConfiguration` + `@Bean` |
+| REST Framework | Jersey (unchanged) | Jersey (unchanged) |
+| WebSocket | Guice-assisted JSR 356 | Tomcat lifecycle + JSR 356 |
+| Configuration | `guacamole.properties` | `application.yml` |
+| Extension Discovery | `ServiceLoader` + `GUACAMOLE_HOME/extensions/` | `ResourcePatternResolver` classpath scan |
+| Property Resolution | `LocalEnvironment` + file | Spring `Environment` bridge |
+| Packaging | WAR (deploy to Tomcat) | Spring Boot Fat JAR (embedded Tomcat) |
+| Build Tool | Ant / Maven WAR | Spring Boot Maven Plugin |
 | Group ID | `org.apache.guacamole` | `com.right` |
 
 ---
 
-## 快速开始
+## Extensions
 
-详细的逐步操作指南请参阅 [docs/QUICK-START.md](docs/QUICK-START.md)。以下为快速参考。
+### Authentication Extensions
 
-### 环境要求
+| Extension | Artifact | Description | Status |
+|-----------|----------|-------------|--------|
+| **Header Auth** | `guacamole-auth-header-starter` | Reverse proxy SSO: reads username from HTTP headers (e.g., `REMOTE_USER`) | ✅ Verified |
+| **JSON Auth** | `guacamole-auth-json-starter` | Encrypted token authentication, no database required | ✅ Verified |
+| **JDBC MySQL** | `guacamole-auth-mysql-starter` | MySQL database authentication and connection storage | ✅ Verified |
+| **JDBC PostgreSQL** | `guacamole-auth-postgresql-starter` | PostgreSQL database authentication and connection storage | ✅ Verified |
+| **JDBC SQL Server** | `guacamole-auth-sqlserver-starter` | SQL Server database authentication and connection storage | ✅ Verified |
+| **LDAP** | `guacamole-auth-ldap-starter` | LDAP / Active Directory authentication | ✅ Verified |
+| **RADIUS** | `guacamole-auth-radius-starter` | RADIUS authentication (PAP, CHAP, MSCHAPv1/v2, EAP-MD5, EAP-TLS) | ✅ Verified |
+| **TOTP** | `guacamole-auth-totp-starter` | Time-based One-Time Password (Google Authenticator, Authy, etc.) | ✅ Verified |
+| **DUO** | `guacamole-auth-duo-starter` | Duo Security two-factor authentication | ⚠️ Needs upgrade |
+| **SSO CAS** | `guacamole-auth-sso-cas-starter` | CAS single sign-on | ✅ Verified |
+| **SSO OpenID** | `guacamole-auth-sso-openid-starter` | OpenID Connect (Google, Okta, Keycloak, etc.) | ✅ Verified |
+| **SSO SAML** | `guacamole-auth-sso-saml-starter` | SAML 2.0 single sign-on | ✅ Verified |
 
-- **JDK 17** 或更高版本
+### Feature Extensions
+
+| Extension | Artifact | Description | Status |
+|-----------|----------|-------------|--------|
+| **Quick Connect** | `guacamole-auth-quickconnect-starter` | Create ad-hoc connections via URI (e.g., `rdp://host:3389`) | ✅ Verified |
+| **History** | `guacamole-history-starter` | Session recording storage and playback | ✅ Verified |
+| **Vault KSM** | `guacamole-vault-ksm-starter` | Keeper Secrets Manager credential injection | ⏳ Pending testing |
+
+### Mutual Exclusion Constraints
+
+- **JDBC Database Mutual Exclusion** — MySQL, PostgreSQL, SQL Server can only enable one at a time
+- **SSO Policy Mutual Exclusion** — CAS, OpenID Connect, SAML cannot be enabled simultaneously
+- **DUO Requires SDK v4 Upgrade** — Current implementation uses Duo Web SDK v2, deprecated by Duo in March 2024 (see [Known Issues](#known-issues))
+
+---
+
+## Quick Start
+
+For a detailed step-by-step guide, see [docs/QUICK-START_EN.md](docs/QUICK-START_EN.md). Below is a quick reference.
+
+### Requirements
+
+- **JDK 17** or higher
 - **Maven 3.8+**
-- **guacd** 1.5.5 运行中（Docker: `docker run -d -p 4822:4822 guacamole/guacd:1.5.5`）
-- **PostgreSQL**（或 MySQL / SQL Server），已初始化 Guacamole 数据库
+- **guacd** 1.5.5 running (Docker: `docker run -d -p 4822:4822 guacamole/guacd:1.5.5`)
+- **PostgreSQL** (or MySQL / SQL Server) with Guacamole database initialized
 
-### 从源码构建并运行
+### Build and Run from Source
 
 ```bash
-# 克隆并构建
+# Clone and build
 git clone <repository-url>
 cd guacamole-spring-boot
 mvn clean package -DskipTests
 
-# 运行
+# Run
 java -jar guacamole/target/guacamole-*.jar
 ```
 
-### 使用 Maven 插件运行
+### Run with Maven Plugin
 
 ```bash
 mvn spring-boot:run -pl guacamole
 ```
 
-### 使用 Docker 运行
+### Run with Docker
 
 ```bash
 docker-compose up -d
 ```
 
-这会启动三个服务：
-- **guacd** —— Guacamole 代理守护进程（镜像: `guacamole/guacd:1.5.5`）
-- **postgres** —— PostgreSQL 16（已初始化 `guacamole` 数据库）
-- **guacamole** —— Spring Boot 应用程序（从本地源码构建）
+This starts three services:
+- **guacd** — Guacamole proxy daemon (image: `guacamole/guacd:1.5.5`)
+- **postgres** — PostgreSQL 16 (with initialized `guacamole` database)
+- **guacamole** — Spring Boot application (built from local source)
 
-### 默认访问信息
+### Default Access
 
-| 项目 | 值 |
-|------|------|
+| Item | Value |
+|------|-------|
 | URL | `http://localhost:8080/` |
-| 默认管理员 | `guacadmin` / `guacadmin`（启用 JDBC 认证时） |
+| Default Admin | `guacadmin` / `guacadmin` (when JDBC auth enabled) |
 
-### 初始化数据库
+### Initialize Database
 
-使用 JDBC 认证时，首次运行前需创建数据库模式：
+When using JDBC authentication, create the database schema before first run:
 
 **PostgreSQL:**
 ```bash
@@ -204,46 +241,11 @@ sqlcmd -S localhost -U guacamole -P guacamole -d guacamole \
 
 ---
 
-## 扩展模块
+## Configuration Quick Reference
 
-### 认证扩展
+Default configuration file is at `guacamole/src/main/resources/application.yml`. Full configuration reference: **[docs/CONFIGURATION_EN.md](docs/CONFIGURATION_EN.md)**.
 
-| 扩展 | Artifact | 说明 | 状态 |
-|------|----------|------|------|
-| **Header Auth** | `guacamole-auth-header-starter` | 反向代理 SSO：从 HTTP 头（如 `REMOTE_USER`）读取用户名 | ✅ 已验证 |
-| **JSON Auth** | `guacamole-auth-json-starter` | 加密令牌认证，无需数据库 | ✅ 已验证 |
-| **JDBC MySQL** | `guacamole-auth-mysql-starter` | MySQL 数据库认证和连接存储 | ✅ 已验证 |
-| **JDBC PostgreSQL** | `guacamole-auth-postgresql-starter` | PostgreSQL 数据库认证和连接存储 | ✅ 已验证 |
-| **JDBC SQL Server** | `guacamole-auth-sqlserver-starter` | SQL Server 数据库认证和连接存储 | ✅ 已验证 |
-| **LDAP** | `guacamole-auth-ldap-starter` | LDAP / Active Directory 认证 | ✅ 已验证 |
-| **RADIUS** | `guacamole-auth-radius-starter` | RADIUS 认证（PAP、CHAP、MSCHAPv1/v2、EAP-MD5、EAP-TLS） | ✅ 已验证 |
-| **TOTP** | `guacamole-auth-totp-starter` | 基于时间的一次性密码（Google Authenticator、Authy 等） | ✅ 已验证 |
-| **DUO** | `guacamole-auth-duo-starter` | Duo Security 双因素认证 | ⚠️ 需要升级 |
-| **SSO CAS** | `guacamole-auth-sso-cas-starter` | CAS 单点登录 | ✅ 已验证 |
-| **SSO OpenID** | `guacamole-auth-sso-openid-starter` | OpenID Connect（Google、Okta、Keycloak 等） | ✅ 已验证 |
-| **SSO SAML** | `guacamole-auth-sso-saml-starter` | SAML 2.0 单点登录 | ✅ 已验证 |
-
-### 功能扩展
-
-| 扩展 | Artifact | 说明 | 状态 |
-|------|----------|------|------|
-| **Quick Connect** | `guacamole-auth-quickconnect-starter` | 通过 URI 创建临时连接（如 `rdp://host:3389`） | ✅ 已验证 |
-| **History** | `guacamole-history-starter` | 会话录制存储和回放 | ✅ 已验证 |
-| **Vault KSM** | `guacamole-vault-ksm-starter` | Keeper Secrets Manager 凭据注入 | ⏳ 待测试 |
-
-### 互斥约束
-
-- **JDBC 数据库互斥** —— MySQL、PostgreSQL、SQL Server 同时只能启用一个
-- **SSO 策略互斥** —— CAS、OpenID Connect、SAML 不能同时启用
-- **DUO 需要 SDK v4 升级** —— 当前实现使用 Duo Web SDK v2，该 SDK 已于 2024 年 3 月被 Duo 弃用（参见[已知问题](#已知问题)）
-
----
-
-## 配置快速参考
-
-默认配置文件位于 `guacamole/src/main/resources/application.yml`。完整的配置参考文档见 **[docs/CONFIGURATION.md](docs/CONFIGURATION.md)**。
-
-### 最小配置 (PostgreSQL)
+### Minimal Configuration (PostgreSQL)
 
 ```yaml
 server:
@@ -265,35 +267,35 @@ spring:
     driver-class-name: org.postgresql.Driver
 ```
 
-### 启用扩展
+### Enabling Extensions
 
-所有扩展默认禁用。在 `application.yml` 中启用：
+All extensions are disabled by default. Enable in `application.yml`:
 
 ```yaml
 guacamole:
   auth:
     header:
-      enabled: true       # 反向代理 SSO
+      enabled: true       # Reverse proxy SSO
     json:
-      enabled: true       # 加密令牌认证
+      enabled: true       # Encrypted token auth
     quickconnect:
-      enabled: true       # URI 快速连接
+      enabled: true       # URI quick connect
     postgresql:
-      enabled: true       # 数据库认证（JDBC：选一个）
+      enabled: true       # Database auth (JDBC: pick one)
     mysql:
       enabled: false
     sqlserver:
       enabled: false
     ldap:
-      enabled: true       # LDAP / AD 认证
+      enabled: true       # LDAP / AD auth
     totp:
-      enabled: true       # TOTP 双因素认证
+      enabled: true       # TOTP two-factor auth
     radius:
-      enabled: true       # RADIUS 认证
+      enabled: true       # RADIUS auth
     duo:
-      enabled: false      # DUO（需要 SDK v4 升级）
+      enabled: false      # DUO (needs SDK v4 upgrade)
     sso-cas:
-      enabled: false      # CAS SSO（与其他 SSO 互斥）
+      enabled: false      # CAS SSO (mutually exclusive with other SSO)
     sso-openid:
       enabled: false      # OpenID Connect SSO
     sso-saml:
@@ -302,19 +304,19 @@ guacamole:
     ksm:
       enabled: false      # Vault KSM
   history:
-    enabled: true         # 会话录制
+    enabled: true         # Session recording
 ```
 
-扩展仅在同时满足以下两个条件时加载：
-1. Maven 依赖存在于 `guacamole/pom.xml` 中
-2. `enabled` 属性设置为 `true`
+Extensions load only when both conditions are met:
+1. Maven dependency exists in `guacamole/pom.xml`
+2. `enabled` property is set to `true`
 
-### 属性映射对照
+### Property Mapping
 
-原始 `guacamole.properties` 扁平命名空间已重组为 YAML 层次结构，置于 `guacamole.*` 下。例如：
+The original `guacamole.properties` flat namespace has been reorganized into YAML hierarchy under `guacamole.*`. Examples:
 
-| 原始属性 | application.yml 路径 |
-|----------|----------------------|
+| Original Property | application.yml Path |
+|-------------------|---------------------|
 | `guacd-hostname` | `guacamole.guacd.hostname` |
 | `mysql-hostname` | `guacamole.auth.mysql.mysql-hostname` |
 | `ldap-hostname` | `guacamole.auth.ldap.ldap-hostname` |
@@ -323,284 +325,294 @@ guacamole:
 | `saml-idp-url` | `guacamole.auth.sso-saml.saml-idp-url` |
 | `recording-search-path` | `guacamole.history.recording-search-path` |
 
-数据库连接使用 **Spring Boot `spring.datasource`** 标准方式配置，取代了旧的 `<db>-hostname` / `<db>-port` 属性。
+Database connections use **Spring Boot `spring.datasource`** standard configuration, replacing the old `<db>-hostname` / `<db>-port` properties.
 
-完整属性映射表请参阅 **[docs/MIGRATION.md](docs/MIGRATION.md)**。
+Full property mapping table: **[docs/MIGRATION_EN.md](docs/MIGRATION_EN.md)**.
 
 ---
 
-## 迁移状态总览
+## Migration Status
 
-本项目是对 **Apache Guacamole 1.5.5**（上游：[apache/guacamole-client](https://github.com/apache/guacamole-client)）从原始 Guice 架构到 Spring Boot 3.3.5 的完整迁移。
+This project is a complete migration of **Apache Guacamole 1.5.5** (upstream: [apache/guacamole-client](https://github.com/apache/guacamole-client)) from the original Guice architecture to Spring Boot 3.3.5.
 
-### 已迁移组件
+### Migrated Components
 
-| 组件 | 状态 | 说明 |
-|------|------|------|
-| `guacamole-common`（协议库，47 文件） | ✅ 完成 | Java 17，Jakarta 命名空间 |
-| `guacamole-common-js`（JavaScript API，38 模块） | ✅ 完成 | 不变，通过 Maven reactor 引入 |
-| `guacamole-ext`（扩展 API，136 文件） | ✅ 完成 | AuthenticationProvider 等 |
-| `guacamole`（Web 应用程序） | ✅ 完成 | Spring Boot 主应用，Jersey，WebSocket |
-| `guacamole-auth-jdbc`（MySQL） | ✅ 完成 | Spring Boot Starter + MyBatis |
-| `guacamole-auth-jdbc`（PostgreSQL） | ✅ 完成 | Spring Boot Starter + MyBatis |
-| `guacamole-auth-jdbc`（SQL Server） | ✅ 完成 | Spring Boot Starter + MyBatis |
-| `guacamole-auth-header-starter` | ✅ 完成 | `@ConditionalOnProperty` 启用 |
-| `guacamole-auth-json-starter` | ✅ 完成 | 加密令牌认证 |
-| `guacamole-auth-ldap-starter` | ✅ 完成 | Apache Directory LDAP API |
-| `guacamole-auth-radius-starter` | ✅ 完成 | JRadius 库 |
-| `guacamole-auth-totp-starter` | ✅ 完成 | ZXing 二维码生成 |
-| `guacamole-auth-quickconnect-starter` | ✅ 完成 | URI 快速连接 |
-| `guacamole-auth-sso-cas-starter` | ✅ 完成 | CAS 客户端 |
-| `guacamole-auth-sso-openid-starter` | ✅ 完成 | jose4j JWT 库 |
-| `guacamole-auth-sso-saml-starter` | ✅ 完成 | OneLogin java-saml 工具包 |
-| `guacamole-history-starter` | ✅ 完成 | 会话录制 |
-| `guacamole-vault-ksm-starter` | ✅ 代码完成 | 等待 KSM 账号测试 |
+| Component | Status | Notes |
+|-----------|--------|-------|
+| `guacamole-common` (protocol lib, 47 files) | ✅ Complete | Java 17, Jakarta namespace |
+| `guacamole-common-js` (JS API, 38 modules) | ✅ Complete | Unchanged, included via Maven reactor |
+| `guacamole-ext` (extension API, 136 files) | ✅ Complete | AuthenticationProvider, etc. |
+| `guacamole` (web application) | ✅ Complete | Spring Boot main app, Jersey, WebSocket |
+| `guacamole-auth-jdbc` (MySQL) | ✅ Complete | Spring Boot Starter + MyBatis |
+| `guacamole-auth-jdbc` (PostgreSQL) | ✅ Complete | Spring Boot Starter + MyBatis |
+| `guacamole-auth-jdbc` (SQL Server) | ✅ Complete | Spring Boot Starter + MyBatis |
+| `guacamole-auth-header-starter` | ✅ Complete | `@ConditionalOnProperty` enablement |
+| `guacamole-auth-json-starter` | ✅ Complete | Encrypted token auth |
+| `guacamole-auth-ldap-starter` | ✅ Complete | Apache Directory LDAP API |
+| `guacamole-auth-radius-starter` | ✅ Complete | JRadius library |
+| `guacamole-auth-totp-starter` | ✅ Complete | ZXing QR code generation |
+| `guacamole-auth-quickconnect-starter` | ✅ Complete | URI quick connect |
+| `guacamole-auth-sso-cas-starter` | ✅ Complete | CAS client |
+| `guacamole-auth-sso-openid-starter` | ✅ Complete | jose4j JWT library |
+| `guacamole-auth-sso-saml-starter` | ✅ Complete | OneLogin java-saml toolkit |
+| `guacamole-history-starter` | ✅ Complete | Session recording |
+| `guacamole-vault-ksm-starter` | ✅ Code complete | Awaiting KSM account for testing |
 
-### 已变更内容
+### What Changed
 
-| 方面 | 上游原始版 | 本项目 |
-|------|-----------|--------|
-| 构建系统 | Ant + Maven WAR | Spring Boot Maven 插件 |
-| DI 框架 | Google Guice | Spring IoC / `@Autowired` |
-| 打包方式 | WAR（部署到 Servlet 容器） | Fat JAR（内嵌 Tomcat） |
-| 配置方式 | `guacamole.properties` 文件 | `application.yml` |
-| 扩展加载 | `GUACAMOLE_HOME/extensions/*.jar` | Maven 依赖 + `@ConditionalOnProperty` |
-| 扩展打包 | 普通 JAR | Spring Boot Starter |
+| Aspect | Upstream Original | This Project |
+|--------|------------------|--------------|
+| Build System | Ant + Maven WAR | Spring Boot Maven Plugin |
+| DI Framework | Google Guice | Spring IoC / `@Autowired` |
+| Packaging | WAR (deploy to Servlet container) | Fat JAR (embedded Tomcat) |
+| Configuration | `guacamole.properties` file | `application.yml` |
+| Extension Loading | `GUACAMOLE_HOME/extensions/*.jar` | Maven dependency + `@ConditionalOnProperty` |
+| Extension Packaging | Plain JAR | Spring Boot Starter |
 | Group ID | `org.apache.guacamole` | `com.right` |
-| Java 版本 | 8 / 11 | 17 |
-| Servlet API | javax（Tomcat 8/9） | jakarta（Tomcat 10 / Spring Boot 3.x） |
-| JDBC 框架 | 手动 DataSource + JDBC | MyBatis Spring Boot Starter |
+| Java Version | 8 / 11 | 17 |
+| Servlet API | javax (Tomcat 8/9) | jakarta (Tomcat 10 / Spring Boot 3.x) |
+| JDBC Framework | Manual DataSource + JDBC | MyBatis Spring Boot Starter |
 
-### 已保留内容
+### What Was Preserved
 
-- **所有 REST API 端点** —— 不变，与现有客户端完全兼容
-- **WebSocket 隧道协议** —— 不变
-- **AngularJS 1.8 前端** —— 保留自上游，通过 webpack 构建
-- **数据库模式** —— 相同的 SQL 脚本，无需数据迁移
-- **扩展 API** —— `AuthenticationProvider` 接口和 `guac-manifest.json` 结构
-- **构建时 JS/CSS 压缩** —— Google Closure Compiler（与上游相同）
-- **许可证** —— Apache 2.0（保留所有原始版权声明）
+- **All REST API endpoints** — Unchanged, fully compatible with existing clients
+- **WebSocket tunnel protocol** — Unchanged
+- **AngularJS 1.8 frontend** — Preserved from upstream, built via webpack
+- **Database schema** — Same SQL scripts, no data migration needed
+- **Extension API** — `AuthenticationProvider` interface and `guac-manifest.json` structure
+- **Build-time JS/CSS minification** — Google Closure Compiler (same as upstream)
+- **License** — Apache 2.0 (all original copyright notices preserved)
 
 ---
 
-## 构建与部署
+## Build and Deploy
 
-### 构建命令
+### Build Commands
 
 ```bash
-# 完整构建（所有模块）
+# Full build (all modules)
 mvn clean package -DskipTests
 
-# 仅构建 Web 应用程序
+# Build web application only
 mvn clean package -pl guacamole -am -DskipTests
 
-# 构建并运行测试
+# Build and run tests
 mvn clean package
 
-# 跳过前端构建
+# Skip frontend build
 mvn clean package -Dskip.frontend
 
-# 强制 npm install（当 package.json 变更时）
+# Force npm install (when package.json changes)
 mvn clean package -Dforce.npm.install
 ```
 
-构建会自动跳过 `node_modules` 存在时的 `npm install`（通过 `skip-npm-install` profile）。依赖变更后使用 `-Dforce.npm.install` 覆盖。
+The build automatically skips `npm install` when `node_modules` exists (via `skip-npm-install` profile). Use `-Dforce.npm.install` to override after dependency changes.
 
-### 前端开发
+### Frontend Development
 
 ```bash
 cd guacamole/frontend
 npm ci
-npm run build       # 生产构建（webpack + Google Closure Compiler）
-npm run dev         # 开发监听模式
+npm run build       # Production build (webpack + Google Closure Compiler)
+npm run dev         # Development watch mode
 ```
 
-前端是 AngularJS 1.8 应用程序，使用 webpack 4 构建。构建输出位于 `guacamole/src/main/resources/static/`。`GuacamoleSpringBootApplication` 将其作为静态资源提供服务。
+The frontend is an AngularJS 1.8 application built with webpack 4. Build output is at `guacamole/src/main/resources/static/`. `GuacamoleSpringBootApplication` serves it as static resources.
 
 ### Docker
 
 ```bash
-# 构建并启动所有服务（guacd + PostgreSQL + Guacamole）
+# Build and start all services (guacd + PostgreSQL + Guacamole)
 docker-compose up -d
 
-# 仅构建 Guacamole 镜像
+# Build Guacamole image only
 docker build -t guacamole-spring-boot .
 
-# 覆盖环境变量
+# Override environment variables
 GUACAMOLE_DB_PASSWORD=secret123 docker-compose up -d
 ```
 
-Dockerfile 使用多阶段构建：
-1. **构建阶段** —— `maven:3.9-eclipse-temurin-17-alpine` 编译并打包应用程序
-2. **运行阶段** —— `eclipse-temurin:17-jre-alpine` 以非 root 用户（`guacamole`）运行 Fat JAR
+The Dockerfile uses multi-stage builds:
+1. **Build stage** — `maven:3.9-eclipse-temurin-17-alpine` compiles and packages the application
+2. **Runtime stage** — `eclipse-temurin:17-jre-alpine` runs the Fat JAR as non-root user (`guacamole`)
 
-docker-compose.yml 将 guacd（端口 4822）、PostgreSQL 16（含健康检查）和 Guacamole 应用程序（端口 8080）编排为三个服务。数据库密码默认为 `guacamole`，可通过 `GUACAMOLE_DB_PASSWORD` 环境变量覆盖。
+docker-compose.yml orchestrates guacd (port 4822), PostgreSQL 16 (with health checks), and the Guacamole application (port 8080) as three services. Database password defaults to `guacamole` and can be overridden via `GUACAMOLE_DB_PASSWORD` environment variable.
 
-### 构建标识符
+### Build Identifier
 
-构建时生成 `${guacamole.build.identifier}` 时间戳（`yyyyMMddHHmmss` 格式），通过 Maven 资源过滤注入到：
-- `static/index.html` —— 缓存破坏参数
-- `static/verifyCachedVersion.js` —— 版本验证
+A `${guacamole.build.identifier}` timestamp (`yyyyMMddHHmmss` format) is generated at build time and injected into:
+- `static/index.html` — Cache-busting parameter
+- `static/verifyCachedVersion.js` — Version verification
 
-此行为与原版 Apache Guacamole 构建一致。`maven-resources-plugin` 配置为使用 `${}` 分隔符（从 Spring Boot 默认的 `@` 分隔符恢复）。
+This behavior is consistent with the original Apache Guacamole build. The `maven-resources-plugin` is configured to use `${}` delimiters (restored from Spring Boot's default `@` delimiter).
 
 ---
 
-## 项目结构
+## Project Structure
 
 ```
 guacamole-spring-boot/
-├── pom.xml                                      # 根 POM（Spring Boot parent 3.3.5）
-├── Dockerfile                                   # 多阶段 Docker 构建
+├── pom.xml                                      # Root POM (Spring Boot parent 3.3.5)
+├── Dockerfile                                   # Multi-stage Docker build
 ├── docker-compose.yml                           # guacd + PostgreSQL + Guacamole
 │
-├── guacamole-common/                            # Guacamole 协议库（Java，47 文件）
-├── guacamole-common-js/                         # Guacamole JavaScript API（npm 包，38 模块）
-├── guacamole-ext/                               # 扩展 API（AuthenticationProvider 等，136 文件）
+├── guacamole-common/                            # Guacamole protocol library (Java, 47 files)
+├── guacamole-common-js/                         # Guacamole JavaScript API (npm package, 38 modules)
+├── guacamole-ext/                               # Extension API (AuthenticationProvider, etc., 136 files)
 │
-├── guacamole/                                   # 主 Web 应用程序（Spring Boot）
-│   ├── pom.xml                                  # 所有扩展依赖在此声明
-│   ├── frontend/                                # AngularJS 1.8 前端（webpack）
+├── guacamole/                                   # Main web application (Spring Boot)
+│   ├── pom.xml                                  # All extension dependencies declared here
+│   ├── frontend/                                # AngularJS 1.8 frontend (webpack)
 │   │   ├── package.json
 │   │   ├── webpack.config.js
-│   │   ├── plugins/                             # 自定义 webpack 插件
-│   │   └── src/                                 # 前端源码（JS、CSS、模板）
+│   │   ├── plugins/                             # Custom webpack plugins
+│   │   └── src/                                 # Frontend source (JS, CSS, templates)
 │   └── src/main/
 │       ├── java/org/apache/guacamole/
-│       │   ├── GuacamoleSpringBootApplication.java   # @SpringBootApplication 入口
-│       │   ├── config/                                # Spring @Configuration 配置类
-│       │   ├── extension/                        # 扩展加载和清单解析
-│       │   ├── resource/                         # ResourceServlet 提供扩展资源
-│       │   ├── rest/                             # Jersey REST 资源类
-│       │   └── tunnel/                           # WebSocket 隧道端点
+│       │   ├── GuacamoleSpringBootApplication.java   # @SpringBootApplication entry point
+│       │   ├── config/                                # Spring @Configuration classes
+│       │   ├── extension/                        # Extension loading and manifest parsing
+│       │   ├── resource/                         # ResourceServlet serving extension resources
+│       │   ├── rest/                             # Jersey REST resource classes
+│       │   └── tunnel/                           # WebSocket tunnel endpoint
 │       └── resources/
-│           ├── application.yml                   # 默认配置
-│           ├── logback-spring.xml                # 日志配置
-│           └── static/                           # 前端构建输出（自动生成）
+│           ├── application.yml                   # Default configuration
+│           ├── logback-spring.xml                # Logging configuration
+│           └── static/                           # Frontend build output (auto-generated)
 │
 ├── extensions/
-│   ├── guacamole-auth-jdbc/                      # JDBC 认证（多模块）
-│   │   ├── guacamole-auth-jdbc-base/             # 共享 JDBC 代码 + MyBatis 映射器
+│   ├── guacamole-auth-jdbc/                      # JDBC authentication (multi-module)
+│   │   ├── guacamole-auth-jdbc-base/             # Shared JDBC code + MyBatis mappers
 │   │   ├── guacamole-auth-mysql-starter/         # MySQL Starter
 │   │   ├── guacamole-auth-postgresql-starter/    # PostgreSQL Starter
 │   │   ├── guacamole-auth-sqlserver-starter/     # SQL Server Starter
 │   │   └── pom.xml
 │   │
-│   ├── guacamole-auth-sso/                       # SSO 认证（多模块）
-│   │   ├── guacamole-auth-sso-base/              # 共享 SSO 代码
+│   ├── guacamole-auth-sso/                       # SSO authentication (multi-module)
+│   │   ├── guacamole-auth-sso-base/              # Shared SSO code
 │   │   ├── guacamole-auth-sso-cas-starter/       # CAS Starter
 │   │   ├── guacamole-auth-sso-openid-starter/    # OpenID Connect Starter
 │   │   ├── guacamole-auth-sso-saml-starter/      # SAML 2.0 Starter
 │   │   └── pom.xml
 │   │
-│   ├── guacamole-vault/                          # Vault 凭据管理（多模块）
-│   │   ├── guacamole-vault-base/                 # 共享 Vault 抽象
+│   ├── guacamole-vault/                          # Vault credential management (multi-module)
+│   │   ├── guacamole-vault-base/                 # Shared Vault abstraction
 │   │   ├── guacamole-vault-ksm-starter/          # Keeper Secrets Manager Starter
 │   │   └── pom.xml
 │   │
-│   ├── guacamole-auth-header-starter/            # HTTP 头认证
-│   ├── guacamole-auth-json-starter/              # 加密 JSON 令牌认证
-│   ├── guacamole-auth-ldap-starter/              # LDAP / Active Directory 认证
-│   ├── guacamole-auth-radius-starter/            # RADIUS 认证
-│   ├── guacamole-auth-totp-starter/              # 基于时间的一次性密码
-│   ├── guacamole-auth-duo-starter/               # Duo Security 双因素认证
-│   ├── guacamole-auth-quickconnect-starter/      # URI 快速连接
-│   └── guacamole-history-starter/                # 会话录制存储
+│   ├── guacamole-auth-header-starter/            # HTTP header authentication
+│   ├── guacamole-auth-json-starter/              # Encrypted JSON token authentication
+│   ├── guacamole-auth-ldap-starter/              # LDAP / Active Directory authentication
+│   ├── guacamole-auth-radius-starter/            # RADIUS authentication
+│   ├── guacamole-auth-totp-starter/              # Time-based One-Time Password
+│   ├── guacamole-auth-duo-starter/               # Duo Security two-factor authentication
+│   ├── guacamole-auth-quickconnect-starter/      # URI quick connect
+│   └── guacamole-history-starter/                # Session recording storage
 │
-└── docs/                                         # 文档
-    ├── QUICK-START.md                            # 快速入门指南（新）
-    ├── ARCHITECTURE.md                           # 深入架构分析
-    ├── BUILD.md                                  # 构建、Docker、部署指南
-    ├── CONFIGURATION.md                          # 完整扩展配置参考
-    ├── EXTENSIONS.md                             # 扩展系统与开发指南
-    ├── MIGRATION.md                              # 迁移参考（Guice -> Spring Boot）
-    ├── REST-API.md                               # REST API 参考
-    └── vault-module.md                           # Vault/KSM 模块文档
+└── docs/                                         # Documentation
+    ├── QUICK-START_EN.md                         # Quick start guide (English)
+    ├── QUICK-START.md                            # 快速入门指南 (中文)
+    ├── ARCHITECTURE_EN.md                        # Architecture analysis (English)
+    ├── ARCHITECTURE.md                           # 深入架构分析 (中文)
+    ├── BUILD_EN.md                               # Build, Docker, deployment (English)
+    ├── BUILD.md                                  # 构建、Docker、部署指南 (中文)
+    ├── CONFIGURATION_EN.md                       # Configuration reference (English)
+    ├── CONFIGURATION.md                          # 完整扩展配置参考 (中文)
+    ├── EXTENSIONS_EN.md                          # Extension development guide (English)
+    ├── EXTENSIONS.md                             # 扩展系统与开发指南 (中文)
+    ├── MIGRATION_EN.md                           # Migration reference (English)
+    ├── MIGRATION.md                              # 迁移参考 (中文)
+    ├── REST-API_EN.md                            # REST API reference (English)
+    ├── REST-API.md                               # REST API 参考 (中文)
+    ├── vault-module_EN.md                        # Vault/KSM module docs (English)
+    └── vault-module.md                           # Vault/KSM 模块文档 (中文)
 ```
 
-### 关键依赖
+### Key Dependencies
 
-| 依赖 | 版本 | 用途 |
-|------|------|------|
-| Spring Boot | 3.3.5 | 应用框架 |
-| Java | 17 | 运行时 |
-| Jersey | 3.1.x | JAX-RS REST 层 |
-| MyBatis Spring Boot | 3.0.3 | JDBC 数据库访问 |
-| Guava | 32.1.3-jre | 工具库 |
-| Jackson | 2.17.2 | JSON 序列化 |
-| ZXing | 3.5.3 | 二维码生成（TOTP） |
-| Apache Directory LDAP API | 2.1.6 | LDAP 认证 |
-| JRadius | 1.1.5 | RADIUS 认证 |
-| jose4j | 0.9.6 | JWT / JOSE（OpenID） |
-| OneLogin java-saml | 2.9.0 | SAML 2.0 工具包 |
+| Dependency | Version | Purpose |
+|------------|---------|---------|
+| Spring Boot | 3.3.5 | Application framework |
+| Java | 17 | Runtime |
+| Jersey | 3.1.x | JAX-RS REST layer |
+| MyBatis Spring Boot | 3.0.3 | JDBC database access |
+| Guava | 32.1.3-jre | Utility library |
+| Jackson | 2.17.2 | JSON serialization |
+| ZXing | 3.5.3 | QR code generation (TOTP) |
+| Apache Directory LDAP API | 2.1.6 | LDAP authentication |
+| JRadius | 1.1.5 | RADIUS authentication |
+| jose4j | 0.9.6 | JWT / JOSE (OpenID) |
+| OneLogin java-saml | 2.9.0 | SAML 2.0 toolkit |
 | CAS Client | 3.6.4 | CAS SSO |
 | Keeper KSM Core | 16.6.3 | Keeper Secrets Manager |
-| Kotlin | 1.9.23 | Keeper KSM SDK 所需 |
-| KotlinX Serialization | 1.6.3 | Keeper KSM SDK 所需 |
-| Bouncy Castle FIPS | 1.0.2.4 | 加密库 |
+| Kotlin | 1.9.23 | Required by KSM SDK |
+| KotlinX Serialization | 1.6.3 | Required by KSM SDK |
+| Bouncy Castle FIPS | 1.0.2.4 | Cryptography library |
 
 ---
 
-## 已知问题
+## Known Issues
 
-### DUO SDK v2 已弃用
+### DUO SDK v2 Deprecated
 
-DUO 扩展当前使用 **Duo Web SDK v2**（基于 iframe），该 SDK 已于 **2024 年 3 月被 Duo 弃用**。扩展可以无错误启动，但 Duo 服务器将阻止认证。
+The DUO extension currently uses **Duo Web SDK v2** (iframe-based), which was **deprecated by Duo in March 2024**. The extension starts without errors, but Duo servers will block authentication.
 
-需要迁移到 **Duo Web SDK v4**：
-- **前端**：iframe 集成 -> 重定向集成
-- **后端**：HMAC SHA-256 -> HMAC SHA-512
-- **配置**：`duo-application-key` 移除；`ikey`/`skey` 重命名为 `client_id`/`client_secret`
-- **参考**：https://duo.com/docs/duoweb
+Migration to **Duo Web SDK v4** is required:
+- **Frontend**: iframe integration → redirect integration
+- **Backend**: HMAC SHA-256 → HMAC SHA-512
+- **Configuration**: `duo-application-key` removed; `ikey`/`skey` renamed to `client_id`/`client_secret`
+- **Reference**: https://duo.com/docs/duoweb
 
-### Vault KSM 待测试
+### Vault KSM Pending Testing
 
-`guacamole-vault-ksm-starter` 模块**代码已完成**且编译通过，但尚未使用真实的 Keeper Secrets Manager 账号进行端到端测试。测试因缺少 KSM 订阅而被阻塞。该模块使用：
+The `guacamole-vault-ksm-starter` module is **code complete** and compiles successfully, but has not yet been end-to-end tested with a real Keeper Secrets Manager account. Testing is blocked by lack of a KSM subscription. The module uses:
 - Keeper Security Secrets Manager Core SDK 16.6.3
-- Kotlin 1.9.23（KSM SDK 所需）
+- Kotlin 1.9.23 (required by KSM SDK)
 - KotlinX Serialization 1.6.3
 - Bouncy Castle FIPS 1.0.2.4
 
-### 其他注意事项
+### Other Notes
 
-- **需要 Java 17** —— 本项目面向 Java 17，前端 webpack 构建使用 `--openssl-legacy-provider`
-- **前端构建需要 Node.js 18** —— `frontend-maven-plugin` 自动安装 Node.js 18.18.0 和 npm 9.8.1
-- **不支持 Jetty** —— 应用程序依赖内嵌 Tomcat 的 WebSocket 支持；替换为 Jetty 需要修改 WebSocket 配置
-
----
-
-## 文档索引
-
-| 文档 | 说明 |
-|------|------|
-| [QUICK-START.md](docs/QUICK-START.md) | 快速入门：环境检查、安装、首次登录（新用户请从这里开始） |
-| [CONFIGURATION.md](docs/CONFIGURATION.md) | 所有扩展的完整配置参考 |
-| [BUILD.md](docs/BUILD.md) | 构建、Docker 和部署指南 |
-| [EXTENSIONS.md](docs/EXTENSIONS.md) | 扩展系统架构和开发指南 |
-| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | 深入系统架构分析 |
-| [MIGRATION.md](docs/MIGRATION.md) | Guice 到 Spring Boot 的迁移参考，含属性映射表 |
-| [REST-API.md](docs/REST-API.md) | REST API 端点参考 |
-| [vault-module.md](docs/vault-module.md) | Vault / KSM 模块详细文档 |
+- **Requires Java 17** — This project targets Java 17; frontend webpack build uses `--openssl-legacy-provider`
+- **Frontend build requires Node.js 18** — `frontend-maven-plugin` automatically installs Node.js 18.18.0 and npm 9.8.1
+- **Jetty not supported** — The application relies on embedded Tomcat's WebSocket support; switching to Jetty requires WebSocket configuration changes
 
 ---
 
-## 许可证
+## Documentation
 
-本项目是 [Apache Guacamole 1.5.5](https://guacamole.apache.org/) 的衍生作品，基于 **Apache License 2.0** 许可发布。
+| Document | Description |
+|----------|-------------|
+| [QUICK-START_EN.md](docs/QUICK-START_EN.md) | Quick start: environment setup, installation, first login (**start here for new users**) |
+| [CONFIGURATION_EN.md](docs/CONFIGURATION_EN.md) | Complete configuration reference for all extensions |
+| [BUILD_EN.md](docs/BUILD_EN.md) | Build, Docker, and deployment guide |
+| [EXTENSIONS_EN.md](docs/EXTENSIONS_EN.md) | Extension system architecture and development guide |
+| [ARCHITECTURE_EN.md](docs/ARCHITECTURE_EN.md) | In-depth system architecture analysis |
+| [MIGRATION_EN.md](docs/MIGRATION_EN.md) | Guice to Spring Boot migration reference with property mapping tables |
+| [REST-API_EN.md](docs/REST-API_EN.md) | REST API endpoint reference |
+| [vault-module_EN.md](docs/vault-module_EN.md) | Vault / KSM module detailed documentation |
 
-### 源代码许可
+**中文文档：** 以上每份英文文档均有对应的中文版本（去掉 `_EN` 后缀即可），如 [QUICK-START.md](docs/QUICK-START.md)、[CONFIGURATION.md](docs/CONFIGURATION.md) 等。
 
-- 所有从 Apache Guacamole 继承的源文件保留其原始 Apache 2.0 许可证头
-- 新增的 Spring Boot 适配代码同样使用 Apache 2.0 许可
-- 完整许可证文本请参见项目根目录下的 [LICENSE](LICENSE) 文件
-- 第三方归属声明请参见 [NOTICE](NOTICE) 文件
+---
 
-### 商标声明
+## License
 
-Apache Guacamole、Apache 和 Apache 羽毛标志是 [Apache 软件基金会](https://www.apache.org/) 的注册商标。本项目与 Apache 软件基金会无任何隶属关系，亦未获得其认可或赞助。
+This project is a derivative work of [Apache Guacamole 1.5.5](https://guacamole.apache.org/), released under the **Apache License 2.0**.
 
-### 第三方组件
+### Source Code Licensing
 
-本项目使用了多个第三方开源组件，各组件遵循其各自的许可证条款，详见 [LICENSE](LICENSE) 文件。
+- All source files inherited from Apache Guacamole retain their original Apache 2.0 license headers
+- New Spring Boot adaptation code also uses Apache 2.0 licensing
+- Full license text: see [LICENSE](LICENSE) in the project root
+- Third-party attribution: see [NOTICE](NOTICE)
 
-> **注意：** JRadius（RADIUS 认证模块依赖）使用 LGPL 2.1 许可证。该库为可选依赖，仅在启用 RADIUS 认证时使用。如需分发包含 JRadius 的二进制文件，请注意 LGPL 2.1 与 Apache 2.0 的兼容性要求。
+### Trademark Notice
+
+Apache Guacamole, Apache, and the Apache feather logo are registered trademarks of the [Apache Software Foundation](https://www.apache.org/). This project is not affiliated with, endorsed by, or sponsored by the Apache Software Foundation.
+
+### Third-Party Components
+
+This project uses multiple third-party open source components, each subject to its own license terms. See [LICENSE](LICENSE) for details.
+
+> **Note:** JRadius (used by the RADIUS authentication module) is licensed under LGPL 2.1. This library is an optional dependency, used only when RADIUS authentication is enabled. If distributing binaries that include JRadius, be aware of the LGPL 2.1 and Apache 2.0 compatibility requirements.

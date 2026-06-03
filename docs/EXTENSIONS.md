@@ -1,5 +1,7 @@
 # 扩展开发指南
 
+[← 返回文档索引](../README_zh.md#documentation-index)
+
 Guacamole Spring Boot 扩展系统的完整开发指南。涵盖扩展架构、创建新扩展的详细步骤、清单文件参考和最佳实践。
 
 ## 目录

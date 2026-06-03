@@ -1,5 +1,7 @@
 # REST API 参考
 
+[← 返回文档索引](../README_zh.md#documentation-index)
+
 Guacamole Spring Boot 完整的 REST API 端点参考。所有端点与原 Apache Guacamole 1.5.5 完全兼容。基于源代码验证。
 
 ## 目录
