@@ -20,6 +20,7 @@
 package org.apache.guacamole.config;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +50,8 @@ public class JerseyConfig extends ResourceConfig {
 
         // Use Jackson for JSON serialization
         register(JacksonFeature.class);
+
+        // Enable multipart form data support for file uploads
+        register(MultiPartFeature.class);
     }
 }

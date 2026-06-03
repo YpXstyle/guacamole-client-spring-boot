@@ -18,7 +18,7 @@
  */
 
 .logged-out-modal guac-modal {
-    background: white;
+    background: var(--gc-color-bg, white);
     z-index: 20;
 }
 

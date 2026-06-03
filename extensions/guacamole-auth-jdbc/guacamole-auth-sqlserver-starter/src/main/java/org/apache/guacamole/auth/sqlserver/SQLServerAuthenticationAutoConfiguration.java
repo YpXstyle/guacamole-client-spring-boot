@@ -1,8 +1,10 @@
 package org.apache.guacamole.auth.sqlserver;
 
+import org.apache.guacamole.auth.jdbc.system.SystemConfigService;
 import org.apache.guacamole.auth.sqlserver.conf.SQLServerEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -18,10 +20,13 @@ public class SQLServerAuthenticationAutoConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLServerAuthenticationAutoConfiguration.class);
 
+    @Autowired(required = false)
+    private SystemConfigService systemConfigService;
+
     @Bean
     @ConditionalOnMissingBean
     public SQLServerEnvironment sQLServerEnvironment() throws Exception {
-        return new SQLServerEnvironment();
+        return new SQLServerEnvironment(systemConfigService);
     }
 
     @Bean

@@ -17,5 +17,7 @@
     <guac-settings-connection-history   ng-if="activeTab === 'history'"></guac-settings-connection-history>
     <guac-settings-sessions             ng-if="activeTab === 'sessions'"></guac-settings-sessions>
     <guac-settings-preferences          ng-if="activeTab === 'preferences'"></guac-settings-preferences>
+    <div ng-if="activeTab === 'system'" ng-controller="systemConfigController"
+         ng-include="'app/settings/templates/systemConfig.html'"></div>
 
 </div>

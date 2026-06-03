@@ -22,14 +22,16 @@ table.sorted {
 }
 
 table.sorted th {
-    background: rgba(0, 0, 0, 0.125);
+    background: var(--gc-color-bg-secondary);
     font-weight: normal;
+    color: var(--gc-color-text);
 }
 
 table.sorted th,
 table.sorted td {
-    border: 1px solid #AAA;
+    border: 1px solid var(--gc-color-border-light);
     padding: 0.5em 1em;
+    color: var(--gc-color-text);
 }
 
 table.sorted th.sortable {

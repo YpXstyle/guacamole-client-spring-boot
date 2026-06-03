@@ -48,17 +48,17 @@
 
 .menu-dropdown {
     position: relative;
-    border-left: 1px solid rgba(0,0,0,0.125);
-    background: rgba(0,0,0,0.04);
+    border-left: 1px solid var(--gc-color-border);
+    background: var(--gc-color-bg);
 }
 
 .menu-dropdown:hover {
-    background: rgba(0,0,0,0.01);
+    background: var(--gc-color-hover);
 }
 
 .menu-dropdown.open,
 .menu-dropdown.open:hover {
-    background: rgba(0,0,0,0.3);
+    background: var(--gc-color-selected);
 }
 
 .menu-dropdown .menu-title {
@@ -106,13 +106,13 @@
     min-width: 100%;
     white-space: nowrap;
 
-    background: #EEE;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.125);
-    border-left: 1px solid rgba(0,0,0,0.125);
-    border-bottom: 1px solid rgba(0,0,0,0.125);
+    background: var(--gc-color-bg-secondary);
+    box-shadow: 0 2px 2px var(--gc-color-shadow);
+    border-left: 1px solid var(--gc-color-shadow);
+    border-bottom: 1px solid var(--gc-color-shadow);
 
     z-index: 5;
-    
+
 }
 
 .menu-dropdown .menu-contents ul {
@@ -133,14 +133,14 @@
 
     display: block;
     cursor: pointer;
-    color: black;
+    color: var(--gc-color-text);
     text-decoration: none;
     padding: 0.75em;
 
 }
 
 .menu-dropdown .menu-contents li a:hover {
-    background-color: #CDA;
+    background-color: var(--gc-color-hover);
 }
 
 .menu-dropdown .menu-contents li a.current,
@@ -151,11 +151,11 @@
 }
 
 .menu-dropdown .menu-contents li a.danger {
-    color: white;
+    color: var(--gc-color-text-on-primary);
     font-weight: bold;
-    background-color: #A43;
+    background-color: var(--gc-color-danger);
 }
 
 .menu-dropdown .menu-contents li a.danger:hover {
-    background-color: #C54;
+    background-color: var(--gc-color-danger-hover);
 }

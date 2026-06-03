@@ -21,6 +21,7 @@ package org.apache.guacamole.auth.sqlserver.conf;
 
 import org.apache.guacamole.GuacamoleException;
 import org.apache.guacamole.auth.jdbc.JDBCEnvironment;
+import org.apache.guacamole.auth.jdbc.system.SystemConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.guacamole.auth.jdbc.security.PasswordPolicy;
@@ -109,11 +110,15 @@ public class SQLServerEnvironment extends JDBCEnvironment {
      *     If an error occurs while setting up the underlying JDBCEnvironment
      *     or while parsing legacy SQLServer configuration options.
      */
+    private final SystemConfigService systemConfigService;
+
     public SQLServerEnvironment() throws GuacamoleException {
+        this(null);
+    }
 
-        // Init underlying JDBC environment
+    public SQLServerEnvironment(SystemConfigService systemConfigService) throws GuacamoleException {
         super();
-
+        this.systemConfigService = systemConfigService;
     }
 
     @Override
@@ -172,7 +177,7 @@ public class SQLServerEnvironment extends JDBCEnvironment {
 
     @Override
     public PasswordPolicy getPasswordPolicy() {
-        return new SQLServerPasswordPolicy(this);
+        return new SQLServerPasswordPolicy(this, systemConfigService);
     }
 
     /**

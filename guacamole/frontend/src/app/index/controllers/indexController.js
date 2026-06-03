@@ -34,6 +34,67 @@ angular.module('index').controller('indexController', ['$scope', '$injector',
     const clipboardService  = $injector.get('clipboardService');
     const guacNotification  = $injector.get('guacNotification');
     const guacClientManager = $injector.get('guacClientManager');
+    const configService     = $injector.get('configService');
+    const themeService      = $injector.get('themeService');
+
+    /**
+     * Copyright text displayed in the page footer.
+     *
+     * @type {string}
+     */
+    $scope.copyright = null;
+
+    /**
+     * Applies branding configuration to the current page in real-time.
+     * Updates page title, copyright footer, and favicon.
+     *
+     * @param {object} branding
+     *     The branding configuration object.
+     */
+    var applyBranding = function applyBranding(branding) {
+        if (!branding) return;
+
+        // Update page title
+        if (branding.siteName) {
+            brandingName = branding.siteName;
+            if ($scope.applicationState === ApplicationState.READY) {
+                $scope.page.title = branding.siteName;
+            }
+        }
+
+        // Update copyright footer
+        $scope.copyright = branding.copyright || null;
+
+        // Update favicon
+        if (branding.favicon && branding.favicon.trim()) {
+            document.querySelectorAll("link[rel='icon'], link[rel='shortcut icon']").forEach(function(el) {
+                el.parentNode.removeChild(el);
+            });
+            var faviconLink = document.createElement('link');
+            faviconLink.rel = 'icon';
+            faviconLink.type = 'image/png';
+            faviconLink.href = branding.favicon;
+            document.head.appendChild(faviconLink);
+        }
+    };
+
+    // Load branding for browser title, favicon, and copyright
+    var brandingName = null;
+    configService.getConfig().then(function(config) {
+        if (config && config.branding) {
+            applyBranding(config.branding);
+        }
+    })['catch'](function() {
+        // Use default title from translations
+    });
+
+    // Listen for branding changes from system config page (real-time sync)
+    $scope.$on('guacBrandingChanged', function(event, branding) {
+        applyBranding(branding);
+    });
+
+    // Apply initial theme
+    themeService.applyTheme();
 
     /**
      * The error that prevents the current page from rendering at all. If no
@@ -240,7 +301,7 @@ angular.module('index').controller('indexController', ['$scope', '$injector',
      */
     const setApplicationState = function setApplicationState(state) {
         $scope.applicationState = state;
-        $scope.page.title = 'APP.NAME';
+        $scope.page.title = brandingName || 'APP.NAME';
         $scope.page.bodyClassName = '';
     };
 

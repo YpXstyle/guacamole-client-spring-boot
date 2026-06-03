@@ -868,7 +868,87 @@
 
     "SETTINGS" : {
 
-        "SECTION_HEADER_SETTINGS" : "Settings"
+        "SECTION_HEADER_SETTINGS"     : "Settings",
+        "SECTION_HEADER_SYSTEM_CONFIG": "System Configuration",
+
+        "TAB_BRANDING"     : "Branding",
+        "TAB_THEME"        : "Theme",
+        "TAB_SECURITY"     : "Security",
+        "TAB_ANNOUNCEMENT" : "Announcement",
+
+        "ACTION_SAVE"           : "Save",
+        "ACTION_RESET"          : "Reset to Defaults",
+        "ACTION_UPLOAD"         : "Upload",
+        "ACTION_UPLOADING"      : "Uploading",
+        "ACTION_UPLOAD_SUCCESS" : "File uploaded successfully",
+        "ACTION_REPLACE"        : "Replace",
+        "ACTION_DELETING"       : "Deleting",
+        "ACTION_SAVE_SUCCESS"   : "Settings saved successfully",
+        "ACTION_RESET_SUCCESS"  : "Settings reset to defaults",
+
+        "DIALOG_HEADER_CONFIRM_RESET" : "Confirm Reset",
+        "TEXT_CONFIRM_RESET"          : "Are you sure you want to reset all settings in this group to defaults? This action cannot be undone.",
+
+        "ERROR_LOAD_FAILED"       : "Failed to load settings",
+        "ERROR_SAVE_FAILED"       : "Failed to save settings",
+        "ERROR_RESET_FAILED"      : "Failed to reset settings",
+        "ERROR_FILE_TOO_LARGE"    : "File size exceeds 2MB limit",
+        "ERROR_INVALID_FILE_TYPE" : "Invalid file type. Allowed: SVG, PNG, JPG, ICO, GIF",
+        "ERROR_UPLOAD_FAILED"     : "Failed to upload file",
+        "FILE_UPLOAD_HINT"        : "SVG, PNG, JPG, ICO, GIF (max 2MB)",
+
+        "BRANDING" : {
+            "TITLE"            : "Branding Settings",
+            "SITE_NAME"        : "Application Name",
+            "SITE_NAME_SHORT"  : "Short Name",
+            "LOGO"             : "Logo (Light)",
+            "LOGO_DARK"        : "Logo (Dark)",
+            "FAVICON"          : "Favicon",
+            "LOGIN_BACKGROUND" : "Login Background",
+            "COPYRIGHT"        : "Copyright",
+            "SUPPORT_URL"      : "Support URL",
+            "HELP_URL"         : "Help URL"
+        },
+
+        "THEME" : {
+            "TITLE"           : "Theme Settings",
+            "PRIMARY_COLOR"   : "Primary Color",
+            "ACCENT_COLOR"    : "Accent Color",
+            "SUCCESS_COLOR"   : "Success Color",
+            "WARNING_COLOR"   : "Warning Color",
+            "DANGER_COLOR"    : "Danger Color",
+            "MODE"            : "Theme Mode",
+            "MODE_LIGHT"      : "Light",
+            "MODE_DARK"       : "Dark",
+            "MODE_AUTO"       : "Auto (Follow System)",
+            "PREVIEW"         : "Preview",
+            "PREVIEW_PRIMARY" : "Primary Button",
+            "PREVIEW_DANGER"  : "Danger Button",
+            "PREVIEW_LINK"    : "Link Text",
+            "PREVIEW_CARD"    : "Card Header",
+            "PREVIEW_CONTENT" : "Card content preview"
+        },
+
+        "SECURITY" : {
+            "TITLE"                     : "Security Settings",
+            "PASSWORD_MIN_LENGTH"       : "Minimum Password Length",
+            "PASSWORD_REQUIRE_UPPERCASE" : "Require Uppercase Letter",
+            "PASSWORD_REQUIRE_NUMBER"   : "Require Number",
+            "PASSWORD_REQUIRE_SPECIAL"  : "Require Special Character"
+        },
+
+        "ANNOUNCEMENT" : {
+            "TITLE"      : "System Announcement",
+            "ENABLED"    : "Enable Announcement",
+            "LEVEL"      : "Level",
+            "LEVEL_INFO"    : "Info",
+            "LEVEL_WARNING" : "Warning",
+            "LEVEL_ERROR"   : "Error",
+            "MESSAGE"    : "Message",
+            "START_TIME" : "Start Time",
+            "END_TIME"   : "End Time",
+            "CLOSABLE"   : "Allow Close"
+        }
 
     },
 
@@ -1040,15 +1120,16 @@
 
     "USER_MENU" : {
 
-        "ACTION_LOGOUT"             : "@:APP.ACTION_LOGOUT",
-        "ACTION_MANAGE_CONNECTIONS" : "@:APP.ACTION_MANAGE_CONNECTIONS",
-        "ACTION_MANAGE_PREFERENCES" : "@:APP.ACTION_MANAGE_PREFERENCES",
-        "ACTION_MANAGE_SESSIONS"    : "@:APP.ACTION_MANAGE_SESSIONS",
-        "ACTION_MANAGE_SETTINGS"    : "@:APP.ACTION_MANAGE_SETTINGS",
-        "ACTION_MANAGE_USERS"       : "@:APP.ACTION_MANAGE_USERS",
-        "ACTION_MANAGE_USER_GROUPS" : "@:APP.ACTION_MANAGE_USER_GROUPS",
-        "ACTION_NAVIGATE_HOME"      : "@:APP.ACTION_NAVIGATE_HOME",
-        "ACTION_VIEW_HISTORY"       : "@:APP.ACTION_VIEW_HISTORY"
+        "ACTION_LOGOUT"              : "@:APP.ACTION_LOGOUT",
+        "ACTION_MANAGE_CONNECTIONS"  : "@:APP.ACTION_MANAGE_CONNECTIONS",
+        "ACTION_MANAGE_PREFERENCES"  : "@:APP.ACTION_MANAGE_PREFERENCES",
+        "ACTION_MANAGE_SESSIONS"     : "@:APP.ACTION_MANAGE_SESSIONS",
+        "ACTION_MANAGE_SETTINGS"     : "@:APP.ACTION_MANAGE_SETTINGS",
+        "ACTION_MANAGE_SYSTEM_CONFIG": "System Configuration",
+        "ACTION_MANAGE_USERS"        : "@:APP.ACTION_MANAGE_USERS",
+        "ACTION_MANAGE_USER_GROUPS"  : "@:APP.ACTION_MANAGE_USER_GROUPS",
+        "ACTION_NAVIGATE_HOME"       : "@:APP.ACTION_NAVIGATE_HOME",
+        "ACTION_VIEW_HISTORY"        : "@:APP.ACTION_VIEW_HISTORY"
 
     }
 

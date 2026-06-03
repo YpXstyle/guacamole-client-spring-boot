@@ -9,3 +9,5 @@ target/
 /.idea
 /guacamole/src/main/resources/static/
 **/.flattened-pom.xml
+docs/design/
+files/

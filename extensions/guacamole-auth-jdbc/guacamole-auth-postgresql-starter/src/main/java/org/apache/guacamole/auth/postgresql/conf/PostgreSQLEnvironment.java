@@ -22,6 +22,7 @@ package org.apache.guacamole.auth.postgresql.conf;
 import java.io.File;
 import org.apache.guacamole.GuacamoleException;
 import org.apache.guacamole.auth.jdbc.JDBCEnvironment;
+import org.apache.guacamole.auth.jdbc.system.SystemConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.guacamole.auth.jdbc.security.PasswordPolicy;
@@ -129,18 +130,36 @@ public class PostgreSQLEnvironment extends JDBCEnvironment {
     private static final int DEFAULT_BATCH_SIZE = 5000;
 
     /**
+     * Service for reading system configuration from the database.
+     * May be null if the system config module is not available.
+     */
+    private final SystemConfigService systemConfigService;
+
+    /**
      * Constructs a new PostgreSQLEnvironment, providing access to PostgreSQL-specific
      * configuration options.
-     * 
-     * @throws GuacamoleException 
+     *
+     * @throws GuacamoleException
      *     If an error occurs while setting up the underlying JDBCEnvironment
      *     or while parsing legacy PostgreSQL configuration options.
      */
     public PostgreSQLEnvironment() throws GuacamoleException {
+        this(null);
+    }
 
-        // Init underlying JDBC environment
+    /**
+     * Constructs a new PostgreSQLEnvironment with optional SystemConfigService
+     * for reading password policy configuration from the database.
+     *
+     * @param systemConfigService
+     *     The SystemConfigService for reading DB config values, or null.
+     *
+     * @throws GuacamoleException
+     *     If an error occurs while setting up the underlying JDBCEnvironment.
+     */
+    public PostgreSQLEnvironment(SystemConfigService systemConfigService) throws GuacamoleException {
         super();
-
+        this.systemConfigService = systemConfigService;
     }
 
     @Override
@@ -199,7 +218,7 @@ public class PostgreSQLEnvironment extends JDBCEnvironment {
 
     @Override
     public PasswordPolicy getPasswordPolicy() {
-        return new PostgreSQLPasswordPolicy(this);
+        return new PostgreSQLPasswordPolicy(this, systemConfigService);
     }
 
     /**

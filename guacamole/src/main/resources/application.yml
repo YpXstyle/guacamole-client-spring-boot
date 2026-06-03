@@ -72,14 +72,38 @@ guacamole:
     enabled: true
     recording-search-path: ${GUACAMOLE_HISTORY_RECORDING_PATH:/tmp/guacamole/recordings}
 
+  # System configuration module
+  system:
+    file-storage-path: ${GUACAMOLE_FILE_STORAGE_PATH:${user.dir}/files}
+    defaults:
+      branding.site_name: "Apache Guacamole"
+      theme.primary_color: "#1a56db"
+      theme.accent_color: "#0694a2"
+      theme.success_color: "#057a55"
+      theme.warning_color: "#f59e0b"
+      theme.danger_color: "#e02424"
+      theme.mode: "light"
+      security.password_min_length: "8"
+      security.password_require_uppercase: "true"
+      security.password_require_number: "true"
+      security.password_require_special: "false"
+      announcement.enabled: "false"
+      announcement.level: "info"
+      announcement.closable: "true"
+
 spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
   datasource:
     url: jdbc:postgresql://192.168.5.188:5432/guacamole
     username: guacamole
     password: ${GUACAMOLE_DB_PASSWORD:guacamole}
     driver-class-name: org.postgresql.Driver
   main:
-    banner-mode: "off"
+    banner-mode: off
   jackson:
     serialization:
       write-dates-as-timestamps: true

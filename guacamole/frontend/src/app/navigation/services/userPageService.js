@@ -339,6 +339,18 @@ angular.module('navigation').factory('userPageService', ['$injector',
             }));
         }
 
+        // If user is system administrator, add link to system configuration
+        angular.forEach(authenticationService.getAvailableDataSources(), function checkAdmin(dataSource) {
+            var permissions = permissionSets[dataSource];
+            if (permissions && PermissionSet.hasSystemPermission(permissions, PermissionSet.SystemPermissionType.ADMINISTER)) {
+                pages.push(new PageDefinition({
+                    name : 'USER_MENU.ACTION_MANAGE_SYSTEM_CONFIG',
+                    url  : '/settings/system'
+                }));
+                return; // Only add once
+            }
+        });
+
         // If user can manage connections, add links for connection management pages
         angular.forEach(canManageConnections, function addConnectionManagementLink(dataSource) {
             pages.push(new PageDefinition({

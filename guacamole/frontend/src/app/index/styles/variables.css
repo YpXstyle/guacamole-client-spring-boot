@@ -1,0 +1,156 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+/*
+ * CSS Custom Properties (Variables) for Guacamole theme system.
+ *
+ * These variables define the visual appearance of the entire application.
+ * They serve as fallback defaults when JavaScript theme engine is not active.
+ *
+ * The theme engine (colorEngine.js + themeService.js) can override these
+ * values at runtime via document.documentElement.style.setProperty().
+ *
+ * IMPORTANT: All CSS files in the application MUST use these variables
+ * instead of hardcoded color values. This ensures consistent theming
+ * and enables dark mode support.
+ */
+
+:root {
+
+    /* ===== Primary Color System ===== */
+    /* Derived from the brand primary color via colorEngine.js */
+
+    --gc-color-primary: #1a56db;
+    --gc-color-primary-hover: #1e40af;
+    --gc-color-primary-active: #1e3a8a;
+    --gc-color-text-on-primary: #ffffff;
+    --gc-color-accent: #0694a2;
+
+    /* ===== Semantic Colors ===== */
+    /* Can be customized via theme configuration */
+
+    --gc-color-success: #057a55;
+    --gc-color-warning: #f59e0b;
+    --gc-color-warning-border: #FA0;
+    --gc-color-danger: #A43;
+    --gc-color-danger-hover: #C54;
+    --gc-color-danger-active: #932;
+    --gc-color-info: #0095ff;
+
+    /* Announcement / alert semantic backgrounds */
+    --gc-color-info-bg: #e3f2fd;
+    --gc-color-info-border: #90caf9;
+    --gc-color-info-text: #1565c0;
+    --gc-color-warning-bg: #fff3e0;
+    --gc-color-warning-border: #ffcc80;
+    --gc-color-warning-text: #e65100;
+    --gc-color-danger-bg: #fce4ec;
+    --gc-color-danger-border: #ef9a9a;
+    --gc-color-danger-text: #c62828;
+
+    /* ===== Neutral Colors ===== */
+    /* Automatically adjusted for light/dark mode by themeService.js */
+
+    --gc-color-bg: #ffffff;
+    --gc-color-bg-secondary: #EEEEEE;
+    --gc-color-bg-subtle: #F5F5F5;
+    --gc-color-text: #000000;
+    --gc-color-text-secondary: #808080;
+    --gc-color-text-muted: rgba(0, 0, 0, 0.5);
+    --gc-color-text-inverse: #ffffff;
+    --gc-color-border: #BBBBBB;
+    --gc-color-border-light: #AAAAAA;
+    --gc-color-border-input: #777777;
+    --gc-color-link: #0000ee;
+
+    /* ===== Functional Colors ===== */
+    /* Derived from primary color and mode by colorEngine.js */
+
+    --gc-color-selected: rgba(60, 60, 60, 0.15);
+    --gc-color-hover: rgba(60, 60, 60, 0.1);
+    --gc-color-error-bg: #FDD;
+    --gc-color-error-text: #964040;
+    --gc-color-overlay: rgba(0, 0, 0, 0.5);
+
+    /* ===== Shadows ===== */
+
+    --gc-color-shadow: rgba(0, 0, 0, 0.125);
+    --gc-color-shadow-strong: rgba(0, 0, 0, 0.25);
+    --gc-shadow: 0 1px 2px var(--gc-color-shadow-strong);
+    --gc-shadow-sm: 0 1px 2px var(--gc-color-shadow);
+    --gc-shadow-lg: 0 2px 4px var(--gc-color-shadow-strong);
+
+    /* ===== Typography ===== */
+
+    --gc-font-family: Carlito, FreeSans, Helvetica, Arial, sans-serif;
+    --gc-font-family-mono: monospace;
+
+    /* ===== Border Radius ===== */
+
+    --gc-radius: 0.25em;
+    --gc-radius-sm: 0.2em;
+    --gc-radius-lg: 0.5em;
+
+    /* ===== Login Page ===== */
+
+    --gc-login-bg: #ffffff;
+
+}
+
+/*
+ * Dark mode overrides.
+ * Applied when themeService.js sets data-theme="dark" on <html>.
+ * These are static fallbacks; the theme engine will override dynamically.
+ */
+[data-theme="dark"] {
+
+    --gc-color-bg: #1a1a1a;
+    --gc-color-bg-secondary: #2d2d2d;
+    --gc-color-bg-subtle: #252525;
+    --gc-color-text: #e0e0e0;
+    --gc-color-text-secondary: #a0a0a0;
+    --gc-color-text-muted: rgba(255, 255, 255, 0.5);
+    --gc-color-text-inverse: #000000;
+    --gc-color-border: #666666;
+    --gc-color-border-light: #555555;
+    --gc-color-border-input: #777777;
+    --gc-color-link: #6db3f2;
+    --gc-color-info: #6db3f2;
+
+    /* Announcement / alert semantic backgrounds (dark) */
+    --gc-color-info-bg: rgba(21, 101, 192, 0.2);
+    --gc-color-info-border: rgba(144, 202, 249, 0.3);
+    --gc-color-info-text: #90caf9;
+    --gc-color-warning-bg: rgba(230, 81, 0, 0.2);
+    --gc-color-warning-border: rgba(255, 204, 128, 0.3);
+    --gc-color-warning-text: #ffcc80;
+    --gc-color-danger-bg: rgba(198, 40, 40, 0.2);
+    --gc-color-danger-border: rgba(239, 154, 154, 0.3);
+    --gc-color-danger-text: #ef9a9a;
+
+    --gc-color-selected: rgba(60, 60, 60, 0.3);
+    --gc-color-hover: rgba(60, 60, 60, 0.2);
+    --gc-color-error-bg: rgba(219, 68, 55, 0.2);
+    --gc-color-error-text: #ff6b6b;
+    --gc-color-overlay: rgba(0, 0, 0, 0.7);
+    --gc-color-shadow: rgba(0, 0, 0, 0.4);
+    --gc-color-shadow-strong: rgba(0, 0, 0, 0.6);
+    --gc-login-bg: #1a1a1a;
+
+}
