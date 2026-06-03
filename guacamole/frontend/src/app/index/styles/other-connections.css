@@ -52,7 +52,7 @@
     width: 16px;
     z-index: 1;
 
-    background-color: white;
+    background-color: var(--gc-color-bg);
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center center;

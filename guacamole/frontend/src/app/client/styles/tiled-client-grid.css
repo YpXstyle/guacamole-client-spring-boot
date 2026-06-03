@@ -89,7 +89,7 @@
     align-items: center;
 
     margin: 0;
-    background: #444;
+    background: var(--gc-color-bg-secondary);
     padding: 0 0.25em;
     font-size: 0.8em;
     color: white;
@@ -99,7 +99,7 @@
 }
 
 .tiled-client-grid .client-tile.focused .client-tile-header {
-    background-color: #3161a9;
+    background-color: var(--gc-color-primary);
 }
 
 .tiled-client-grid .client-tile .client-tile-header > * {
@@ -156,8 +156,8 @@
     padding: 0.125em 0.75em;
     margin: 0.5em;
 
-    background: #055;
-    color: white;
+    background: var(--gc-color-bg-secondary);
+    color: var(--gc-color-text);
     font-weight: bold;
     font-size: 0.8em;
 

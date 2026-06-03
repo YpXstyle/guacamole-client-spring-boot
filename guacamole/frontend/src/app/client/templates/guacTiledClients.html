@@ -10,11 +10,11 @@
                 }"
                 guac-click="getFocusAssignmentCallback(client)">
                 <h3 class="client-tile-header" ng-if="hasMultipleClients(clientGroup)">
-                    <img class="client-tile-shared-indicator" src="images/share-white.svg">
+                    <img class="client-tile-shared-indicator white-icon" src="images/share-white.svg">
                     <span class="client-tile-name">{{ client.title }}</span>
                     <guac-client-user-count client="client"></guac-client-user-count>
                     <img ng-click="onClose({ '$client' : client })"
-                         class="client-tile-disconnect"
+                         class="client-tile-disconnect white-icon"
                          ng-attr-alt="{{ 'CLIENT.ACTION_DISCONNECT' | translate }}"
                          ng-attr-title="{{ 'CLIENT.ACTION_DISCONNECT' | translate }}"
                          src="images/x.svg">
