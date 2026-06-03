@@ -1,5 +1,7 @@
 # 系统架构
 
+[← 返回文档索引](../README_zh.md#documentation-index)
+
 Guacamole Spring Boot 系统的深入架构分析。本文档涵盖系统组件、请求流程、认证机制和关键设计模式。
 
 ## 目录

@@ -1,5 +1,7 @@
 # 构建与部署指南
 
+[← 返回文档索引](../README_zh.md#documentation-index)
+
 完整的构建、运行和部署 Guacamole Spring Boot 应用的指南。
 
 ## 目录

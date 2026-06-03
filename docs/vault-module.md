@@ -1,5 +1,7 @@
 # Vault 模块 — Keeper Secrets Manager 集成
 
+[← 返回文档索引](../README_zh.md#documentation-index)
+
 ## 概述
 
 Vault 模块将 Keeper Secrets Manager（KSM）集成到 Guacamole 中，实现凭据的自动获取和注入。连接配置中的密码等敏感信息不再需要硬编码，而是在连接建立时从 KSM 动态获取。

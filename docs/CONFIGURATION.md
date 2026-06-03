@@ -1,5 +1,7 @@
 # 配置参考手册
 
+[← 返回文档索引](../README_zh.md#documentation-index)
+
 Guacamole Spring Boot 全部配置参考。
 
 ## 目录

@@ -1,5 +1,7 @@
 # 迁移指南：Apache Guacamole 1.5.5 至 Spring Boot 3.3.5
 
+[← 返回文档索引](../README_zh.md#documentation-index)
+
 本文档记录了从原版 Apache Guacamole 1.5.5（Google Guice + WAR + guacamole.properties）迁移至 Spring Boot 3.3.5 版本（`com.right` groupId）所需的全部变更。
 
 以下所有属性映射已针对本仓库中的实际 Java 源代码（ConfigurationService 和 GuacamoleProperties 类）验证。
