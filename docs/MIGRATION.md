@@ -675,18 +675,50 @@ guacamole:
 extensions/guacamole-auth-jdbc/guacamole-auth-postgresql-starter/src/main/resources/schema/
   +-- 001-create-schema.sql
   +-- 002-create-admin-user.sql
+  +-- 003-create-system-config.sql  ← 新增：系统配置模块（可选）
   +-- upgrade/
 
 extensions/guacamole-auth-jdbc/guacamole-auth-mysql-starter/src/main/resources/schema/
   +-- 001-create-schema.sql
   +-- 002-create-admin-user.sql
+  +-- 003-create-system-config.sql  ← 新增：系统配置模块（可选）
   +-- upgrade/
 
 extensions/guacamole-auth-jdbc/guacamole-auth-sqlserver-starter/src/main/resources/schema/
   +-- 001-create-schema.sql
   +-- 002-create-admin-user.sql
+  +-- 003-create-system-config.sql  ← 新增：系统配置模块（可选）
   +-- upgrade/
 ```
+
+### 系统配置模块（可选升级）
+
+系统配置模块是新增功能，不影响现有数据库，按需启用。
+
+**升级步骤：**
+
+```bash
+# 1. 备份数据库
+pg_dump guacamole > backup_before_system_config.sql   # PostgreSQL
+mysqldump guacamole > backup_before_system_config.sql  # MySQL
+
+# 2. 执行 DDL（创建 2 张新表 + 预置 25 条配置）
+psql -d guacamole -f extensions/guacamole-auth-jdbc/guacamole-auth-postgresql-starter/src/main/resources/schema/003-create-system-config.sql
+
+# 3. 启动应用（需同时启用 JDBC 扩展）
+mvn spring-boot:run -pl guacamole
+# 或
+java -jar guacamole/target/guacamole-*.jar
+```
+
+**新建的表：**
+
+| 表名 | 记录数 | 说明 |
+|------|--------|------|
+| `guacamole_system_config` | 25 | 品牌/主题/安全/公告配置（key-value） |
+| `guacamole_system_file` | 0 | 上传文件元数据（Logo、Favicon 等） |
+
+**不启用系统配置模块：** 不执行 `003-create-system-config.sql`，应用正常运行，品牌/主题使用 `application.yml` 默认值。
 
 ### 数据兼容性
 

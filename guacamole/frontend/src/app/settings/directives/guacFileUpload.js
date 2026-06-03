@@ -195,11 +195,15 @@ angular.module('settings').directive('guacFileUpload', [function guacFileUpload(
                     }
                 })['catch'](requestService.createErrorCallback(function(error) {
                     $scope.removing = false;
-                    // Clear locally even if server delete fails
-                    $scope.currentUrl = '';
-                    if ($scope.onUpload) {
-                        $scope.onUpload({ url: '' });
-                    }
+                    // Keep currentUrl and notify user — do NOT silently clear.
+                    // The file still exists on server, so the UI must reflect
+                    // that to prevent orphan records from being saved.
+                    guacNotification.showStatus({
+                        className  : 'error',
+                        title      : 'APP.DIALOG_HEADER_ERROR',
+                        text       : { key : 'SETTINGS.ERROR_DELETE_FAILED' },
+                        actions    : [ ACKNOWLEDGE_ACTION ]
+                    });
                 }));
             };
 

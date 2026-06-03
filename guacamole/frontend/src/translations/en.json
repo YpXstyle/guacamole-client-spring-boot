@@ -895,6 +895,7 @@
         "ERROR_FILE_TOO_LARGE"    : "File size exceeds 2MB limit",
         "ERROR_INVALID_FILE_TYPE" : "Invalid file type. Allowed: SVG, PNG, JPG, ICO, GIF",
         "ERROR_UPLOAD_FAILED"     : "Failed to upload file",
+        "ERROR_DELETE_FAILED"     : "Failed to delete file, please retry",
         "FILE_UPLOAD_HINT"        : "SVG, PNG, JPG, ICO, GIF (max 2MB)",
 
         "BRANDING" : {

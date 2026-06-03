@@ -28,7 +28,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class APISettingUpdate {
 
     /**
-     * The new configuration value. Set to null to delete the entry.
+     * The new configuration value. A null value is stored as an empty
+     * string and does NOT delete the database row. Configuration rows
+     * can only be deleted by running a DDL migration to drop them.
      */
     private String value;
 

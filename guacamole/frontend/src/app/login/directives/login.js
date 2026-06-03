@@ -108,7 +108,9 @@ angular.module('login').directive('guacLogin', [function guacLogin() {
                     });
                     var link = document.createElement('link');
                     link.rel = 'icon';
-                    link.type = 'image/png';
+                    // Do NOT set link.type — let HTTP Content-Type header
+                    // (returned by FileRESTService.getFile) drive the MIME
+                    // so SVG/ICO/GIF favicons render in all browsers.
                     link.href = config.branding.favicon;
                     document.getElementsByTagName('head')[0].appendChild(link);
                 }

@@ -50,8 +50,8 @@ public class HTTPTunnelRequest extends TunnelRequest {
     public HTTPTunnelRequest(HttpServletRequest request) {
 
         // For each parameter
-        for (Map.Entry<String, String[]> mapEntry : ((Map<String, String[]>)
-                request.getParameterMap()).entrySet()) {
+        for (Map.Entry<String, String[]> mapEntry :
+                request.getParameterMap().entrySet()) {
 
             // Get parameter name and corresponding values
             String parameterName = mapEntry.getKey();

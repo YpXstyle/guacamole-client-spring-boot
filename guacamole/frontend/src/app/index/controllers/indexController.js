@@ -72,7 +72,9 @@ angular.module('index').controller('indexController', ['$scope', '$injector',
             });
             var faviconLink = document.createElement('link');
             faviconLink.rel = 'icon';
-            faviconLink.type = 'image/png';
+            // Do NOT set link.type — let HTTP Content-Type header
+            // (returned by FileRESTService.getFile) drive the MIME
+            // so SVG/ICO/GIF favicons render in all browsers.
             faviconLink.href = branding.favicon;
             document.head.appendChild(faviconLink);
         }

@@ -19,8 +19,7 @@
 
 --
 -- System configuration storage. Stores key-value pairs for
--- branding, theme, site settings, security policies, feature
--- toggles, and announcements.
+-- branding, theme, security policies (password complexity), and announcements.
 --
 
 CREATE TABLE `guacamole_system_config` (
