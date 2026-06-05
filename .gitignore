@@ -11,3 +11,4 @@ target/
 **/.flattened-pom.xml
 docs/design/
 files/
+CLAUDE.md

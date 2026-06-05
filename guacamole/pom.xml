@@ -219,6 +219,18 @@
                     <exclude>**/application*.properties</exclude>
                 </excludes>
             </resource>
+            <!-- Core translation files: treat frontend/src/translations as a
+                 standard Maven resource directory so they are available on the
+                 classpath in both Maven and IDE builds.  No custom plugin
+                 execution required. -->
+            <resource>
+                <directory>frontend/src/translations</directory>
+                <filtering>false</filtering>
+                <targetPath>translations</targetPath>
+                <includes>
+                    <include>*.json</include>
+                </includes>
+            </resource>
         </resources>
         <plugins>
             <!-- ============================================================
@@ -280,62 +292,6 @@
                 </executions>
             </plugin>
 
-            <!-- Copy guacamole-common-js resources to static directory.
-                 Runs at process-resources phase so files are available
-                 regardless of build mode (IDE, mvn compile, mvn package).
-                 Uses direct source copy instead of dependency unpack to
-                 work correctly with Maven reactor builds. -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-guacamole-common-js</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/classes/static/guacamole-common-js</outputDirectory>
-                            <overwrite>true</overwrite>
-                            <resources>
-                                <resource>
-                                    <directory>../guacamole-common-js/src/main/resources</directory>
-                                    <includes>
-                                        <include>all.js</include>
-                                        <include>all.min.js</include>
-                                        <include>modules/**</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <!-- Copy core translation files from frontend source to
-                         classpath:translations/. Mirrors original project where
-                         webpack CopyPlugin copies translations to dist/ and
-                         maven-war-plugin includes them. TranslationController
-                         serves these at runtime via LanguageResourceService. -->
-                    <execution>
-                        <id>copy-core-translations</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/classes/translations</outputDirectory>
-                            <overwrite>true</overwrite>
-                            <resources>
-                                <resource>
-                                    <directory>frontend/src/translations</directory>
-                                    <includes>
-                                        <include>*.json</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
