@@ -20,4 +20,17 @@
         Keyboard, Mouse, Audio, Video, and SessionRecording modules.
     </description>
 
+    <build>
+        <!-- Place JS resources under META-INF/resources/ so Spring Boot
+             auto-serves them as static resources at /guacamole-common-js/.
+             This works for both Maven builds (inside the JAR) and IDE
+             builds (via target/classes on the classpath). -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <targetPath>META-INF/resources/guacamole-common-js</targetPath>
+            </resource>
+        </resources>
+    </build>
+
 </project>
