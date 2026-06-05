@@ -47,6 +47,8 @@
         "ACTION_ACKNOWLEDGE": "@:APP.ACTION_ACKNOWLEDGE",
         "ACTION_CLEAR_COMPLETED_TRANSFERS": "Tøm",
         "ACTION_DISCONNECT": "Koble fra",
+        "ACTION_FULLSCREEN"                : "Fullscreen",
+        "ACTION_SHOW_MENU"                 : "Show Menu",
         "ACTION_LOGOUT": "@:APP.ACTION_LOGOUT",
         "ACTION_NAVIGATE_BACK": "@:APP.ACTION_NAVIGATE_BACK",
         "ACTION_NAVIGATE_HOME": "@:APP.ACTION_NAVIGATE_HOME",

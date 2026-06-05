@@ -47,6 +47,8 @@
     },
     "CLIENT": {
         "ACTION_DISCONNECT": "Desconnecta",
+        "ACTION_FULLSCREEN"                : "Fullscreen",
+        "ACTION_SHOW_MENU"                 : "Show Menu",
         "ACTION_RECONNECT": "Torneu a connectar",
         "ACTION_UPLOAD_FILES": "Carregueu fitxers",
         "DIALOG_HEADER_CONNECTING": "Connectant",

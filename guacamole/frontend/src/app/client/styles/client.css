@@ -128,6 +128,111 @@ body.client {
     background-image: url('images/x.svg');
 }
 
+/* ── Left-edge floating toolbar ─────────────────────────────────────
+   A thin vertical strip on the left edge that expands on hover to
+   reveal a fullscreen toggle and a menu toggle.  The primary colour
+   (--gc-color-primary) adapts to light / dark / custom themes, and
+   the box-shadow ensures the buttons are legible over any remote-
+   desktop content. */
+.client .floating-toolbar {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 4px;
+    width: 14px;
+    border-radius: 0 6px 6px 0;
+    background: var(--gc-color-primary);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    opacity: 0.35;
+    transition: width 0.2s ease, opacity 0.2s ease, padding 0.2s ease;
+    overflow: hidden;
+    white-space: nowrap;
+    pointer-events: auto;
+}
+
+.client .floating-toolbar:hover {
+    width: 52px;
+    opacity: 0.85;
+    padding: 8px 8px;
+}
+
+/* Touch devices: long-press to expand (same visual as hover) */
+.client .floating-toolbar:active {
+    width: 52px;
+    opacity: 0.85;
+    padding: 8px 8px;
+}
+
+/* On devices that DO support hover (desktop), hide buttons when
+   collapsed; on touch-only devices, always show a minimal indicator
+   that invites tapping. */
+@media (hover: hover) {
+    .client .floating-toolbar .toolbar-btn {
+        opacity: 0;
+        pointer-events: none;
+    }
+    .client .floating-toolbar:hover .toolbar-btn {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+@media (hover: none) {
+    /* Touch: buttons always faintly visible so users know to tap */
+    .client .floating-toolbar .toolbar-btn {
+        opacity: 0.6;
+        pointer-events: auto;
+    }
+}
+
+/* Shared button style inside the toolbar — hidden until hover */
+.client .floating-toolbar .toolbar-btn {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 16px;
+    transition: background-color 0.15s, opacity 0.15s;
+}
+
+.client .floating-toolbar .toolbar-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Fullscreen icon */
+.client .floating-toolbar .fullscreen-btn {
+    background-image: url('images/action-icons/guac-fullscreen.svg');
+}
+
+/* Menu icon — hamburger */
+.client .floating-toolbar .menu-btn {
+    background-image: url('images/action-icons/guac-menu.svg');
+}
+
+.client .menu-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    background: transparent;
+}
+
 .client .drop-pending .display {
     background: #3161a9;
 }

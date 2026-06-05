@@ -44,7 +44,19 @@
     <div id="connection-warning" ng-show="isConnectionUnstable()">
         {{'CLIENT.TEXT_CLIENT_STATUS_UNSTABLE' | translate}}
     </div>
-    
+
+    <!-- Left-edge floating toolbar: a thin strip that expands on hover
+         to reveal the menu toggle and fullscreen buttons. -->
+    <div class="floating-toolbar">
+        <button class="toolbar-btn fullscreen-btn" ng-click="toggleFullscreen()"
+                title="{{'CLIENT.ACTION_FULLSCREEN' | translate}}"></button>
+        <button class="toolbar-btn menu-btn" ng-click="menu.shown = !menu.shown"
+                title="{{'CLIENT.ACTION_SHOW_MENU' | translate}}"></button>
+    </div>
+
+    <!-- Menu backdrop — click to close -->
+    <div class="menu-backdrop" ng-show="menu.shown" ng-click="closeMenu()"></div>
+
     <!-- Menu -->
     <div class="menu" ng-class="{open: menu.shown}" id="guac-menu">
         <div class="menu-content" ng-if="menu.shown" guac-touch-drag="menuDrag">
