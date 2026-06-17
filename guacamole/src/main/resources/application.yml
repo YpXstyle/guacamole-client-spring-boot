@@ -1,9 +1,9 @@
 server:
-  port: 8080
+  port: 5888
 
 guacamole:
   guacd:
-    hostname: localhost
+    hostname: 192.168.5.188
     port: 4822
     ssl: false
 
@@ -67,7 +67,7 @@ guacamole:
       saml-idp-url: https://idp.example.com/sso
       saml-entity-id: http://localhost:8080/
       saml-strict: false
-      saml-debug: true
+      saml-debug: false
 
   vault:
     ksm:
@@ -82,7 +82,7 @@ guacamole:
   system:
     file-storage-path: ${GUACAMOLE_FILE_STORAGE_PATH:${user.dir}/files}
     defaults:
-      branding.site_name: "Apache Guacamole"
+      branding.site_name: "成都瑞特远程网关"
       theme.primary_color: "#1a56db"
       theme.accent_color: "#0694a2"
       theme.success_color: "#057a55"
