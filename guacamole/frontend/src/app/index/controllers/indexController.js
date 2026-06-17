@@ -54,12 +54,10 @@ angular.module('index').controller('indexController', ['$scope', '$injector',
     var applyBranding = function applyBranding(branding) {
         if (!branding) return;
 
-        // Update page title
+        // Update page title — always apply regardless of application state
         if (branding.siteName) {
             brandingName = branding.siteName;
-            if ($scope.applicationState === ApplicationState.READY) {
-                $scope.page.title = branding.siteName;
-            }
+            $scope.page.title = branding.siteName;
         }
 
         // Update copyright footer
@@ -82,12 +80,15 @@ angular.module('index').controller('indexController', ['$scope', '$injector',
 
     // Load branding for browser title, favicon, and copyright
     var brandingName = null;
+    var brandingLoaded = false;
     configService.getConfig().then(function(config) {
         if (config && config.branding) {
             applyBranding(config.branding);
         }
     })['catch'](function() {
         // Use default title from translations
+    })['finally'](function() {
+        brandingLoaded = true;
     });
 
     // Listen for branding changes from system config page (real-time sync)
@@ -303,7 +304,10 @@ angular.module('index').controller('indexController', ['$scope', '$injector',
      */
     const setApplicationState = function setApplicationState(state) {
         $scope.applicationState = state;
-        $scope.page.title = brandingName || 'APP.NAME';
+        if (brandingName)
+            $scope.page.title = brandingName;
+        else if (brandingLoaded)
+            $scope.page.title = 'APP.NAME';
         $scope.page.bodyClassName = '';
     };
 
@@ -393,10 +397,13 @@ angular.module('index').controller('indexController', ['$scope', '$injector',
             // login was either successful or not required)
             $scope.applicationState = ApplicationState.READY;
 
-            // Set title
-            var title = current.$$route.title;
-            if (title)
-                $scope.page.title = title;
+            // Set title — prefer branding site name once loaded.
+            // If branding hasn't loaded yet, keep the current title
+            // (avoid flashing "Apache Guacamole" before the API returns).
+            if (brandingName)
+                $scope.page.title = brandingName;
+            else if (brandingLoaded)
+                $scope.page.title = current.$$route.title || 'APP.NAME';
 
             // Set body CSS class
             $scope.page.bodyClassName = current.$$route.bodyClassName || '';
