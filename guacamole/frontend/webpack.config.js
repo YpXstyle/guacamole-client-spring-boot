@@ -194,7 +194,8 @@ module.exports = {
             { from: 'fonts/**/*' },
             { from: 'images/**/*' },
             { from: 'layouts/**/*' },
-            { from: 'verifyCachedVersion.js' }
+            { from: 'verifyCachedVersion.js' },
+            { from: 'translations/**/*' }
         ], {
             context: 'src/'
         }),

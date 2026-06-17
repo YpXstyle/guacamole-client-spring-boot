@@ -22,13 +22,35 @@
     margin: 0.25em 0;
     width: 100%;
     margin-left: 0.50em;
+    position: relative;
+}
+
+/*
+ * Protocol icon rendered via mask-image so it automatically adopts
+ * the current text color.  No need for a separate white variant in
+ * dark mode — the icon follows --gc-color-text in every theme.
+ */
+.quickconnect-container::before {
+    content: '';
+    position: absolute;
+    left: 0.25em;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.50em;
+    height: 1.50em;
+    background-color: var(--gc-color-text);
+    mask-image: url('images/protocol-icons/guac-text.svg');
+    -webkit-mask-image: url('images/protocol-icons/guac-text.svg');
+    mask-size: contain;
+    -webkit-mask-size: contain;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-position: center;
+    pointer-events: none;
 }
 
 .quickconnect-container .quickconnect-field {
-    background-image: url('images/protocol-icons/guac-text.png');
-    background-repeat: no-repeat;
-    background-size: 1.50em;
-    background-position: 0.25em center;
     background-color: transparent;
     padding: 0.25em;
     padding-left: 2.50em;

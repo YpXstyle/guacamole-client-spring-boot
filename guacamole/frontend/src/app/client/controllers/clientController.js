@@ -685,6 +685,19 @@ angular.module('client').controller('clientController', ['$scope', '$routeParams
     };
 
     /**
+     * Toggles browser fullscreen mode.
+     */
+    $scope.toggleFullscreen = function toggleFullscreen() {
+        var doc = $injector.get('$document')[0];
+        var el  = doc.documentElement;
+        var req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+        var exit = doc.exitFullscreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+        var full = doc.fullscreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement;
+        if (full) exit.call(doc);
+        else      req.call(el);
+    };
+
+    /**
      * Action which immediately disconnects the currently-connected client, if
      * any.
      */

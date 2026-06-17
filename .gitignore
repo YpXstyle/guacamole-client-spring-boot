@@ -12,3 +12,5 @@ target/
 docs/design/
 files/
 CLAUDE.md
+guacamole-client-1.5.5/
+guacamole-server-1.5.5/

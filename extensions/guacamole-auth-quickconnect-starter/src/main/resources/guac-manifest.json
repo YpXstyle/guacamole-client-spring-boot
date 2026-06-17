@@ -1,7 +1,7 @@
 {
     "guacamoleVersion" : "1.5.5",
 
-    "name"             : "Adhoc Guacamole Connections",
+    "name"             : "Adhoc Connections",
     "namespace"        : "quickconnect",
 
     "configProperty"   : "guacamole.auth.quickconnect.enabled",
