@@ -90,3 +90,14 @@
     border-color: var(--gc-color-danger-border, #ef9a9a);
     color: var(--gc-color-danger-text, #c62828);
 }
+
+/* Hide the announcement banner during a remote desktop session.
+   The banner uses static positioning and would otherwise occupy the top
+   of the page, offsetting the fullscreen viewport (.viewport is sized to
+   the full window height by fitVisibleArea) and clipping the remote
+   display's bottom edge. Removing it from layout here lets the viewport
+   fill the window correctly. Mirrors the existing body.client .app-footer
+   rule. */
+body.client .announcement-banner {
+    display: none;
+}

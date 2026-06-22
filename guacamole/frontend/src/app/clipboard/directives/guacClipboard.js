@@ -98,10 +98,15 @@ angular.module('clipboard').directive('guacClipboard', ['$injector',
             updateClipboardEditor(data);
         });
 
-        // Init clipboard editor with current clipboard contents
-        clipboardService.getClipboard().then((data) => {
-            updateClipboardEditor(data);
-        }, angular.noop);
+        // Init clipboard editor with the current INTERNAL clipboard contents.
+        // We deliberately read the internal clipboard (not the local browser
+        // clipboard) here: the menu is rebuilt on every open (ng-if), and at
+        // open time the local clipboard may hold stale data because writes
+        // triggered by remote copy events are rejected by browsers (no user
+        // gesture). The internal clipboard always holds the latest value from
+        // either source, so it is the authoritative source for display.
+        // Reading the local clipboard would overwrite this with stale data.
+        updateClipboardEditor(clipboardService.getStoredClipboard());
 
     }];
 

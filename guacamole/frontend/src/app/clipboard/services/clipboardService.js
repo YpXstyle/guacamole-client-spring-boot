@@ -581,6 +581,29 @@ angular.module('clipboard').factory('clipboardService', ['$injector',
     };
 
     /**
+     * Returns the current contents of the internal clipboard ONLY, without
+     * attempting to read or synchronize against the local browser clipboard.
+     *
+     * The internal clipboard always reflects the most-recently-copied value
+     * regardless of source (remote desktop or local), because both the
+     * remote→internal path (setClipboard, called from onclipboard) and the
+     * local→internal path (resyncClipboard, called on copy/cut/focus) update
+     * it unconditionally. Reading the local clipboard here instead would
+     * overwrite the internal value with a stale local clipboard contents —
+     * modern browsers reject writes to the local clipboard when the trigger is
+     * a remote (non-user-gesture) network event, so the local clipboard often
+     * lags behind the internal one. Use this getter whenever the caller wants
+     * the authoritative current value for display purposes.
+     *
+     * @return {ClipboardData}
+     *     The current contents of the internal clipboard. May be the default
+     *     empty ClipboardData if nothing has been set yet.
+     */
+    service.getStoredClipboard = function getStoredClipboard() {
+        return storedClipboardData();
+    };
+
+    /**
      * Sets the content of the internal clipboard shared across all active
      * Guacamole connections running within the current browser tab. If
      * access to the local clipboard is available, the local clipboard is
